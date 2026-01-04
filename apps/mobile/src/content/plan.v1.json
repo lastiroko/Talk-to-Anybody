@@ -1,0 +1,1802 @@
+[
+  {
+    "dayNumber": 1,
+    "title": "Day 1: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_01",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_01",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 2,
+    "title": "Day 2: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_02",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_02",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 3,
+    "title": "Day 3: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_03",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_03",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 4,
+    "title": "Day 4: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_04",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_04",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 5,
+    "title": "Day 5: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_05",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_05",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 6,
+    "title": "Day 6: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_06",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_06",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 7,
+    "title": "Day 7: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_07",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_07",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 8,
+    "title": "Day 8: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_08",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_08",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 9,
+    "title": "Day 9: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_09",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_09",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 10,
+    "title": "Day 10: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_10",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_10",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 11,
+    "title": "Day 11: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_11",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_11",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 12,
+    "title": "Day 12: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_12",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_12",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 13,
+    "title": "Day 13: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_13",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_13",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 14,
+    "title": "Day 14: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_14",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_14",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 15,
+    "title": "Day 15: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_15",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_15",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 16,
+    "title": "Day 16: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_16",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_16",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 17,
+    "title": "Day 17: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_17",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_17",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 18,
+    "title": "Day 18: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_18",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_18",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 19,
+    "title": "Day 19: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_19",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_19",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 20,
+    "title": "Day 20: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_20",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_20",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 21,
+    "title": "Day 21: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_21",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_21",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 22,
+    "title": "Day 22: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_22",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_22",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 23,
+    "title": "Day 23: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_23",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_23",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 24,
+    "title": "Day 24: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_24",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_24",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 25,
+    "title": "Day 25: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_25",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_25",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 26,
+    "title": "Day 26: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_26",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_26",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 27,
+    "title": "Day 27: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_27",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_27",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 28,
+    "title": "Day 28: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_28",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_28",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 29,
+    "title": "Day 29: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_29",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_29",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 30,
+    "title": "Day 30: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_30",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_30",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 31,
+    "title": "Day 31: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_31",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_31",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 32,
+    "title": "Day 32: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_32",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_32",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 33,
+    "title": "Day 33: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_33",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_33",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 34,
+    "title": "Day 34: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_34",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_34",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 35,
+    "title": "Day 35: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_35",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_35",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 36,
+    "title": "Day 36: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_36",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_36",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 37,
+    "title": "Day 37: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_37",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_37",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 38,
+    "title": "Day 38: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_38",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_38",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 39,
+    "title": "Day 39: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_39",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_39",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 40,
+    "title": "Day 40: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_40",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_40",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 41,
+    "title": "Day 41: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_41",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_41",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 42,
+    "title": "Day 42: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_42",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_42",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 43,
+    "title": "Day 43: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_43",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_43",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 44,
+    "title": "Day 44: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_44",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_44",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 45,
+    "title": "Day 45: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_45",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_45",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 46,
+    "title": "Day 46: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_46",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_46",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 47,
+    "title": "Day 47: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_47",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_47",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 48,
+    "title": "Day 48: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_48",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_48",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 49,
+    "title": "Day 49: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_49",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_49",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 50,
+    "title": "Day 50: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_50",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_50",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 51,
+    "title": "Day 51: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_51",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_51",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 52,
+    "title": "Day 52: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_52",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_52",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 53,
+    "title": "Day 53: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_53",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_53",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 54,
+    "title": "Day 54: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_54",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_54",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 55,
+    "title": "Day 55: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_55",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_55",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 56,
+    "title": "Day 56: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_56",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_56",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 57,
+    "title": "Day 57: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_57",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_57",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 58,
+    "title": "Day 58: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 5,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_58",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_58",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 59,
+    "title": "Day 59: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 10,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_59",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_59",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  },
+  {
+    "dayNumber": 60,
+    "title": "Day 60: Speaking drill",
+    "objective": "Build confidence with concise delivery",
+    "estimatedMinutes": 15,
+    "lessonText": "Keep it clear and pause with intention.",
+    "exercises": [
+      {
+        "id": "record_60",
+        "type": "record",
+        "prompt": "Record a 60-120s take on today's prompt.",
+        "durationSec": 90,
+        "targetMetrics": [
+          "wpm",
+          "fillerPerMin",
+          "pauseAvgSec"
+        ]
+      },
+      {
+        "id": "drill_60",
+        "type": "drill",
+        "prompt": "Focus on one improvement: fewer fillers or better pauses.",
+        "durationSec": 60,
+        "targetMetrics": [
+          "structure",
+          "clarity"
+        ]
+      }
+    ]
+  }
+]
