@@ -16,6 +16,8 @@ import { DayDetailScreen } from '../screens/DayDetailScreen';
 import {
   AuthStackParamList,
   MainStackParamList,
+import {
+  AuthStackParamList,
   OnboardingStackParamList,
   TabsParamList,
 } from './types';
@@ -108,6 +110,7 @@ export function AppNavigator({ flow, onAuthenticated, onOnboardingComplete }: Ap
           />
         </MainStack.Navigator>
       )}
+      {flow === 'main' && <MainTabs />}
     </NavigationContainer>
   );
 }

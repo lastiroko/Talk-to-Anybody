@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text } from 'react-native';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
@@ -23,6 +24,12 @@ export function PrimaryButton({ title, onPress, leftIcon, disabled = false }: Pr
       disabled={disabled}
     >
       {leftIcon ? <View style={styles.iconSlot}>{leftIcon}</View> : null}
+}
+
+export function PrimaryButton({ title, onPress, leftIcon }: PrimaryButtonProps) {
+  return (
+    <Pressable style={({ pressed }) => [styles.button, pressed && styles.pressed]} onPress={onPress}>
+      {leftIcon ? <Text style={styles.iconSlot}>{leftIcon}</Text> : null}
       <Text style={styles.title}>{title}</Text>
     </Pressable>
   );

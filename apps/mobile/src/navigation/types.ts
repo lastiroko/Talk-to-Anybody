@@ -29,4 +29,5 @@ export type RootStackParamList = {
 export type MainStackParamList = {
   Tabs: NavigatorScreenParams<TabsParamList>;
   DayDetail: { dayNumber: number };
+  Main: NavigatorScreenParams<TabsParamList>;
 };

@@ -8,13 +8,13 @@ export default function App() {
   const [flow, setFlow] = useState<'auth' | 'onboarding' | 'main'>('auth');
 
   return (
-    <ProgressProvider>
+    <>
       <StatusBar style="dark" />
       <AppNavigator
         flow={flow}
         onAuthenticated={() => setFlow('onboarding')}
         onOnboardingComplete={() => setFlow('main')}
       />
-    </ProgressProvider>
+    </>
   );
 }

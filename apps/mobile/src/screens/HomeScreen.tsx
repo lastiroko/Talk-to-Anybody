@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
@@ -18,6 +19,8 @@ export function HomeScreen() {
   const currentDay = progress?.currentDayUnlocked ?? 1;
   const currentStreak = progress?.currentStreak ?? 0;
 
+
+export function HomeScreen() {
   return (
     <ScreenContainer>
       <View style={styles.section}>
@@ -32,6 +35,7 @@ export function HomeScreen() {
           onPress={() => navigation.navigate('DayDetail', { dayNumber: currentDay })}
           disabled={loading}
         />
+        <Text style={styles.subtitle}>Today’s workout and quick stats will appear here.</Text>
       </View>
     </ScreenContainer>
   );

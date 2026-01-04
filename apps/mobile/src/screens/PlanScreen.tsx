@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
@@ -62,6 +63,14 @@ export function PlanScreen() {
         numColumns={1}
         contentContainerStyle={styles.list}
       />
+
+export function PlanScreen() {
+  return (
+    <ScreenContainer>
+      <View style={styles.section}>
+        <Text style={styles.title}>Plan</Text>
+        <Text style={styles.subtitle}>60-day plan grid/list placeholder.</Text>
+      </View>
     </ScreenContainer>
   );
 }
@@ -116,5 +125,18 @@ const styles = StyleSheet.create({
   loading: {
     marginTop: spacing.lg,
     color: colors.text,
+  },
+  section: {
+    gap: spacing.md,
+    marginTop: spacing.lg,
+  },
+  title: {
+    fontSize: typography.heading,
+    fontWeight: typography.weightBold,
+    color: colors.text,
+  },
+  subtitle: {
+    fontSize: typography.body,
+    color: colors.muted,
   },
 });
