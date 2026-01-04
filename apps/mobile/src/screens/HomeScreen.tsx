@@ -9,37 +9,29 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../navigation/types';
 
-type HomeNav = NativeStackNavigationProp<MainStackParamList>;
+type HomeNavigation = NativeStackNavigationProp<MainStackParamList>;
 
 export function HomeScreen() {
   const { progress, loading } = useProgress();
-  const navigation = useNavigation<HomeNav>();
+  const navigation = useNavigation<HomeNavigation>();
 
-  const todayDay = progress?.currentDayUnlocked ?? 1;
-
-  if (loading || !progress) {
-    return (
-      <ScreenContainer>
-        <Text style={styles.loading}>Loading...</Text>
-      </ScreenContainer>
-    );
-  }
+  const currentDay = progress?.currentDayUnlocked ?? 1;
+  const currentStreak = progress?.currentStreak ?? 0;
 
   return (
     <ScreenContainer>
       <View style={styles.section}>
-        <Text style={styles.title}>Today</Text>
-        <View style={styles.card}>
-          <Text style={styles.dayLabel}>Day {todayDay}</Text>
-          <Text style={styles.subtitle}>Tap to view lesson and exercises.</Text>
-          <PrimaryButton title="Open today" onPress={() => navigation.navigate('DayDetail', { dayNumber: todayDay })} />
-        </View>
+        <Text style={styles.title}>Home</Text>
+        <Text style={styles.subtitle}>Your daily plan and streak live here.</Text>
       </View>
-      <View style={styles.section}>
-        <Text style={styles.title}>Streak</Text>
-        <Text style={styles.subtitle}>
-          Current streak: {progress.currentStreak} | Last practice: {progress.lastPracticeDate ?? '—'}
-        </Text>
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>Today: Day {currentDay}</Text>
+        <Text style={styles.meta}>Current streak: {currentStreak} day(s)</Text>
+        <PrimaryButton
+          title="Open today"
+          onPress={() => navigation.navigate('DayDetail', { dayNumber: currentDay })}
+          disabled={loading}
+        />
       </View>
     </ScreenContainer>
   );
@@ -49,6 +41,7 @@ const styles = StyleSheet.create({
   section: {
     gap: spacing.md,
     marginTop: spacing.lg,
+    marginBottom: spacing.md,
   },
   title: {
     fontSize: typography.heading,
@@ -60,20 +53,20 @@ const styles = StyleSheet.create({
     color: colors.muted,
   },
   card: {
-    backgroundColor: colors.surface,
     padding: spacing.lg,
-    borderRadius: 12,
     borderWidth: 1,
     borderColor: colors.border,
-    gap: spacing.sm,
+    borderRadius: 12,
+    backgroundColor: colors.surface,
+    gap: spacing.md,
   },
-  dayLabel: {
+  cardTitle: {
     fontSize: typography.subheading,
     fontWeight: typography.weightSemi,
     color: colors.text,
   },
-  loading: {
-    marginTop: spacing.lg,
-    color: colors.text,
+  meta: {
+    fontSize: typography.body,
+    color: colors.muted,
   },
 });
