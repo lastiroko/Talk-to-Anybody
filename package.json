@@ -1,0 +1,14 @@
+{
+  "name": "speakcoach-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "lint": "echo \"lint placeholder\"",
+    "format": "echo \"format placeholder\"",
+    "typecheck": "echo \"typecheck placeholder\""
+  }
+}
