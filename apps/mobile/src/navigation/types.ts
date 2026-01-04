@@ -23,5 +23,11 @@ export type TabsParamList = {
 export type RootStackParamList = {
   Auth: NavigatorScreenParams<AuthStackParamList>;
   Onboarding: NavigatorScreenParams<OnboardingStackParamList>;
+  Main: NavigatorScreenParams<MainStackParamList>;
+};
+
+export type MainStackParamList = {
+  Tabs: NavigatorScreenParams<TabsParamList>;
+  DayDetail: { dayNumber: number };
   Main: NavigatorScreenParams<TabsParamList>;
 };

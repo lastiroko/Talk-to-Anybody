@@ -26,6 +26,11 @@ React Native app scaffolded with Expo (TypeScript) for the SpeakCoach product.
 - Onboarding stack: Goal → Time preference → Baseline placeholder
 - Main tabs: Home, Plan, Practice, Progress, Settings
 
+## Plan & progress
+- Plan data: `src/content/plan.v1.json` (60-day placeholder content).
+- Plan screen: tap a day to open details; Day N unlocks after completing Day N-1.
+- Progress persistence: stored locally via AsyncStorage (`completedDays`, `currentDayUnlocked`, streak).
+
 ## Project structure
 - `App.tsx` – sets the current flow (auth → onboarding → main tabs)
 - `src/navigation/AppNavigator.tsx` – navigation stacks and tabs

@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
@@ -8,6 +9,21 @@ interface PrimaryButtonProps {
   title: string;
   onPress: () => void;
   leftIcon?: ReactNode;
+  disabled?: boolean;
+}
+
+export function PrimaryButton({ title, onPress, leftIcon, disabled = false }: PrimaryButtonProps) {
+  return (
+    <Pressable
+      style={({ pressed }) => [
+        styles.button,
+        pressed && !disabled && styles.pressed,
+        disabled && styles.disabled,
+      ]}
+      onPress={onPress}
+      disabled={disabled}
+    >
+      {leftIcon ? <View style={styles.iconSlot}>{leftIcon}</View> : null}
 }
 
 export function PrimaryButton({ title, onPress, leftIcon }: PrimaryButtonProps) {
@@ -31,6 +47,9 @@ const styles = StyleSheet.create({
   },
   pressed: {
     backgroundColor: colors.primaryDark,
+  },
+  disabled: {
+    backgroundColor: colors.muted,
   },
   iconSlot: {
     marginRight: spacing.sm,

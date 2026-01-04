@@ -30,6 +30,3 @@ Cross-platform AI public speaking coach (placeholder name) with Expo React Nativ
 ## Next steps
 - Stage 1: scaffold the mobile app (Expo) and API app (Fastify) using shared configs.
 - Stage 2+: implement recording, analysis pipeline integrations, purchases, and dashboards.
-# Talk-to-Anybody
-
-This repository holds the product requirements for the AI Public Speaking Coach app (React Native for iOS + Android). See [`FEATURE_SPEC.md`](FEATURE_SPEC.md) for the full feature, pricing, and architecture specification.

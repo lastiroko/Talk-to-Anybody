@@ -12,6 +12,10 @@ import { PlanScreen } from '../screens/PlanScreen';
 import { PracticeScreen } from '../screens/PracticeScreen';
 import { ProgressScreen } from '../screens/ProgressScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
+import { DayDetailScreen } from '../screens/DayDetailScreen';
+import {
+  AuthStackParamList,
+  MainStackParamList,
 import {
   AuthStackParamList,
   OnboardingStackParamList,
@@ -21,6 +25,7 @@ import {
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 const OnboardingStack = createNativeStackNavigator<OnboardingStackParamList>();
 const Tabs = createBottomTabNavigator<TabsParamList>();
+const MainStack = createNativeStackNavigator<MainStackParamList>();
 
 type Flow = 'auth' | 'onboarding' | 'main';
 
@@ -95,6 +100,16 @@ export function AppNavigator({ flow, onAuthenticated, onOnboardingComplete }: Ap
     <NavigationContainer>
       {flow === 'auth' && <AuthNavigator onAuthenticated={onAuthenticated} />}
       {flow === 'onboarding' && <OnboardingNavigator onDone={onOnboardingComplete} />}
+      {flow === 'main' && (
+        <MainStack.Navigator>
+          <MainStack.Screen name="Tabs" component={MainTabs} options={{ headerShown: false }} />
+          <MainStack.Screen
+            name="DayDetail"
+            component={DayDetailScreen}
+            options={({ route }) => ({ title: `Day ${route.params.dayNumber}` })}
+          />
+        </MainStack.Navigator>
+      )}
       {flow === 'main' && <MainTabs />}
     </NavigationContainer>
   );
