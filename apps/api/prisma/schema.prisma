@@ -1,0 +1,361 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Enums
+// ═══════════════════════════════════════════════════════════════════════════════
+
+enum SessionMode {
+  daily
+  freestyle
+  script
+  impromptu
+  roleplay
+  game
+}
+
+enum SessionStatus {
+  queued
+  processing
+  done
+  error
+}
+
+enum PurchaseType {
+  monthly
+  lifetime
+}
+
+enum PurchaseStatus {
+  active
+  expired
+  refunded
+}
+
+enum PurchasePlatform {
+  ios
+  android
+}
+
+enum HabitType {
+  filler
+  uptalk
+  rushing
+}
+
+enum UnlearningPhase {
+  detect
+  disrupt
+  replace
+}
+
+enum SrsDimension {
+  fillers
+  pauses
+  pace
+  structure
+  vocal_variety
+  clarity
+  storytelling
+}
+
+enum TechniqueType {
+  pause
+  variety
+  pacing
+  emphasis
+}
+
+enum RewardFormatType {
+  full_scorecard
+  golden_insight
+  surprise_challenge
+  community_before_after
+  streak_milestone
+}
+
+enum EngagementAction {
+  dismissed
+  viewed
+  tapped_detail
+  shared
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Core Tables
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model User {
+  id                 String    @id @default(cuid())
+  email              String    @unique
+  passwordHash       String
+  createdAt          DateTime  @default(now())
+  goal               String?
+  dailyMinutesTarget Int?
+  timezone           String?
+  baselineCompleted  Boolean   @default(false)
+
+  purchases              Purchase[]
+  sessions               Session[]
+  streak                 Streak?
+  srsCards               SrsCard[]
+  unlearningProgress     UnlearningProgress[]
+  desensitizationProgress DesensitizationProgress?
+  anxietyRatings         AnxietyRating[]
+  rewardWeights          RewardWeight[]
+  rewardHistory          RewardHistory[]
+  imitationResults       ImitationResult[]
+  events                 EventAnalytics[]
+
+  @@index([email])
+}
+
+model Purchase {
+  id                 String           @id @default(cuid())
+  userId             String
+  platform           PurchasePlatform
+  type               PurchaseType
+  status             PurchaseStatus
+  storeTransactionId String?
+  expiresAt          DateTime?
+  createdAt          DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model PlanDay {
+  id            String @id @default(cuid())
+  dayNumber     Int    @unique
+  title         String
+  description   String
+  difficulty    Int
+  assetsJson    Json?
+  exercisesJson Json
+
+  sessions Session[]
+
+  @@index([dayNumber])
+}
+
+model Session {
+  id          String        @id @default(cuid())
+  userId      String
+  planDayId   String?
+  mode        SessionMode
+  status      SessionStatus @default(queued)
+  createdAt   DateTime      @default(now())
+  durationSec Int?
+  promptId    String?
+
+  user           User            @relation(fields: [userId], references: [id])
+  planDay        PlanDay?        @relation(fields: [planDayId], references: [id])
+  recordings     Recording[]
+  analysisResult AnalysisResult?
+  anxietyRatings AnxietyRating[]
+
+  @@index([userId])
+  @@index([planDayId])
+}
+
+model Recording {
+  id               String   @id @default(cuid())
+  sessionId        String
+  audioUrl         String
+  audioDurationSec Float
+  audioFormat      String
+  createdAt        DateTime @default(now())
+
+  session Session @relation(fields: [sessionId], references: [id])
+
+  @@index([sessionId])
+}
+
+model AnalysisResult {
+  id                  String   @id @default(cuid())
+  sessionId           String   @unique
+  transcriptText      String
+  transcriptWordsJson Json?
+  metricsJson         Json
+  scoresJson          Json
+  coachingText        String
+  habitMarkersJson    Json?
+  rewardFormat        RewardFormatType?
+  rewardContentJson   Json?
+  createdAt           DateTime @default(now())
+
+  session Session @relation(fields: [sessionId], references: [id])
+
+  @@index([sessionId])
+}
+
+model Streak {
+  userId           String   @id @unique
+  currentStreak    Int      @default(0)
+  longestStreak    Int      @default(0)
+  lastPracticeDate DateTime?
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model EventAnalytics {
+  id             String   @id @default(cuid())
+  userId         String
+  eventName      String
+  propertiesJson Json?
+  createdAt      DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([eventName])
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Psychological Engine Tables
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ── SRS (Spaced Repetition for Skills) ──────────────────────────────────────
+
+model SrsCard {
+  id                  String       @id @default(cuid())
+  userId              String
+  drillId             String
+  dimension           SrsDimension
+  currentIntervalDays Int          @default(1)
+  easeFactor          Float        @default(2.5)
+  nextReviewDate      DateTime
+  lastScore           Float        @default(0)
+  reviewCount         Int          @default(0)
+  reviewPriority      Float        @default(0.5)
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, drillId, dimension])
+  @@index([userId])
+  @@index([nextReviewDate])
+  @@index([userId, nextReviewDate])
+}
+
+// ── Unlearning Protocol ─────────────────────────────────────────────────────
+
+model UnlearningProgress {
+  id                       String          @id @default(cuid())
+  userId                   String
+  habitType                HabitType
+  currentPhase             UnlearningPhase @default(detect)
+  phaseStartedAt           DateTime        @default(now())
+  detectionAccuracy        Float           @default(0)
+  consecutiveCleanSessions Int             @default(0)
+  detectionThreshold       Float           @default(0.8)
+  createdAt                DateTime        @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, habitType])
+  @@index([userId])
+  @@index([habitType])
+}
+
+// ── Desensitization Ladder ──────────────────────────────────────────────────
+
+model DesensitizationProgress {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  currentLevel    Int      @default(1)
+  levelUnlockedAt Json     @default("[]")
+  createdAt       DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+// ── Anxiety Tracking ────────────────────────────────────────────────────────
+
+model AnxietyRating {
+  id         String   @id @default(cuid())
+  userId     String
+  sessionId  String
+  preRating  Int?
+  postRating Int?
+  createdAt  DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  session Session @relation(fields: [sessionId], references: [id])
+
+  @@index([userId])
+  @@index([sessionId])
+  @@index([userId, createdAt])
+}
+
+// ── Variable Reward System ──────────────────────────────────────────────────
+
+model RewardWeight {
+  id              String          @id @default(cuid())
+  userId          String
+  formatType      RewardFormatType
+  weight          Float           @default(0.2)
+  lastShownAt     DateTime?
+  engagementScore Float           @default(0)
+  updatedAt       DateTime        @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, formatType])
+  @@index([userId])
+}
+
+model RewardHistory {
+  id               String           @id @default(cuid())
+  userId           String
+  sessionId        String
+  formatShown      RewardFormatType
+  engagementAction EngagementAction?
+  createdAt        DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([sessionId])
+}
+
+// ── Expert Clips & Imitation ────────────────────────────────────────────────
+
+model ExpertClip {
+  id               String        @id @default(cuid())
+  techniqueType    TechniqueType
+  transcriptText   String
+  audioUrl         String
+  waveformJson     Json
+  paceProfileJson  Json
+  pitchProfileJson Json
+  durationSec      Float
+  createdAt        DateTime      @default(now())
+
+  imitationResults ImitationResult[]
+}
+
+model ImitationResult {
+  id                  String   @id @default(cuid())
+  userId              String
+  sessionId           String
+  expertClipId        String
+  similarityScore     Float
+  dimensionScoresJson Json
+  createdAt           DateTime @default(now())
+
+  user      User      @relation(fields: [userId], references: [id])
+  expertClip ExpertClip @relation(fields: [expertClipId], references: [id])
+
+  @@index([userId])
+  @@index([sessionId])
+  @@index([expertClipId])
+}

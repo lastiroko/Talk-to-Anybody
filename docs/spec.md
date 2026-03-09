@@ -6,11 +6,14 @@
 - Pricing: €5/month subscription or €30 lifetime (IAP-compliant).
 
 ## Core Experiences
-- **60-day plan**: Day 1–60 list with lock/unlock after completion; preview Day 1–2 free.
-- **Daily workout**: micro-lesson (30–60s), drill (1–2m), recording (60–180s, hard cap 5m), instant scorecard, two tips, reflection quick-tap.
+- **60-day plan**: Day 1–60 list with lock/unlock after completion; preview Day 1–2 free. Session durations follow a Micro-Commitment Curve (90s on Day 1 → 12 min by Day 30+) so users build the habit before sessions feel long.
+- **Daily workout**: micro-lesson (30–60s), drill (1–2m), recording (60–180s, hard cap 5m), instant scorecard, two tips, reflection quick-tap. Includes SRS-scheduled review drills when past skills are due for reinforcement.
 - **Practice modes**: Freestyle, Script mode (paste text), Impromptu prompt, Roleplay scenarios.
 - **Mini-games**: Filler Swap, Pause Punch, ABT Builder, Clarity Sprint.
-- **Progress**: streak, total minutes, trends (WPM, fillers/min, vocal variety proxy, Speaking Score), baseline vs current.
+- **Imitation drills**: Watch a 15s expert clip demonstrating a technique (pause placement, vocal variety, pacing, emphasis), then record yourself mimicking it with side-by-side waveform/pace comparison.
+- **Unlearning drills**: Three-phase habit-breaking exercises (Detect → Disrupt → Replace) for filler words, uptalk, and rushing.
+- **Desensitization ladder**: 6-level graduated exposure system (audio-only private → live group practice), gated by self-reported anxiety ratings.
+- **Progress**: streak, total minutes, trends (WPM, fillers/min, vocal variety proxy, Speaking Score), baseline vs current, anxiety trend graph (rolling 7-day average from Fear Journal).
 
 ## Onboarding
 - Select goal: Public speaking / Interviews / Work meetings / Social confidence.
@@ -21,7 +24,10 @@
 - **Scores**: Overall 0–100; sub-scores Delivery, Clarity, Story/Structure.
 - **Delivery metrics**: WPM, pause count/average, filler words per minute (needs transcript), vocal variety proxy (pitch range), energy proxy (loudness variance).
 - **Content metrics**: clarity proxy (sentence length/complexity), vocabulary richness, structure heuristics (intro/body/close), storytelling cues (ABT/conflict→resolution via LLM).
-- **Output**: top 2 fixes + 1 drill recommendation, supportive tone only, max ~90 words coaching.
+- **Output**: top 2 fixes + 1 drill recommendation, supportive tone only, max ~90 words coaching. Post-session feedback format varies via the Variable Reward System (full scorecard, single golden insight, surprise challenge unlock, community before/after clip, or streak milestone) to maintain engagement through novelty.
+- **Anxiety tracking**: Pre/post session anxiety self-report (1–10) feeds the Fear Journal & Anxiety Tracker. Trend visualization on Progress screen; data gates desensitization ladder progression and triggers encouragement on anxiety spikes.
+- **Spaced repetition**: Per-dimension skill scores (fillers, pauses, pace, structure, vocal variety, clarity, storytelling) feed the SRS-S engine, which schedules review drills on Ebbinghaus-curve intervals that adapt based on user improvement or regression.
+- **Imitation scoring**: Mirror Neuron Imitation Drills produce a similarity score (0–100) comparing user waveform/pace/pitch patterns against expert clips.
 - **Future (V1+)**: filler timeline, compare-to-last overlay, adaptive filler remediation days.
 
 ## Notifications
