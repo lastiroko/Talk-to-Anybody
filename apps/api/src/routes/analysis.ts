@@ -1,13 +1,20 @@
 import type { FastifyPluginAsync } from 'fastify';
-import { AnalysisResultSchema } from '@speakcoach/shared';
+import { getAnalysis } from '../services/analysis.service';
 
 const analysisRoutes: FastifyPluginAsync = async (fastify) => {
   // GET /sessions/:id/analysis — scorecard JSON with metrics, scores, coaching tips, reward
-  // preHandler: [fastify.authenticate]
-  fastify.get<{ Params: { id: string } }>('/sessions/:id/analysis', async (request, reply) => {
-    // TODO: fetch analysis result for session, validate with AnalysisResultSchema, return scorecard
+  fastify.get<{ Params: { id: string } }>('/sessions/:id/analysis', {
+    preHandler: [fastify.authenticate],
+  }, async (request, reply) => {
     const { id } = request.params;
-    return reply.status(501).send({ message: 'not implemented' });
+    const userId = request.user.userId;
+
+    const analysis = await getAnalysis(fastify.prisma, id, userId);
+    if (!analysis) {
+      return reply.status(404).send({ message: 'Analysis not found' });
+    }
+
+    return reply.send(analysis);
   });
 };
 

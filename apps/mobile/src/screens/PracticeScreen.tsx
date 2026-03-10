@@ -6,6 +6,7 @@ import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
 import { useProgress } from '../hooks/useProgress';
+import { usePaywallGate } from '../hooks/usePaywallGate';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../navigation/types';
@@ -22,6 +23,7 @@ const GAME_UNLOCK_DAYS: Record<string, number> = {
 export function PracticeScreen() {
   const navigation = useNavigation<PracticeNavigation>();
   const { progress } = useProgress();
+  const { isGated } = usePaywallGate();
   const completedDays = progress?.completedDays ?? [];
 
   const isGameUnlocked = (gameId: string) =>
@@ -54,19 +56,25 @@ export function PracticeScreen() {
               icon={'\ud83d\udcdd'}
               title="Script Mode"
               description="Paste your script and practice delivering it."
-              onPress={() => navigation.navigate('ScriptMode')}
+              onPress={() =>
+                isGated() ? navigation.navigate('Paywall') : navigation.navigate('ScriptMode')
+              }
             />
             <ModeCard
               icon={'\u26a1'}
               title="Impromptu"
               description="Random prompt. Zero prep. Think on your feet."
-              onPress={() => navigation.navigate('Impromptu')}
+              onPress={() =>
+                isGated() ? navigation.navigate('Paywall') : navigation.navigate('Impromptu')
+              }
             />
             <ModeCard
               icon={'\ud83c\udfad'}
               title="Roleplay"
               description="Practice real scenarios: interviews, toasts, pitches."
-              onPress={() => navigation.navigate('Roleplay')}
+              onPress={() =>
+                isGated() ? navigation.navigate('Paywall') : navigation.navigate('Roleplay')
+              }
             />
           </View>
         </View>
@@ -82,7 +90,9 @@ export function PracticeScreen() {
                 description="Replace fillers with power words"
                 locked={!isGameUnlocked('filler_swap')}
                 unlockDay={GAME_UNLOCK_DAYS.filler_swap}
-                onPress={() => navigation.navigate('FillerSwap')}
+                onPress={() =>
+                  isGated() ? navigation.navigate('Paywall') : navigation.navigate('FillerSwap')
+                }
               />
               <GameCard
                 icon={'\u23f8\ufe0f'}
@@ -90,7 +100,9 @@ export function PracticeScreen() {
                 description="Hit the perfect pause timing"
                 locked={!isGameUnlocked('pause_punch')}
                 unlockDay={GAME_UNLOCK_DAYS.pause_punch}
-                onPress={() => navigation.navigate('PausePunch')}
+                onPress={() =>
+                  isGated() ? navigation.navigate('Paywall') : navigation.navigate('PausePunch')
+                }
               />
             </View>
             <View style={styles.gameRow}>
@@ -100,7 +112,9 @@ export function PracticeScreen() {
                 description="Construct compelling story structures"
                 locked={!isGameUnlocked('abt_builder')}
                 unlockDay={GAME_UNLOCK_DAYS.abt_builder}
-                onPress={() => navigation.navigate('ABTBuilder')}
+                onPress={() =>
+                  isGated() ? navigation.navigate('Paywall') : navigation.navigate('ABTBuilder')
+                }
               />
               <GameCard
                 icon={'\ud83d\udc8e'}
@@ -108,7 +122,9 @@ export function PracticeScreen() {
                 description="Simplify complex ideas fast"
                 locked={!isGameUnlocked('clarity_sprint')}
                 unlockDay={GAME_UNLOCK_DAYS.clarity_sprint}
-                onPress={() => navigation.navigate('ClaritySprint')}
+                onPress={() =>
+                  isGated() ? navigation.navigate('Paywall') : navigation.navigate('ClaritySprint')
+                }
               />
             </View>
           </View>

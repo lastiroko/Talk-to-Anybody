@@ -9,6 +9,7 @@ import { colors } from '../theme/colors';
 import planData from '../content/plan.v1.json';
 import { PlanDay } from '../types/progress';
 import { useProgress } from '../hooks/useProgress';
+import { usePaywallGate } from '../hooks/usePaywallGate';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../navigation/types';
@@ -27,6 +28,7 @@ interface GridItem {
 export function PlanScreen() {
   const { progress, loading } = useProgress();
   const navigation = useNavigation<PlanNavigation>();
+  const { isGated } = usePaywallGate();
   const plan = useMemo(() => planData as PlanDay[], []);
 
   const completedCount = progress?.completedDays.length ?? 0;
@@ -62,6 +64,10 @@ export function PlanScreen() {
         'Locked',
         `Complete Day ${progress?.currentDayUnlocked ?? 1} first`,
       );
+      return;
+    }
+    if (isGated({ dayNumber })) {
+      navigation.navigate('Paywall');
       return;
     }
     navigation.navigate('DayDetail', { dayNumber });

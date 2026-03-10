@@ -20,12 +20,14 @@ import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
 import { useProgress } from '../hooks/useProgress';
+import { usePaywallGate } from '../hooks/usePaywallGate';
 import { MainStackParamList } from '../navigation/types';
 
 export function DayDetailScreen() {
   const route = useRoute<RouteProp<MainStackParamList, 'DayDetail'>>();
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
   const { progress, loading, completeDay } = useProgress();
+  const { isGated } = usePaywallGate();
 
   const plan = useMemo(() => planData as PlanDay[], []);
   const day = useMemo(
@@ -91,6 +93,27 @@ export function DayDetailScreen() {
       <ScreenContainer>
         <View style={styles.center}>
           <Text style={styles.loadingText}>Loading...</Text>
+        </View>
+      </ScreenContainer>
+    );
+  }
+
+  if (isGated({ dayNumber: route.params.dayNumber })) {
+    return (
+      <ScreenContainer>
+        <View style={styles.center}>
+          <Text style={styles.gatedIcon}>{'\ud83d\udd12'}</Text>
+          <Text style={styles.gatedTitle}>This day requires a subscription</Text>
+          <Text style={styles.gatedSubtitle}>
+            Unlock the full 60-day plan to access Day {route.params.dayNumber} and beyond.
+          </Text>
+          <TouchableOpacity
+            style={styles.gatedButton}
+            onPress={() => navigation.navigate('Paywall')}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.gatedButtonText}>View Plans</Text>
+          </TouchableOpacity>
         </View>
       </ScreenContainer>
     );
@@ -423,5 +446,37 @@ const styles = StyleSheet.create({
 
   bottomSpacer: {
     height: spacing.xl,
+  },
+
+  // Gated / paywall overlay
+  gatedIcon: {
+    fontSize: 48,
+    marginBottom: spacing.md,
+  },
+  gatedTitle: {
+    fontSize: typography.subheading,
+    fontWeight: typography.weightBold,
+    color: colors.text,
+    textAlign: 'center',
+    marginBottom: spacing.sm,
+  },
+  gatedSubtitle: {
+    fontSize: typography.body,
+    color: colors.muted,
+    textAlign: 'center',
+    lineHeight: 22,
+    paddingHorizontal: spacing.lg,
+    marginBottom: spacing.lg,
+  },
+  gatedButton: {
+    backgroundColor: colors.primary,
+    borderRadius: 12,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.xl,
+  },
+  gatedButtonText: {
+    color: '#ffffff',
+    fontSize: typography.body,
+    fontWeight: typography.weightBold,
   },
 });

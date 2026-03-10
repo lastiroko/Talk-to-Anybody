@@ -41,4 +41,5 @@ export type MainStackParamList = {
   ClaritySprint: undefined;
   ExerciseRecord: { exercise: PlanExercise; dayNumber: number };
   AnalysisResult: { sessionId: string; exerciseId?: string; dayNumber?: number };
+  Paywall: undefined;
 };

@@ -23,6 +23,7 @@ import { ABTBuilderScreen } from '../screens/ABTBuilderScreen';
 import { ClaritySprintScreen } from '../screens/ClaritySprintScreen';
 import { ExerciseRecordScreen } from '../screens/ExerciseRecordScreen';
 import { AnalysisResultScreen } from '../screens/AnalysisResultScreen';
+import { PaywallScreen } from '../screens/PaywallScreen';
 import {
   AuthStackParamList,
   MainStackParamList,
@@ -126,6 +127,7 @@ export function AppNavigator({ flow, onAuthenticated, onOnboardingComplete }: Ap
           <MainStack.Screen name="ClaritySprint" component={ClaritySprintScreen} options={{ title: 'Clarity Sprint' }} />
           <MainStack.Screen name="ExerciseRecord" component={ExerciseRecordScreen} options={{ title: 'Record' }} />
           <MainStack.Screen name="AnalysisResult" component={AnalysisResultScreen} options={{ title: 'Results' }} />
+          <MainStack.Screen name="Paywall" component={PaywallScreen} options={{ presentation: 'modal', headerShown: false }} />
         </MainStack.Navigator>
       )}
     </NavigationContainer>
