@@ -2,7 +2,16 @@
   "permissions": {
     "allow": [
       "Bash(cd \"C:\\\\Users\\\\phili\\\\Talk-to-Anybody\" && npx tsc --noEmit --project apps/mobile/tsconfig.json 2>&1 | head -50)",
-      "Bash(cd \"C:\\\\Users\\\\phili\\\\Talk-to-Anybody\" && mv apps/mobile/src/hooks/useProgress.ts apps/mobile/src/hooks/useProgress.tsx)"
+      "Bash(cd \"C:\\\\Users\\\\phili\\\\Talk-to-Anybody\" && mv apps/mobile/src/hooks/useProgress.ts apps/mobile/src/hooks/useProgress.tsx)",
+      "Bash(cd \"C:\\\\Users\\\\phili\\\\Talk-to-Anybody\\\\apps\\\\mobile\" && npx expo install expo-av expo-file-system 2>&1)",
+      "Bash(cd \"C:\\\\Users\\\\phili\\\\Talk-to-Anybody\\\\apps\\\\mobile\" && npm install expo-av expo-file-system 2>&1)",
+      "Bash(cd /c/Users/phili/Talk-to-Anybody/apps/api && npm install @deepgram/sdk openai 2>&1)",
+      "Bash(cd \"C:/Users/phili/Talk-to-Anybody\" && npx tsc --noEmit --project apps/mobile/tsconfig.json 2>&1 | head -30)",
+      "Bash(cd /c/Users/phili/Talk-to-Anybody/apps/api && npx tsc --noEmit 2>&1 | head -60)",
+      "Bash(cd /c/Users/phili/Talk-to-Anybody/apps/api && npx tsc --noEmit 2>&1 | head -30)",
+      "Bash(git add apps/api/src/jobs/ apps/api/src/services/audio-analysis.service.ts apps/api/src/services/coaching.service.ts apps/api/src/services/stt.service.ts apps/api/package.json apps/api/src/config.ts apps/api/src/routes/analysis.ts apps/api/src/routes/sessions.ts apps/api/src/services/analysis.service.ts apps/api/src/services/rewards.service.ts apps/api/src/services/session.service.ts apps/mobile/App.tsx apps/mobile/src/navigation/AppNavigator.tsx apps/mobile/src/navigation/types.ts apps/mobile/src/screens/DayDetailScreen.tsx apps/mobile/src/screens/PlanScreen.tsx apps/mobile/src/screens/PracticeScreen.tsx apps/mobile/src/hooks/usePaywallGate.ts apps/mobile/src/hooks/usePurchase.tsx apps/mobile/src/screens/PaywallScreen.tsx package-lock.json)",
+      "Bash(git commit -m \"$\\(cat <<'EOF'\nfeat: backend analysis pipeline + purchase/paywall system\n\nStage 10: Add STT \\(Deepgram\\), audio metrics extraction, LLM coaching\n\\(OpenAI\\), analysis job orchestrator, and implement session/analysis\nroutes with Prisma. Mock fallbacks when API keys are missing.\n\nStage 12: Add PaywallScreen with monthly/lifetime plans, usePurchase\ncontext, usePaywallGate hook. Gate days 3+, Script/Impromptu/Roleplay,\nand mini-games behind paywall. Freestyle and days 1-2 remain free.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git add -A && git commit -m \"feat: complete app build — all screens, recording, analysis, games, purchases\")"
     ]
   }
 }
