@@ -23,7 +23,7 @@ export function PrimaryButton({ title, onPress, leftIcon, disabled = false }: Pr
       disabled={disabled}
     >
       {leftIcon ? <View style={styles.iconSlot}>{leftIcon}</View> : null}
-      <Text style={styles.title}>{title}</Text>
+      <Text style={[styles.title, disabled && styles.disabledText]}>{title}</Text>
     </Pressable>
   );
 }
@@ -42,7 +42,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primaryDark,
   },
   disabled: {
-    backgroundColor: colors.muted,
+    backgroundColor: '#cbd5e1',
+  },
+  disabledText: {
+    color: '#94a3b8',
   },
   iconSlot: {
     marginRight: spacing.sm,

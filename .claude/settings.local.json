@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd \"C:\\\\Users\\\\phili\\\\Talk-to-Anybody\" && npx tsc --noEmit --project apps/mobile/tsconfig.json 2>&1 | head -50)",
+      "Bash(cd \"C:\\\\Users\\\\phili\\\\Talk-to-Anybody\" && mv apps/mobile/src/hooks/useProgress.ts apps/mobile/src/hooks/useProgress.tsx)"
+    ]
+  }
+}
