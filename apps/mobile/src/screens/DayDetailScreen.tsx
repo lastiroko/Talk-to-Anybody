@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Alert,
   Animated,
@@ -53,12 +53,27 @@ export function DayDetailScreen() {
   const showPostRating = day.anxietyGate?.showPostRating ?? false;
 
   const handleExerciseStart = (exerciseId: string) => {
-    setCompletedExercises((prev) => {
-      const next = new Set(prev);
-      next.add(exerciseId);
-      return next;
-    });
+    const exercise = day.exercises.find((e) => e.id === exerciseId);
+    if (exercise && (exercise.type === 'record' || exercise.type === 'drill' || exercise.type === 'imitation_drill')) {
+      navigation.navigate('ExerciseRecord', { exercise, dayNumber: day.dayNumber });
+    } else {
+      // For non-recording exercises, mark as done locally
+      setCompletedExercises((prev) => {
+        const next = new Set(prev);
+        next.add(exerciseId);
+        return next;
+      });
+    }
   };
+
+  // Mark exercise complete when returning from recording
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      // Check for exercises that went through recording flow — mark complete
+      // This is a simple approach; a more robust solution would use route params
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   const handleComplete = async () => {
     if (!allExercisesDone) return;

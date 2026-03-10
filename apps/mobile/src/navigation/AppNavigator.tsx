@@ -13,6 +13,16 @@ import { PracticeScreen } from '../screens/PracticeScreen';
 import { ProgressScreen } from '../screens/ProgressScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import { DayDetailScreen } from '../screens/DayDetailScreen';
+import { FreestyleScreen } from '../screens/FreestyleScreen';
+import { ScriptModeScreen } from '../screens/ScriptModeScreen';
+import { ImpromptuScreen } from '../screens/ImpromptuScreen';
+import { RoleplayScreen } from '../screens/RoleplayScreen';
+import { FillerSwapScreen } from '../screens/FillerSwapScreen';
+import { PausePunchScreen } from '../screens/PausePunchScreen';
+import { ABTBuilderScreen } from '../screens/ABTBuilderScreen';
+import { ClaritySprintScreen } from '../screens/ClaritySprintScreen';
+import { ExerciseRecordScreen } from '../screens/ExerciseRecordScreen';
+import { AnalysisResultScreen } from '../screens/AnalysisResultScreen';
 import {
   AuthStackParamList,
   MainStackParamList,
@@ -106,6 +116,16 @@ export function AppNavigator({ flow, onAuthenticated, onOnboardingComplete }: Ap
             component={DayDetailScreen}
             options={({ route }) => ({ title: `Day ${route.params.dayNumber}` })}
           />
+          <MainStack.Screen name="Freestyle" component={FreestyleScreen} options={{ title: 'Freestyle' }} />
+          <MainStack.Screen name="ScriptMode" component={ScriptModeScreen} options={{ title: 'Script Mode' }} />
+          <MainStack.Screen name="Impromptu" component={ImpromptuScreen} options={{ title: 'Impromptu' }} />
+          <MainStack.Screen name="Roleplay" component={RoleplayScreen} options={{ title: 'Roleplay' }} />
+          <MainStack.Screen name="FillerSwap" component={FillerSwapScreen} options={{ title: 'Filler Swap' }} />
+          <MainStack.Screen name="PausePunch" component={PausePunchScreen} options={{ title: 'Pause Punch' }} />
+          <MainStack.Screen name="ABTBuilder" component={ABTBuilderScreen} options={{ title: 'ABT Builder' }} />
+          <MainStack.Screen name="ClaritySprint" component={ClaritySprintScreen} options={{ title: 'Clarity Sprint' }} />
+          <MainStack.Screen name="ExerciseRecord" component={ExerciseRecordScreen} options={{ title: 'Record' }} />
+          <MainStack.Screen name="AnalysisResult" component={AnalysisResultScreen} options={{ title: 'Results' }} />
         </MainStack.Navigator>
       )}
     </NavigationContainer>

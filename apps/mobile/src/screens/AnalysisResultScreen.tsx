@@ -1,0 +1,353 @@
+import { useEffect, useMemo, useState } from 'react';
+import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ScreenContainer } from '../components/ScreenContainer';
+import { PrimaryButton } from '../components/PrimaryButton';
+import { MetricCard } from '../components/MetricCard';
+import { spacing } from '../theme/spacing';
+import { typography } from '../theme/typography';
+import { colors } from '../theme/colors';
+import { MainStackParamList } from '../navigation/types';
+import { getAnalysis } from '../services/api';
+
+function scoreColor(score: number): string {
+  if (score > 70) return '#16a34a';
+  if (score >= 40) return '#eab308';
+  return '#ef4444';
+}
+
+function pauseLabel(val: number): string {
+  if (val < 0.3) return 'Too short';
+  if (val > 1.5) return 'Too long';
+  return 'Good';
+}
+
+function fillerTrend(val: number): 'up' | 'down' | 'stable' {
+  if (val < 1) return 'down';
+  if (val > 3) return 'up';
+  return 'stable';
+}
+
+type AnalysisData = Awaited<ReturnType<typeof getAnalysis>>;
+
+export function AnalysisResultScreen() {
+  const route = useRoute<RouteProp<MainStackParamList, 'AnalysisResult'>>();
+  const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
+  const { sessionId, dayNumber } = route.params;
+
+  const [analysis, setAnalysis] = useState<AnalysisData | null>(null);
+
+  useEffect(() => {
+    getAnalysis(sessionId).then(setAnalysis);
+  }, [sessionId]);
+
+  if (!analysis) {
+    return (
+      <ScreenContainer>
+        <View style={styles.center}>
+          <Text style={styles.loadingText}>Loading results...</Text>
+        </View>
+      </ScreenContainer>
+    );
+  }
+
+  const overall = analysis.scores.overall;
+  const ringColor = scoreColor(overall);
+
+  return (
+    <ScreenContainer padded={false} scroll={false}>
+      <ScrollView contentContainerStyle={styles.content}>
+        {/* Header */}
+        <Text style={styles.title}>Your Results</Text>
+
+        {/* Overall score circle */}
+        <View style={styles.scoreCircleContainer}>
+          <View style={[styles.scoreCircle, { borderColor: ringColor }]}>
+            <Text style={[styles.scoreNumber, { color: ringColor }]}>{overall}</Text>
+          </View>
+          <Text style={styles.scoreLabel}>Speaking Score</Text>
+        </View>
+
+        {/* Sub-scores row */}
+        <View style={styles.subScoresRow}>
+          <View style={styles.subScoreCard}>
+            <Text style={styles.subScoreIcon}>{'\ud83c\udfa4'}</Text>
+            <Text style={[styles.subScoreValue, { color: scoreColor(analysis.scores.delivery) }]}>
+              {analysis.scores.delivery}
+            </Text>
+            <Text style={styles.subScoreLabel}>Delivery</Text>
+          </View>
+          <View style={styles.subScoreCard}>
+            <Text style={styles.subScoreIcon}>{'\ud83d\udc8e'}</Text>
+            <Text style={[styles.subScoreValue, { color: scoreColor(analysis.scores.clarity) }]}>
+              {analysis.scores.clarity}
+            </Text>
+            <Text style={styles.subScoreLabel}>Clarity</Text>
+          </View>
+          <View style={styles.subScoreCard}>
+            <Text style={styles.subScoreIcon}>{'\ud83d\udcd6'}</Text>
+            <Text style={[styles.subScoreValue, { color: scoreColor(analysis.scores.story) }]}>
+              {analysis.scores.story}
+            </Text>
+            <Text style={styles.subScoreLabel}>Story</Text>
+          </View>
+        </View>
+
+        {/* Metrics section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>{'\ud83d\udcca'} Metrics</Text>
+          <View style={styles.metricsGrid}>
+            <View style={styles.metricsRow}>
+              <MetricCard
+                label="WPM"
+                value={String(analysis.metrics.wpm)}
+                trend={analysis.metrics.wpm >= 130 && analysis.metrics.wpm <= 160 ? 'up' : 'stable'}
+                trendLabel="Target: 130-160"
+              />
+              <MetricCard
+                label="Fillers/min"
+                value={String(analysis.metrics.fillerPerMin)}
+                trend={fillerTrend(analysis.metrics.fillerPerMin)}
+                trendLabel={analysis.metrics.fillerPerMin < 1 ? 'Great!' : analysis.metrics.fillerPerMin > 3 ? 'Work on it' : 'Okay'}
+              />
+            </View>
+            <View style={styles.metricsRow}>
+              <MetricCard
+                label="Avg Pause"
+                value={`${analysis.metrics.avgPauseSec}s`}
+                trend={pauseLabel(analysis.metrics.avgPauseSec) === 'Good' ? 'up' : 'stable'}
+                trendLabel={pauseLabel(analysis.metrics.avgPauseSec)}
+              />
+              <MetricCard
+                label="Pitch Range"
+                value={`${analysis.metrics.pitchRangeHz} Hz`}
+                trend="stable"
+                trendLabel=""
+              />
+            </View>
+          </View>
+        </View>
+
+        {/* Wins */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>{'\ud83c\udf1f'} What went well</Text>
+          {analysis.wins.map((win, i) => (
+            <View key={i} style={styles.winCard}>
+              <Text style={styles.winText}>{'\u2705'} {win}</Text>
+            </View>
+          ))}
+        </View>
+
+        {/* Fixes */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>{'\ud83c\udfaf'} Focus areas</Text>
+          {analysis.fixes.map((fix, i) => (
+            <TouchableOpacity
+              key={i}
+              style={styles.fixCard}
+              onPress={() => Alert.alert('Drill coming soon', `"${fix.title}" drill will be available in a future update.`)}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.fixText}>{'\ud83d\udd27'} {fix.title}</Text>
+              <Text style={styles.fixArrow}>{'\u203a'}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* Coaching message */}
+        <View style={styles.coachingCard}>
+          <Text style={styles.coachingLabel}>{'\ud83e\uddd1\u200d\ud83c\udfeb'} Coach says:</Text>
+          <Text style={styles.coachingText}>{analysis.coachingText}</Text>
+        </View>
+
+        {/* Actions */}
+        <View style={styles.actions}>
+          <PrimaryButton
+            title="Continue"
+            onPress={() => {
+              // Go back to DayDetail
+              if (dayNumber) {
+                navigation.pop(1);
+              } else {
+                navigation.goBack();
+              }
+            }}
+          />
+          <TouchableOpacity
+            style={styles.shareButton}
+            onPress={() => Alert.alert('Coming soon', 'Sharing will be available in a future update.')}
+          >
+            <Text style={styles.shareText}>Share Progress</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.bottomSpacer} />
+      </ScrollView>
+    </ScreenContainer>
+  );
+}
+
+const styles = StyleSheet.create({
+  content: {
+    padding: spacing.lg,
+    gap: spacing.lg,
+    paddingBottom: spacing.xl,
+  },
+  center: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loadingText: {
+    fontSize: typography.body,
+    color: colors.muted,
+  },
+  title: {
+    fontSize: typography.heading,
+    fontWeight: typography.weightBold,
+    color: colors.text,
+  },
+
+  // Score circle
+  scoreCircleContainer: {
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  scoreCircle: {
+    width: 130,
+    height: 130,
+    borderRadius: 65,
+    borderWidth: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
+  scoreNumber: {
+    fontSize: 48,
+    fontWeight: typography.weightBold,
+  },
+  scoreLabel: {
+    fontSize: typography.subheading,
+    fontWeight: typography.weightSemi,
+    color: colors.text,
+  },
+
+  // Sub-scores
+  subScoresRow: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+  },
+  subScoreCard: {
+    flex: 1,
+    backgroundColor: colors.surface,
+    borderRadius: 12,
+    padding: spacing.md,
+    alignItems: 'center',
+    gap: 4,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  subScoreIcon: {
+    fontSize: 20,
+  },
+  subScoreValue: {
+    fontSize: 22,
+    fontWeight: typography.weightBold,
+  },
+  subScoreLabel: {
+    fontSize: typography.small,
+    color: colors.muted,
+  },
+
+  // Sections
+  section: {
+    gap: spacing.sm,
+  },
+  sectionTitle: {
+    fontSize: typography.subheading,
+    fontWeight: typography.weightBold,
+    color: colors.text,
+  },
+
+  // Metrics
+  metricsGrid: {
+    gap: spacing.sm,
+  },
+  metricsRow: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+  },
+
+  // Wins
+  winCard: {
+    backgroundColor: '#dcfce7',
+    borderRadius: 10,
+    padding: spacing.md,
+    borderWidth: 1,
+    borderColor: '#86efac',
+  },
+  winText: {
+    fontSize: typography.body,
+    color: '#15803d',
+  },
+
+  // Fixes
+  fixCard: {
+    backgroundColor: '#fff7ed',
+    borderRadius: 10,
+    padding: spacing.md,
+    borderWidth: 1,
+    borderColor: '#fed7aa',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  fixText: {
+    fontSize: typography.body,
+    color: '#c2410c',
+    flex: 1,
+  },
+  fixArrow: {
+    fontSize: 20,
+    color: '#c2410c',
+  },
+
+  // Coaching
+  coachingCard: {
+    backgroundColor: '#eff6ff',
+    borderRadius: 14,
+    padding: spacing.lg,
+    gap: spacing.sm,
+    borderWidth: 1,
+    borderColor: '#bfdbfe',
+  },
+  coachingLabel: {
+    fontSize: typography.small,
+    fontWeight: typography.weightBold,
+    color: colors.primary,
+  },
+  coachingText: {
+    fontSize: typography.body,
+    color: colors.text,
+    lineHeight: 24,
+  },
+
+  // Actions
+  actions: {
+    gap: spacing.md,
+  },
+  shareButton: {
+    alignItems: 'center',
+    paddingVertical: spacing.sm,
+  },
+  shareText: {
+    fontSize: typography.body,
+    color: colors.primary,
+    fontWeight: typography.weightSemi,
+  },
+
+  bottomSpacer: {
+    height: spacing.lg,
+  },
+});

@@ -1,32 +1,282 @@
-import { Text, StyleSheet, View } from 'react-native';
+import { useState } from 'react';
+import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
+import { SettingsRow } from '../components/SettingsRow';
+import { SettingsToggle } from '../components/SettingsToggle';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
+import { useProgress } from '../hooks/useProgress';
 
 export function SettingsScreen() {
+  const { progress, resetProgress } = useProgress();
+  const currentDay = progress?.currentDayUnlocked ?? 1;
+
+  const [dailyReminder, setDailyReminder] = useState(true);
+  const [streakRescue, setStreakRescue] = useState(false);
+
+  const handleResetProgress = () => {
+    Alert.alert(
+      'Reset Progress',
+      'Are you sure? This will erase all your progress and start from Day 1. This cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Reset',
+          style: 'destructive',
+          onPress: () => resetProgress(),
+        },
+      ],
+    );
+  };
+
+  const comingSoon = (feature: string) => () =>
+    Alert.alert('Coming soon', `${feature} will be available in a future update.`);
+
   return (
-    <ScreenContainer>
-      <View style={styles.section}>
-        <Text style={styles.title}>Settings</Text>
-        <Text style={styles.subtitle}>Account, purchases, reminders placeholder.</Text>
-      </View>
+    <ScreenContainer padded={false} scroll={false}>
+      <ScrollView contentContainerStyle={styles.content}>
+        {/* Profile section */}
+        <View style={styles.sectionCard}>
+          <View style={styles.profileHeader}>
+            <View style={styles.avatar}>
+              <Text style={styles.avatarText}>{'\ud83d\udc64'}</Text>
+            </View>
+            <View style={styles.profileInfo}>
+              <Text style={styles.profileEmail}>user@example.com</Text>
+              <TouchableOpacity onPress={comingSoon('Edit profile')}>
+                <Text style={styles.editLink}>Edit Profile</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+
+        {/* Plan section */}
+        <View style={styles.sectionCard}>
+          <Text style={styles.sectionTitle}>Your Plan</Text>
+          <SettingsRow label="Goal" value="Public Speaking" onPress={comingSoon('Goal editing')} />
+          <View style={styles.separator} />
+          <SettingsRow label="Daily time" value="10 min/day" onPress={comingSoon('Daily time editing')} />
+          <View style={styles.separator} />
+          <SettingsRow label="Current day" value={`Day ${currentDay} of 60`} />
+        </View>
+
+        {/* Subscription section */}
+        <View style={styles.sectionCard}>
+          <Text style={styles.sectionTitle}>Subscription</Text>
+          <View style={styles.subRow}>
+            <Text style={styles.subLabel}>Status</Text>
+            <View style={styles.freeBadge}>
+              <Text style={styles.freeBadgeText}>Free Trial</Text>
+            </View>
+          </View>
+          <TouchableOpacity
+            style={styles.upgradeButton}
+            onPress={() =>
+              Alert.alert(
+                'Upgrade to Premium',
+                '\u20ac5/month or \u20ac30 lifetime. Coming soon!',
+              )
+            }
+            activeOpacity={0.7}
+          >
+            <Text style={styles.upgradeText}>{'\u2b50'} Upgrade to Premium</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Notifications section */}
+        <View style={styles.sectionCard}>
+          <Text style={styles.sectionTitle}>Notifications</Text>
+          <SettingsRow
+            label="Daily reminder"
+            rightElement={
+              <SettingsToggle value={dailyReminder} onToggle={() => setDailyReminder(!dailyReminder)} />
+            }
+          />
+          <View style={styles.separator} />
+          <SettingsRow
+            label="Reminder time"
+            value="9:00 AM"
+            onPress={comingSoon('Time picker')}
+          />
+          <View style={styles.separator} />
+          <SettingsRow
+            label="Streak rescue"
+            rightElement={
+              <SettingsToggle value={streakRescue} onToggle={() => setStreakRescue(!streakRescue)} />
+            }
+          />
+        </View>
+
+        {/* Data section */}
+        <View style={styles.sectionCard}>
+          <Text style={styles.sectionTitle}>Your Data</Text>
+          <SettingsRow label="Export my data" onPress={comingSoon('Data export')} />
+          <View style={styles.separator} />
+          <SettingsRow label="Reset progress" destructive onPress={handleResetProgress} />
+          <View style={styles.separator} />
+          <SettingsRow
+            label="Delete account"
+            destructive
+            onPress={() =>
+              Alert.alert('Delete Account', 'Contact support@speakcoach.app to delete your account.')
+            }
+          />
+        </View>
+
+        {/* About section */}
+        <View style={styles.sectionCard}>
+          <Text style={styles.sectionTitle}>About</Text>
+          <SettingsRow label="Version" value="0.1.0" />
+          <View style={styles.separator} />
+          <SettingsRow label="Terms of Service" onPress={comingSoon('Terms of Service')} />
+          <View style={styles.separator} />
+          <SettingsRow label="Privacy Policy" onPress={comingSoon('Privacy Policy')} />
+          <View style={styles.separator} />
+          <SettingsRow label="Send Feedback" onPress={comingSoon('Feedback form')} />
+        </View>
+
+        {/* Sign out */}
+        <TouchableOpacity
+          style={styles.signOutButton}
+          onPress={() =>
+            Alert.alert(
+              'Sign Out',
+              'Sign out will be available when auth is connected.',
+            )
+          }
+          activeOpacity={0.7}
+        >
+          <Text style={styles.signOutText}>Sign Out</Text>
+        </TouchableOpacity>
+
+        <View style={styles.bottomSpacer} />
+      </ScrollView>
     </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  section: {
+  content: {
+    padding: spacing.lg,
     gap: spacing.md,
-    marginTop: spacing.lg,
+    paddingBottom: spacing.xl,
   },
-  title: {
-    fontSize: typography.heading,
+
+  // Section card
+  sectionCard: {
+    backgroundColor: colors.surface,
+    borderRadius: 14,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  sectionTitle: {
+    fontSize: typography.small,
     fontWeight: typography.weightBold,
+    color: colors.muted,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.md,
+    paddingBottom: spacing.xs,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: colors.border,
+    marginHorizontal: spacing.md,
+  },
+
+  // Profile
+  profileHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: spacing.md,
+    gap: spacing.md,
+  },
+  avatar: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: '#dbeafe',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: '#93c5fd',
+  },
+  avatarText: {
+    fontSize: 28,
+  },
+  profileInfo: {
+    flex: 1,
+    gap: 4,
+  },
+  profileEmail: {
+    fontSize: typography.body,
+    fontWeight: typography.weightSemi,
     color: colors.text,
   },
-  subtitle: {
+  editLink: {
+    fontSize: typography.small,
+    color: colors.primary,
+    fontWeight: typography.weightSemi,
+  },
+
+  // Subscription
+  subRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+  subLabel: {
     fontSize: typography.body,
-    color: colors.muted,
+    color: colors.text,
+  },
+  freeBadge: {
+    backgroundColor: '#fef3c7',
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 2,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#fcd34d',
+  },
+  freeBadgeText: {
+    fontSize: typography.small,
+    fontWeight: typography.weightBold,
+    color: '#b45309',
+  },
+  upgradeButton: {
+    marginHorizontal: spacing.md,
+    marginBottom: spacing.md,
+    marginTop: spacing.xs,
+    backgroundColor: colors.primary,
+    borderRadius: 10,
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  upgradeText: {
+    color: '#fff',
+    fontSize: typography.body,
+    fontWeight: typography.weightSemi,
+  },
+
+  // Sign out
+  signOutButton: {
+    borderWidth: 1.5,
+    borderColor: '#ef4444',
+    borderRadius: 12,
+    paddingVertical: spacing.md,
+    alignItems: 'center',
+  },
+  signOutText: {
+    fontSize: typography.body,
+    fontWeight: typography.weightSemi,
+    color: '#ef4444',
+  },
+
+  bottomSpacer: {
+    height: spacing.xl,
   },
 });

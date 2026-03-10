@@ -1,24 +1,131 @@
-import { Text, StyleSheet, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
+import { ModeCard } from '../components/ModeCard';
+import { GameCard } from '../components/GameCard';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
+import { useProgress } from '../hooks/useProgress';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { MainStackParamList } from '../navigation/types';
+
+type PracticeNavigation = NativeStackNavigationProp<MainStackParamList>;
+
+const GAME_UNLOCK_DAYS: Record<string, number> = {
+  filler_swap: 15,
+  pause_punch: 23,
+  abt_builder: 13,
+  clarity_sprint: 39,
+};
 
 export function PracticeScreen() {
+  const navigation = useNavigation<PracticeNavigation>();
+  const { progress } = useProgress();
+  const completedDays = progress?.completedDays ?? [];
+
+  const isGameUnlocked = (gameId: string) =>
+    completedDays.some((d) => d >= GAME_UNLOCK_DAYS[gameId]);
+
+  const handleLockedGame = (unlockDay: number) => {
+    Alert.alert('Locked', `Complete Day ${unlockDay} to unlock this game.`);
+  };
+
   return (
-    <ScreenContainer>
-      <View style={styles.section}>
-        <Text style={styles.title}>Practice</Text>
-        <Text style={styles.subtitle}>Freestyle, Script mode, Impromptu, and Roleplay placeholders.</Text>
-      </View>
+    <ScreenContainer padded={false} scroll={false}>
+      <ScrollView contentContainerStyle={styles.content}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.title}>Practice</Text>
+          <Text style={styles.subtitle}>Train any skill, anytime</Text>
+        </View>
+
+        {/* Practice Modes */}
+        <View style={styles.section}>
+          <Text style={styles.sectionLabel}>{'\ud83c\udf99\ufe0f'} Practice Modes</Text>
+          <View style={styles.modes}>
+            <ModeCard
+              icon={'\ud83c\udfa4'}
+              title="Freestyle"
+              description="Talk about anything. No prompt, no rules. Just practice."
+              onPress={() => navigation.navigate('Freestyle')}
+            />
+            <ModeCard
+              icon={'\ud83d\udcdd'}
+              title="Script Mode"
+              description="Paste your script and practice delivering it."
+              onPress={() => navigation.navigate('ScriptMode')}
+            />
+            <ModeCard
+              icon={'\u26a1'}
+              title="Impromptu"
+              description="Random prompt. Zero prep. Think on your feet."
+              onPress={() => navigation.navigate('Impromptu')}
+            />
+            <ModeCard
+              icon={'\ud83c\udfad'}
+              title="Roleplay"
+              description="Practice real scenarios: interviews, toasts, pitches."
+              onPress={() => navigation.navigate('Roleplay')}
+            />
+          </View>
+        </View>
+
+        {/* Mini-Games */}
+        <View style={styles.section}>
+          <Text style={styles.sectionLabel}>{'\ud83c\udfae'} Mini-Games</Text>
+          <View style={styles.gameGrid}>
+            <View style={styles.gameRow}>
+              <GameCard
+                icon={'\ud83d\udd04'}
+                title="Filler Swap"
+                description="Replace fillers with power words"
+                locked={!isGameUnlocked('filler_swap')}
+                unlockDay={GAME_UNLOCK_DAYS.filler_swap}
+                onPress={() => navigation.navigate('FillerSwap')}
+              />
+              <GameCard
+                icon={'\u23f8\ufe0f'}
+                title="Pause Punch"
+                description="Hit the perfect pause timing"
+                locked={!isGameUnlocked('pause_punch')}
+                unlockDay={GAME_UNLOCK_DAYS.pause_punch}
+                onPress={() => navigation.navigate('PausePunch')}
+              />
+            </View>
+            <View style={styles.gameRow}>
+              <GameCard
+                icon={'\ud83d\udcd6'}
+                title="ABT Builder"
+                description="Construct compelling story structures"
+                locked={!isGameUnlocked('abt_builder')}
+                unlockDay={GAME_UNLOCK_DAYS.abt_builder}
+                onPress={() => navigation.navigate('ABTBuilder')}
+              />
+              <GameCard
+                icon={'\ud83d\udc8e'}
+                title="Clarity Sprint"
+                description="Simplify complex ideas fast"
+                locked={!isGameUnlocked('clarity_sprint')}
+                unlockDay={GAME_UNLOCK_DAYS.clarity_sprint}
+                onPress={() => navigation.navigate('ClaritySprint')}
+              />
+            </View>
+          </View>
+        </View>
+      </ScrollView>
     </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  section: {
-    gap: spacing.md,
-    marginTop: spacing.lg,
+  content: {
+    padding: spacing.lg,
+    gap: spacing.lg,
+    paddingBottom: spacing.xl,
+  },
+  header: {
+    gap: spacing.xs,
   },
   title: {
     fontSize: typography.heading,
@@ -28,5 +135,23 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: typography.body,
     color: colors.muted,
+  },
+  section: {
+    gap: spacing.md,
+  },
+  sectionLabel: {
+    fontSize: typography.subheading,
+    fontWeight: typography.weightBold,
+    color: colors.text,
+  },
+  modes: {
+    gap: spacing.md,
+  },
+  gameGrid: {
+    gap: spacing.md,
+  },
+  gameRow: {
+    flexDirection: 'row',
+    gap: spacing.md,
   },
 });
