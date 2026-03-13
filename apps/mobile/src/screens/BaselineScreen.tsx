@@ -4,6 +4,7 @@ import { ScreenContainer } from '../components/ScreenContainer';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { StepIndicator } from '../components/StepIndicator';
 import { RecordingPanel } from '../components/RecordingPanel';
+import { GradientOrb } from '../components/Decorative';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
@@ -34,16 +35,19 @@ export function BaselineScreen({ onComplete }: BaselineScreenProps) {
           </Text>
         </View>
 
-        {/* Recording panel */}
-        <RecordingPanel
-          maxDurationSec={90}
-          minDurationSec={10}
-          showPlayback
-          showPauseResume
-          promptText="Tell us about something you're passionate about \u2014 a hobby, a cause, a topic you could talk about for hours. There are no wrong answers."
-          onRecordingComplete={() => setRecordingDone(true)}
-          onDiscard={() => setRecordingDone(false)}
-        />
+        {/* Recording panel with decorative orb */}
+        <View style={styles.recordingWrap}>
+          <GradientOrb size={180} color={colors.primary} style={{ top: -40, alignSelf: 'center' }} />
+          <RecordingPanel
+            maxDurationSec={90}
+            minDurationSec={10}
+            showPlayback
+            showPauseResume
+            promptText="Tell us about something you're passionate about \u2014 a hobby, a cause, a topic you could talk about for hours. There are no wrong answers."
+            onRecordingComplete={() => setRecordingDone(true)}
+            onDiscard={() => setRecordingDone(false)}
+          />
+        </View>
 
         {/* Tips */}
         <View style={styles.tips}>
@@ -87,6 +91,9 @@ const styles = StyleSheet.create({
     fontSize: typography.body,
     color: colors.muted,
     lineHeight: 22,
+  },
+  recordingWrap: {
+    position: 'relative',
   },
   tips: {
     backgroundColor: colors.surface,

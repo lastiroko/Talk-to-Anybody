@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
-import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
+import { Alert, Animated, FlatList, StyleSheet, Text, View } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { DayTile } from '../components/DayTile';
 import { ProgressBar } from '../components/ProgressBar';
+import { SkeletonCard, SkeletonLine } from '../components/Skeleton';
+import { useEntryAnimation } from '../hooks/useEntryAnimation';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
@@ -30,6 +32,7 @@ export function PlanScreen() {
   const navigation = useNavigation<PlanNavigation>();
   const { isGated } = usePaywallGate();
   const plan = useMemo(() => planData as PlanDay[], []);
+  const { fadeIn } = useEntryAnimation(3);
 
   const completedCount = progress?.completedDays.length ?? 0;
   const progressFraction = completedCount / 60;
@@ -76,7 +79,11 @@ export function PlanScreen() {
   if (loading || !progress) {
     return (
       <ScreenContainer>
-        <Text style={styles.loading}>Loading plan...</Text>
+        <View style={{ gap: spacing.md, padding: spacing.lg }}>
+          <SkeletonLine width={200} />
+          <SkeletonCard />
+          <SkeletonCard />
+        </View>
       </ScreenContainer>
     );
   }
@@ -84,43 +91,47 @@ export function PlanScreen() {
   return (
     <ScreenContainer padded={false} scroll={false}>
       {/* Header */}
-      <View style={styles.header}>
+      <Animated.View style={[styles.header, fadeIn(0)]}>
         <Text style={styles.title}>Your 60-Day Plan</Text>
+      </Animated.View>
+
+      <Animated.View style={[styles.progressWrap, fadeIn(1)]}>
         <ProgressBar progress={progressFraction} />
         <Text style={styles.progressLabel}>
           {completedCount} of 60 days completed
         </Text>
-      </View>
+      </Animated.View>
 
       {/* Day grid */}
-      <FlatList
-        data={gridData}
-        keyExtractor={(item) => item.key}
-        numColumns={NUM_COLUMNS}
-        contentContainerStyle={styles.gridContainer}
-        renderItem={({ item }) => {
-          if (item.type === 'weekLabel') {
+      <Animated.View style={[{ flex: 1 }, fadeIn(2)]}>
+        <FlatList
+          data={gridData}
+          keyExtractor={(item) => item.key}
+          numColumns={NUM_COLUMNS}
+          contentContainerStyle={styles.gridContainer}
+          renderItem={({ item }) => {
+            if (item.type === 'weekLabel') {
+              return (
+                <View style={styles.weekLabel}>
+                  <Text style={styles.weekLabelText}>Week {item.weekNumber}</Text>
+                </View>
+              );
+            }
+
+            const dayNumber = item.dayNumber!;
+            const status = getDayStatus(dayNumber);
+
             return (
-              <View style={styles.weekLabel}>
-                <Text style={styles.weekLabelText}>Week {item.weekNumber}</Text>
-              </View>
+              <DayTile
+                dayNumber={dayNumber}
+                status={status}
+                onPress={() => handleDayPress(dayNumber)}
+              />
             );
-          }
-
-          const dayNumber = item.dayNumber!;
-          const status = getDayStatus(dayNumber);
-
-          return (
-            <DayTile
-              dayNumber={dayNumber}
-              status={status}
-              onPress={() => handleDayPress(dayNumber)}
-            />
-          );
-        }}
-        // When a weekLabel appears, span full width
-        getItemLayout={undefined}
-      />
+          }}
+          getItemLayout={undefined}
+        />
+      </Animated.View>
 
       {/* Bottom stats */}
       <View style={styles.bottomBar}>
@@ -133,19 +144,19 @@ export function PlanScreen() {
 }
 
 const styles = StyleSheet.create({
-  loading: {
-    marginTop: spacing.lg,
-    fontSize: typography.body,
-    color: colors.muted,
-  },
   header: {
-    padding: spacing.lg,
-    gap: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.lg,
   },
   title: {
     fontSize: typography.heading,
     fontWeight: typography.weightBold,
     color: colors.text,
+  },
+  progressWrap: {
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.sm,
+    gap: spacing.sm,
   },
   progressLabel: {
     fontSize: typography.small,

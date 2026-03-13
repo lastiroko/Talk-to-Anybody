@@ -1,11 +1,17 @@
-import { useMemo } from 'react';
-import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useMemo, useRef } from 'react';
+import { Animated, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { ProgressBar } from '../components/ProgressBar';
 import { SkillBar } from '../components/SkillBar';
 import { DotChart } from '../components/DotChart';
 import { MetricCard } from '../components/MetricCard';
 import { AchievementBadge } from '../components/AchievementBadge';
+import { AnimatedNumber } from '../components/AnimatedNumber';
+import { GradientOrb } from '../components/Decorative';
+import { ScrollHeader } from '../components/ScrollHeader';
+import { EmptyState } from '../components/EmptyState';
+import { SkeletonCard, SkeletonCircle, SkeletonLine } from '../components/Skeleton';
+import { useEntryAnimation } from '../hooks/useEntryAnimation';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
@@ -42,8 +48,9 @@ export function ProgressScreen() {
   const completedDays = progress?.completedDays ?? [];
   const completedCount = completedDays.length;
   const streak = progress?.currentStreak ?? 0;
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const { fadeIn } = useEntryAnimation(5);
 
-  // Mock data derived from completedDays.length
   const speakingScore = useMemo(
     () => Math.min(100, Math.round(completedCount * 1.5 + 30)),
     [completedCount],
@@ -93,48 +100,73 @@ export function ProgressScreen() {
   if (loading || !progress) {
     return (
       <ScreenContainer>
-        <Text style={styles.loadingText}>Loading...</Text>
+        <View style={{ gap: spacing.lg, padding: spacing.lg }}>
+          <SkeletonLine width={180} />
+          <SkeletonCard />
+          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <SkeletonCircle size={130} />
+          </View>
+          <SkeletonCard />
+        </View>
+      </ScreenContainer>
+    );
+  }
+
+  if (completedCount === 0) {
+    return (
+      <ScreenContainer>
+        <EmptyState
+          icon={'\ud83c\udf99\ufe0f'}
+          title="Start your journey"
+          subtitle="Complete Day 1 to see your progress here"
+        />
       </ScreenContainer>
     );
   }
 
   return (
     <ScreenContainer padded={false} scroll={false}>
-      <ScrollView contentContainerStyle={styles.content}>
-        {/* Header */}
-        <Text style={styles.title}>Your Progress</Text>
-
+      <ScrollHeader title="Your Progress" scrollY={scrollY} />
+      <Animated.ScrollView
+        contentContainerStyle={styles.content}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: false },
+        )}
+        scrollEventThrottle={16}
+      >
         {/* Streak & Days banner */}
-        <View style={styles.streakBanner}>
+        <Animated.View style={[styles.streakBanner, fadeIn(0)]}>
           <View style={styles.streakLeft}>
-            <Text style={styles.streakNumber}>{'\ud83d\udd25'} {streak}</Text>
+            <Text style={styles.streakEmoji}>{'\ud83d\udd25'}</Text>
+            <AnimatedNumber value={streak} style={styles.streakNumber} />
             <Text style={styles.streakLabel}>day streak</Text>
           </View>
           <View style={styles.dividerVert} />
           <View style={styles.streakRight}>
-            <Text style={styles.daysNumber}>{completedCount}/60</Text>
+            <AnimatedNumber value={completedCount} suffix="/60" style={styles.daysNumber} />
             <Text style={styles.streakLabel}>days</Text>
             <View style={styles.miniProgress}>
               <ProgressBar progress={completedCount / 60} />
             </View>
           </View>
-        </View>
+        </Animated.View>
 
         {/* Speaking Score card */}
-        <View style={styles.scoreCard}>
-          <Text style={styles.scoreNumber}>{speakingScore}</Text>
+        <Animated.View style={[styles.scoreCard, fadeIn(1)]}>
+          <GradientOrb size={160} color={colors.primary} style={{ top: -20, alignSelf: 'center' }} />
+          <AnimatedNumber value={speakingScore} style={styles.scoreNumber} />
           <Text style={styles.scoreLabel}>Speaking Score</Text>
           <Text style={styles.scoreSub}>Based on your latest session</Text>
           {scoreChange > 0 ? (
             <Text style={styles.scoreChange}>{'\u2191'} +{scoreChange} from baseline</Text>
           ) : null}
-        </View>
+        </Animated.View>
 
         {/* Trend charts */}
-        <View style={styles.section}>
+        <Animated.View style={[styles.section, fadeIn(2)]}>
           <Text style={styles.sectionTitle}>{'\ud83d\udcc8'} Your Trends</Text>
 
-          {/* Skills Radar */}
           <View style={styles.card}>
             <Text style={styles.cardTitle}>Skills Radar</Text>
             <View style={styles.skillBars}>
@@ -144,17 +176,16 @@ export function ProgressScreen() {
             </View>
           </View>
 
-          {/* Score Over Time */}
           {chartData.length > 1 ? (
             <View style={styles.card}>
               <Text style={styles.cardTitle}>Score Over Time</Text>
               <DotChart data={chartData} maxValue={100} height={120} />
             </View>
           ) : null}
-        </View>
+        </Animated.View>
 
         {/* Key metrics */}
-        <View style={styles.section}>
+        <Animated.View style={[styles.section, fadeIn(3)]}>
           <View style={styles.metricsGrid}>
             <View style={styles.metricsRow}>
               <MetricCard
@@ -185,7 +216,7 @@ export function ProgressScreen() {
               />
             </View>
           </View>
-        </View>
+        </Animated.View>
 
         {/* Anxiety Trend */}
         {completedCount >= 4 ? (
@@ -194,11 +225,11 @@ export function ProgressScreen() {
             <View style={styles.card}>
               <View style={styles.anxietyRow}>
                 <View style={styles.anxietyItem}>
-                  <Text style={styles.anxietyValue}>{anxietyPre}</Text>
+                  <AnimatedNumber value={anxietyPre} style={styles.anxietyValue} />
                   <Text style={styles.anxietyLabel}>Before sessions</Text>
                 </View>
                 <View style={styles.anxietyItem}>
-                  <Text style={styles.anxietyValue}>{anxietyPost}</Text>
+                  <AnimatedNumber value={anxietyPost} style={styles.anxietyValue} />
                   <Text style={styles.anxietyLabel}>After sessions</Text>
                 </View>
               </View>
@@ -230,7 +261,7 @@ export function ProgressScreen() {
         ) : null}
 
         {/* Achievements */}
-        <View style={styles.section}>
+        <Animated.View style={[styles.section, fadeIn(4)]}>
           <Text style={styles.sectionTitle}>{'\ud83c\udfc6'} Achievements</Text>
           <FlatList
             data={ACHIEVEMENTS}
@@ -245,7 +276,7 @@ export function ProgressScreen() {
               />
             )}
           />
-        </View>
+        </Animated.View>
 
         {/* Comfort Level / Desensitization */}
         {completedCount >= 4 ? (
@@ -272,7 +303,7 @@ export function ProgressScreen() {
         ) : null}
 
         <View style={styles.bottomSpacer} />
-      </ScrollView>
+      </Animated.ScrollView>
     </ScreenContainer>
   );
 }
@@ -282,16 +313,6 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     gap: spacing.lg,
     paddingBottom: spacing.xl,
-  },
-  loadingText: {
-    fontSize: typography.body,
-    color: colors.muted,
-    marginTop: spacing.lg,
-  },
-  title: {
-    fontSize: typography.heading,
-    fontWeight: typography.weightBold,
-    color: colors.text,
   },
 
   // Streak banner
@@ -313,6 +334,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     gap: 4,
+  },
+  streakEmoji: {
+    fontSize: 22,
   },
   streakNumber: {
     fontSize: 28,
@@ -348,6 +372,7 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
     borderWidth: 1,
     borderColor: '#bfdbfe',
+    overflow: 'hidden',
   },
   scoreNumber: {
     fontSize: 56,

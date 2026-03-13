@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
+import { haptic } from '../utils/haptics';
 
 interface AnxietyRaterProps {
   label: string;
@@ -15,6 +16,11 @@ const CIRCLE_COLORS = [
 ];
 
 export function AnxietyRater({ label, value, onChange }: AnxietyRaterProps) {
+  const handlePress = (rating: number) => {
+    haptic.selection();
+    onChange(rating);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
@@ -25,7 +31,7 @@ export function AnxietyRater({ label, value, onChange }: AnxietyRaterProps) {
           return (
             <TouchableOpacity
               key={rating}
-              onPress={() => onChange(rating)}
+              onPress={() => handlePress(rating)}
               style={[
                 styles.circle,
                 {

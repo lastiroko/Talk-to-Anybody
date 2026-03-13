@@ -1,4 +1,5 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useRef } from 'react';
+import { Animated, Pressable, StyleSheet, Text } from 'react-native';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
@@ -13,25 +14,48 @@ interface GameCardProps {
 }
 
 export function GameCard({ icon, title, description, locked, unlockDay, onPress }: GameCardProps) {
+  const scale = useRef(new Animated.Value(1)).current;
+
+  const handlePressIn = () => {
+    if (locked) return;
+    Animated.timing(scale, {
+      toValue: 0.97,
+      duration: 100,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    if (locked) return;
+    Animated.spring(scale, {
+      toValue: 1,
+      tension: 300,
+      friction: 10,
+      useNativeDriver: true,
+    }).start();
+  };
+
   return (
-    <TouchableOpacity
-      style={[styles.card, locked && styles.locked]}
-      onPress={onPress}
-      activeOpacity={locked ? 1 : 0.7}
-      disabled={locked}
-    >
-      <Text style={styles.icon}>{locked ? '\ud83d\udd12' : icon}</Text>
-      <Text style={[styles.title, locked && styles.lockedText]}>{title}</Text>
-      <Text style={styles.description} numberOfLines={2}>
-        {locked ? `Unlocks on Day ${unlockDay}` : description}
-      </Text>
-    </TouchableOpacity>
+    <Animated.View style={[{ flex: 1, transform: [{ scale }] }]}>
+      <Pressable
+        style={[styles.card, locked && styles.locked]}
+        onPress={onPress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        disabled={locked}
+      >
+        <Text style={styles.icon}>{locked ? '\ud83d\udd12' : icon}</Text>
+        <Text style={[styles.title, locked && styles.lockedText]}>{title}</Text>
+        <Text style={styles.description} numberOfLines={2}>
+          {locked ? `Unlocks on Day ${unlockDay}` : description}
+        </Text>
+      </Pressable>
+    </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    flex: 1,
     backgroundColor: colors.surface,
     borderRadius: 14,
     padding: spacing.md,

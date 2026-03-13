@@ -1,10 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { MetricCard } from '../components/MetricCard';
+import { AnimatedNumber } from '../components/AnimatedNumber';
+import { Celebration } from '../components/Celebration';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
@@ -54,9 +56,13 @@ export function AnalysisResultScreen() {
 
   const overall = analysis.scores.overall;
   const ringColor = scoreColor(overall);
+  const showConfetti = overall > 80;
+  const showGlow = overall > 60 && overall <= 80;
 
   return (
     <ScreenContainer padded={false} scroll={false}>
+      <Celebration trigger={showConfetti} variant="confetti" />
+      <Celebration trigger={showGlow} variant="glow" />
       <ScrollView contentContainerStyle={styles.content}>
         {/* Header */}
         <Text style={styles.title}>Your Results</Text>
@@ -64,7 +70,11 @@ export function AnalysisResultScreen() {
         {/* Overall score circle */}
         <View style={styles.scoreCircleContainer}>
           <View style={[styles.scoreCircle, { borderColor: ringColor }]}>
-            <Text style={[styles.scoreNumber, { color: ringColor }]}>{overall}</Text>
+            <AnimatedNumber
+              value={overall}
+              duration={1000}
+              style={[styles.scoreNumber, { color: ringColor }]}
+            />
           </View>
           <Text style={styles.scoreLabel}>Speaking Score</Text>
         </View>
@@ -73,23 +83,26 @@ export function AnalysisResultScreen() {
         <View style={styles.subScoresRow}>
           <View style={styles.subScoreCard}>
             <Text style={styles.subScoreIcon}>{'\ud83c\udfa4'}</Text>
-            <Text style={[styles.subScoreValue, { color: scoreColor(analysis.scores.delivery) }]}>
-              {analysis.scores.delivery}
-            </Text>
+            <AnimatedNumber
+              value={analysis.scores.delivery}
+              style={[styles.subScoreValue, { color: scoreColor(analysis.scores.delivery) }]}
+            />
             <Text style={styles.subScoreLabel}>Delivery</Text>
           </View>
           <View style={styles.subScoreCard}>
             <Text style={styles.subScoreIcon}>{'\ud83d\udc8e'}</Text>
-            <Text style={[styles.subScoreValue, { color: scoreColor(analysis.scores.clarity) }]}>
-              {analysis.scores.clarity}
-            </Text>
+            <AnimatedNumber
+              value={analysis.scores.clarity}
+              style={[styles.subScoreValue, { color: scoreColor(analysis.scores.clarity) }]}
+            />
             <Text style={styles.subScoreLabel}>Clarity</Text>
           </View>
           <View style={styles.subScoreCard}>
             <Text style={styles.subScoreIcon}>{'\ud83d\udcd6'}</Text>
-            <Text style={[styles.subScoreValue, { color: scoreColor(analysis.scores.story) }]}>
-              {analysis.scores.story}
-            </Text>
+            <AnimatedNumber
+              value={analysis.scores.story}
+              style={[styles.subScoreValue, { color: scoreColor(analysis.scores.story) }]}
+            />
             <Text style={styles.subScoreLabel}>Story</Text>
           </View>
         </View>
@@ -166,7 +179,6 @@ export function AnalysisResultScreen() {
           <PrimaryButton
             title="Continue"
             onPress={() => {
-              // Go back to DayDetail
               if (dayNumber) {
                 navigation.pop(1);
               } else {

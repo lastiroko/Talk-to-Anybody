@@ -4,6 +4,7 @@ import { ScreenContainer } from '../components/ScreenContainer';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { StepIndicator } from '../components/StepIndicator';
 import { SelectableCard } from '../components/SelectableCard';
+import { DotPattern } from '../components/Decorative';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
@@ -25,6 +26,7 @@ export function OnboardingGoalScreen({ onNext }: OnboardingGoalScreenProps) {
   return (
     <ScreenContainer>
       <View style={styles.container}>
+        <DotPattern rows={8} cols={6} style={{ top: 60, right: -20 }} />
         <StepIndicator currentStep={1} totalSteps={3} />
 
         {/* Header */}

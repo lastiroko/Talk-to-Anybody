@@ -1,8 +1,9 @@
-import { ReactNode } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { ReactNode, useRef } from 'react';
+import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
+import { haptic } from '../utils/haptics';
 
 interface PrimaryButtonProps {
   title: string;
@@ -12,19 +13,49 @@ interface PrimaryButtonProps {
 }
 
 export function PrimaryButton({ title, onPress, leftIcon, disabled = false }: PrimaryButtonProps) {
+  const scale = useRef(new Animated.Value(1)).current;
+
+  const handlePressIn = () => {
+    if (disabled) return;
+    Animated.timing(scale, {
+      toValue: 0.97,
+      duration: 100,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    if (disabled) return;
+    Animated.spring(scale, {
+      toValue: 1,
+      tension: 300,
+      friction: 10,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePress = () => {
+    haptic.light();
+    onPress();
+  };
+
   return (
-    <Pressable
-      style={({ pressed }) => [
-        styles.button,
-        pressed && !disabled && styles.pressed,
-        disabled && styles.disabled,
-      ]}
-      onPress={onPress}
-      disabled={disabled}
-    >
-      {leftIcon ? <View style={styles.iconSlot}>{leftIcon}</View> : null}
-      <Text style={[styles.title, disabled && styles.disabledText]}>{title}</Text>
-    </Pressable>
+    <Animated.View style={{ transform: [{ scale }] }}>
+      <Pressable
+        style={({ pressed }) => [
+          styles.button,
+          pressed && !disabled && styles.pressed,
+          disabled && styles.disabled,
+        ]}
+        onPress={handlePress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        disabled={disabled}
+      >
+        {leftIcon ? <View style={styles.iconSlot}>{leftIcon}</View> : null}
+        <Text style={[styles.title, disabled && styles.disabledText]}>{title}</Text>
+      </Pressable>
+    </Animated.View>
   );
 }
 

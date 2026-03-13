@@ -1,6 +1,8 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { PrimaryButton } from '../components/PrimaryButton';
+import { GradientOrb } from '../components/Decorative';
+import { useEntryAnimation } from '../hooks/useEntryAnimation';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
@@ -17,30 +19,37 @@ const BENEFITS = [
 ];
 
 export function WelcomeScreen({ onLogin, onSignup }: WelcomeScreenProps) {
+  const { fadeIn } = useEntryAnimation(4);
+
   return (
     <ScreenContainer>
       <View style={styles.container}>
         {/* Hero section */}
         <View style={styles.hero}>
           {/* Visual element */}
-          <View style={styles.micCircle}>
-            <Text style={styles.micEmoji}>{'\ud83c\udf99\ufe0f'}</Text>
-          </View>
+          <Animated.View style={[styles.micCircleWrap, fadeIn(0)]}>
+            <GradientOrb size={200} color={colors.primary} style={{ top: -50, right: -60 }} />
+            <View style={styles.micCircle}>
+              <Text style={styles.micEmoji}>{'\ud83c\udf99\ufe0f'}</Text>
+            </View>
+          </Animated.View>
 
-          <Text style={styles.appName}>SpeakCoach</Text>
-          <Text style={styles.tagline}>Find your voice in 60 days</Text>
+          <Animated.View style={fadeIn(1)}>
+            <Text style={styles.appName}>SpeakCoach</Text>
+            <Text style={styles.tagline}>Find your voice in 60 days</Text>
+          </Animated.View>
 
-          <View style={styles.benefits}>
+          <Animated.View style={[styles.benefits, fadeIn(2)]}>
             {BENEFITS.map((benefit) => (
               <View key={benefit} style={styles.benefitPill}>
                 <Text style={styles.benefitText}>{benefit}</Text>
               </View>
             ))}
-          </View>
+          </Animated.View>
         </View>
 
         {/* Action section */}
-        <View style={styles.actions}>
+        <Animated.View style={[styles.actions, fadeIn(3)]}>
           <PrimaryButton title="Get Started" onPress={onSignup} />
 
           <TouchableOpacity onPress={onLogin} style={styles.loginLink}>
@@ -50,7 +59,7 @@ export function WelcomeScreen({ onLogin, onSignup }: WelcomeScreenProps) {
           <Text style={styles.legal}>
             By continuing, you agree to our Terms & Privacy Policy
           </Text>
-        </View>
+        </Animated.View>
       </View>
     </ScreenContainer>
   );
@@ -68,6 +77,10 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     paddingTop: spacing.xl,
   },
+  micCircleWrap: {
+    marginBottom: spacing.md,
+    overflow: 'visible',
+  },
   micCircle: {
     width: 100,
     height: 100,
@@ -77,7 +90,6 @@ const styles = StyleSheet.create({
     borderColor: '#bfdbfe',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: spacing.md,
   },
   micEmoji: {
     fontSize: 44,
@@ -87,11 +99,13 @@ const styles = StyleSheet.create({
     fontWeight: typography.weightBold,
     color: colors.text,
     letterSpacing: -0.5,
+    textAlign: 'center',
   },
   tagline: {
     fontSize: typography.subheading,
     color: colors.muted,
     marginBottom: spacing.lg,
+    textAlign: 'center',
   },
   benefits: {
     gap: spacing.sm,

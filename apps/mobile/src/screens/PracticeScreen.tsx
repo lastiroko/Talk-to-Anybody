@@ -1,7 +1,9 @@
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Animated, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { ModeCard } from '../components/ModeCard';
 import { GameCard } from '../components/GameCard';
+import { EmptyState } from '../components/EmptyState';
+import { useEntryAnimation } from '../hooks/useEntryAnimation';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
@@ -25,6 +27,7 @@ export function PracticeScreen() {
   const { progress } = useProgress();
   const { isGated } = usePaywallGate();
   const completedDays = progress?.completedDays ?? [];
+  const { fadeIn } = useEntryAnimation(4);
 
   const isGameUnlocked = (gameId: string) =>
     completedDays.some((d) => d >= GAME_UNLOCK_DAYS[gameId]);
@@ -37,50 +40,51 @@ export function PracticeScreen() {
     <ScreenContainer padded={false} scroll={false}>
       <ScrollView contentContainerStyle={styles.content}>
         {/* Header */}
-        <View style={styles.header}>
+        <Animated.View style={[styles.header, fadeIn(0)]}>
           <Text style={styles.title}>Practice</Text>
           <Text style={styles.subtitle}>Train any skill, anytime</Text>
-        </View>
+        </Animated.View>
 
         {/* Practice Modes */}
-        <View style={styles.section}>
+        <Animated.View style={[styles.section, fadeIn(1)]}>
           <Text style={styles.sectionLabel}>{'\ud83c\udf99\ufe0f'} Practice Modes</Text>
-          <View style={styles.modes}>
-            <ModeCard
-              icon={'\ud83c\udfa4'}
-              title="Freestyle"
-              description="Talk about anything. No prompt, no rules. Just practice."
-              onPress={() => navigation.navigate('Freestyle')}
-            />
-            <ModeCard
-              icon={'\ud83d\udcdd'}
-              title="Script Mode"
-              description="Paste your script and practice delivering it."
-              onPress={() =>
-                isGated() ? navigation.navigate('Paywall') : navigation.navigate('ScriptMode')
-              }
-            />
-            <ModeCard
-              icon={'\u26a1'}
-              title="Impromptu"
-              description="Random prompt. Zero prep. Think on your feet."
-              onPress={() =>
-                isGated() ? navigation.navigate('Paywall') : navigation.navigate('Impromptu')
-              }
-            />
-            <ModeCard
-              icon={'\ud83c\udfad'}
-              title="Roleplay"
-              description="Practice real scenarios: interviews, toasts, pitches."
-              onPress={() =>
-                isGated() ? navigation.navigate('Paywall') : navigation.navigate('Roleplay')
-              }
-            />
-          </View>
-        </View>
+        </Animated.View>
+
+        <Animated.View style={[styles.modes, fadeIn(2)]}>
+          <ModeCard
+            icon={'\ud83c\udfa4'}
+            title="Freestyle"
+            description="Talk about anything. No prompt, no rules. Just practice."
+            onPress={() => navigation.navigate('Freestyle')}
+          />
+          <ModeCard
+            icon={'\ud83d\udcdd'}
+            title="Script Mode"
+            description="Paste your script and practice delivering it."
+            onPress={() =>
+              isGated() ? navigation.navigate('Paywall') : navigation.navigate('ScriptMode')
+            }
+          />
+          <ModeCard
+            icon={'\u26a1'}
+            title="Impromptu"
+            description="Random prompt. Zero prep. Think on your feet."
+            onPress={() =>
+              isGated() ? navigation.navigate('Paywall') : navigation.navigate('Impromptu')
+            }
+          />
+          <ModeCard
+            icon={'\ud83c\udfad'}
+            title="Roleplay"
+            description="Practice real scenarios: interviews, toasts, pitches."
+            onPress={() =>
+              isGated() ? navigation.navigate('Paywall') : navigation.navigate('Roleplay')
+            }
+          />
+        </Animated.View>
 
         {/* Mini-Games */}
-        <View style={styles.section}>
+        <Animated.View style={[styles.section, fadeIn(3)]}>
           <Text style={styles.sectionLabel}>{'\ud83c\udfae'} Mini-Games</Text>
           <View style={styles.gameGrid}>
             <View style={styles.gameRow}>
@@ -128,7 +132,7 @@ export function PracticeScreen() {
               />
             </View>
           </View>
-        </View>
+        </Animated.View>
       </ScrollView>
     </ScreenContainer>
   );

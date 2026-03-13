@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { haptic } from '../utils/haptics';
 import { WelcomeScreen } from '../screens/WelcomeScreen';
 import { LoginScreen } from '../screens/LoginScreen';
 import { SignupScreen } from '../screens/SignupScreen';
@@ -94,7 +95,13 @@ function OnboardingNavigator({ onDone }: { onDone: () => void }) {
 
 function MainTabs() {
   return (
-    <Tabs.Navigator>
+    <Tabs.Navigator
+      screenListeners={{
+        tabPress: () => {
+          haptic.selection();
+        },
+      }}
+    >
       <Tabs.Screen name="Home" component={HomeScreen} />
       <Tabs.Screen name="Plan" component={PlanScreen} />
       <Tabs.Screen name="Practice" component={PracticeScreen} />

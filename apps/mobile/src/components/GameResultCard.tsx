@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { AnimatedNumber } from './AnimatedNumber';
+import { Celebration } from './Celebration';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
+import { haptic } from '../utils/haptics';
 
 interface GameResultCardProps {
   gameName: string;
@@ -42,8 +45,14 @@ export default function GameResultCard({
   const scoreColor = getScoreColor(score, maxScore);
   const encouragement = getEncouragement(score, maxScore);
 
+  if (isNewHighScore) {
+    haptic.success();
+  }
+
   return (
     <View style={styles.card}>
+      <Celebration trigger={isNewHighScore} variant="confetti" />
+
       {/* Header */}
       <Text style={styles.heading}>
         {isNewHighScore ? 'New High Score!' : 'Great job!'}
@@ -52,9 +61,12 @@ export default function GameResultCard({
 
       {/* Score display */}
       <View style={styles.scoreContainer}>
-        <Text style={[styles.scoreText, { color: scoreColor }]}>
-          {score}/{maxScore}
-        </Text>
+        <AnimatedNumber
+          value={score}
+          duration={1000}
+          suffix={`/${maxScore}`}
+          style={[styles.scoreText, { color: scoreColor }]}
+        />
       </View>
 
       {/* Previous best */}

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Alert,
   Animated,
@@ -14,6 +14,10 @@ import { ScreenContainer } from '../components/ScreenContainer';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { ExerciseCard } from '../components/ExerciseCard';
 import { AnxietyRater } from '../components/AnxietyRater';
+import { Celebration } from '../components/Celebration';
+import { ScrollHeader } from '../components/ScrollHeader';
+import { SkeletonCard, SkeletonLine } from '../components/Skeleton';
+import { useEntryAnimation } from '../hooks/useEntryAnimation';
 import planData from '../content/plan.v1.json';
 import { PlanDay } from '../types/progress';
 import { spacing } from '../theme/spacing';
@@ -22,6 +26,7 @@ import { colors } from '../theme/colors';
 import { useProgress } from '../hooks/useProgress';
 import { usePaywallGate } from '../hooks/usePaywallGate';
 import { MainStackParamList } from '../navigation/types';
+import { haptic } from '../utils/haptics';
 
 export function DayDetailScreen() {
   const route = useRoute<RouteProp<MainStackParamList, 'DayDetail'>>();
@@ -50,6 +55,10 @@ export function DayDetailScreen() {
   const [working, setWorking] = useState(false);
   const [justCompleted, setJustCompleted] = useState(false);
 
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const exerciseCount = day.exercises.length;
+  const { fadeIn } = useEntryAnimation(3 + exerciseCount);
+
   const allExercisesDone = day.exercises.every((e) => completedExercises.has(e.id));
   const showPreRating = day.anxietyGate?.showPreRating ?? false;
   const showPostRating = day.anxietyGate?.showPostRating ?? false;
@@ -59,7 +68,7 @@ export function DayDetailScreen() {
     if (exercise && (exercise.type === 'record' || exercise.type === 'drill' || exercise.type === 'imitation_drill')) {
       navigation.navigate('ExerciseRecord', { exercise, dayNumber: day.dayNumber });
     } else {
-      // For non-recording exercises, mark as done locally
+      haptic.light();
       setCompletedExercises((prev) => {
         const next = new Set(prev);
         next.add(exerciseId);
@@ -68,12 +77,8 @@ export function DayDetailScreen() {
     }
   };
 
-  // Mark exercise complete when returning from recording
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      // Check for exercises that went through recording flow — mark complete
-      // This is a simple approach; a more robust solution would use route params
-    });
+    const unsubscribe = navigation.addListener('focus', () => {});
     return unsubscribe;
   }, [navigation]);
 
@@ -83,16 +88,19 @@ export function DayDetailScreen() {
     await completeDay(day.dayNumber);
     setWorking(false);
     setJustCompleted(true);
+    haptic.success();
   };
 
-  // Difficulty dots
   const difficulty = Math.min(5, Math.max(1, Math.ceil(day.dayNumber / 12)));
 
   if (loading || !progress) {
     return (
       <ScreenContainer>
-        <View style={styles.center}>
-          <Text style={styles.loadingText}>Loading...</Text>
+        <View style={{ gap: spacing.lg }}>
+          <SkeletonLine width={120} />
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
         </View>
       </ScreenContainer>
     );
@@ -121,9 +129,19 @@ export function DayDetailScreen() {
 
   return (
     <ScreenContainer scroll={false}>
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+      <Celebration trigger={justCompleted} variant="confetti" />
+      <ScrollHeader title={day.title} scrollY={scrollY} />
+      <Animated.ScrollView
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: false },
+        )}
+        scrollEventThrottle={16}
+      >
         {/* Day header */}
-        <View style={styles.dayHeader}>
+        <Animated.View style={[styles.dayHeader, fadeIn(0)]}>
           <View style={styles.dayBadge}>
             <Text style={styles.dayBadgeText}>Day {day.dayNumber}</Text>
           </View>
@@ -140,7 +158,7 @@ export function DayDetailScreen() {
             ))}
             <Text style={styles.difficultyLabel}>Difficulty</Text>
           </View>
-        </View>
+        </Animated.View>
 
         {/* Objective */}
         <View style={styles.objectiveCard}>
@@ -158,23 +176,24 @@ export function DayDetailScreen() {
         ) : null}
 
         {/* Lesson card */}
-        <View style={styles.lessonCard}>
+        <Animated.View style={[styles.lessonCard, fadeIn(1)]}>
           <Text style={styles.lessonLabel}>{'\ud83d\udcd6'} Lesson</Text>
           <Text style={styles.lessonText}>{day.lessonText}</Text>
-        </View>
+        </Animated.View>
 
         {/* Exercise list */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>
             Exercises ({completedExercises.size}/{day.exercises.length})
           </Text>
-          {day.exercises.map((exercise) => (
-            <ExerciseCard
-              key={exercise.id}
-              exercise={exercise}
-              isCompleted={completedExercises.has(exercise.id)}
-              onStart={() => handleExerciseStart(exercise.id)}
-            />
+          {day.exercises.map((exercise, idx) => (
+            <Animated.View key={exercise.id} style={fadeIn(2 + idx)}>
+              <ExerciseCard
+                exercise={exercise}
+                isCompleted={completedExercises.has(exercise.id)}
+                onStart={() => handleExerciseStart(exercise.id)}
+              />
+            </Animated.View>
           ))}
         </View>
 
@@ -247,7 +266,7 @@ export function DayDetailScreen() {
         ) : null}
 
         <View style={styles.bottomSpacer} />
-      </ScrollView>
+      </Animated.ScrollView>
     </ScreenContainer>
   );
 }
@@ -258,13 +277,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  loadingText: {
-    fontSize: typography.body,
-    color: colors.muted,
-  },
   content: {
     gap: spacing.lg,
     paddingBottom: spacing.xl,
+    paddingHorizontal: spacing.lg,
   },
 
   // Day header

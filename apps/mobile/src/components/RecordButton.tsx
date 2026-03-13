@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Easing, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
+import { haptic } from '../utils/haptics';
 
 type RecordingState = 'ready' | 'countdown' | 'recording' | 'done';
 
@@ -11,6 +12,47 @@ interface RecordButtonProps {
   onRecordingComplete: (durationSec: number) => void;
   onReRecord: () => void;
   showCountdown?: boolean;
+}
+
+function PulseRing({ delay, duration }: { delay: number; duration: number }) {
+  const scale = useRef(new Animated.Value(1)).current;
+  const opacity = useRef(new Animated.Value(0.4)).current;
+
+  useEffect(() => {
+    const animation = Animated.loop(
+      Animated.sequence([
+        Animated.delay(delay),
+        Animated.parallel([
+          Animated.timing(scale, {
+            toValue: 1.8,
+            duration,
+            easing: Easing.out(Easing.cubic),
+            useNativeDriver: true,
+          }),
+          Animated.timing(opacity, {
+            toValue: 0,
+            duration,
+            useNativeDriver: true,
+          }),
+        ]),
+        Animated.parallel([
+          Animated.timing(scale, { toValue: 1, duration: 0, useNativeDriver: true }),
+          Animated.timing(opacity, { toValue: 0.4, duration: 0, useNativeDriver: true }),
+        ]),
+      ]),
+    );
+    animation.start();
+    return () => animation.stop();
+  }, [scale, opacity, delay, duration]);
+
+  return (
+    <Animated.View
+      style={[
+        styles.pulseRing,
+        { transform: [{ scale }], opacity },
+      ]}
+    />
+  );
 }
 
 export function RecordButton({
@@ -24,6 +66,13 @@ export function RecordButton({
   const [countdownNum, setCountdownNum] = useState(3);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // Recording pulse for inner circle
+  const innerPulse = useRef(new Animated.Value(1)).current;
+  const innerPulseAnim = useRef<Animated.CompositeAnimation | null>(null);
+
+  // Done spring animation
+  const doneScale = useRef(new Animated.Value(0.5)).current;
+
   const clearTimer = () => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -36,6 +85,48 @@ export function RecordButton({
     const sec = s % 60;
     return `${m}:${sec.toString().padStart(2, '0')}`;
   };
+
+  // Inner circle pulse while recording
+  useEffect(() => {
+    if (state === 'recording') {
+      innerPulseAnim.current = Animated.loop(
+        Animated.sequence([
+          Animated.timing(innerPulse, {
+            toValue: 1.05,
+            duration: 500,
+            easing: Easing.inOut(Easing.ease),
+            useNativeDriver: true,
+          }),
+          Animated.timing(innerPulse, {
+            toValue: 1,
+            duration: 500,
+            easing: Easing.inOut(Easing.ease),
+            useNativeDriver: true,
+          }),
+        ]),
+      );
+      innerPulseAnim.current.start();
+    } else {
+      innerPulseAnim.current?.stop();
+      innerPulse.setValue(1);
+    }
+    return () => {
+      innerPulseAnim.current?.stop();
+    };
+  }, [state, innerPulse]);
+
+  // Done spring
+  useEffect(() => {
+    if (state === 'done') {
+      doneScale.setValue(0.5);
+      Animated.spring(doneScale, {
+        toValue: 1,
+        tension: 300,
+        friction: 10,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [state, doneScale]);
 
   const startCountdown = () => {
     setState('countdown');
@@ -54,12 +145,14 @@ export function RecordButton({
 
   const startRecording = () => {
     setState('recording');
+    haptic.medium();
     setSeconds(0);
     intervalRef.current = setInterval(() => {
       setSeconds((prev) => {
         if (prev >= maxDurationSec - 1) {
           clearTimer();
           setState('done');
+          haptic.success();
           onRecordingComplete(maxDurationSec);
           return maxDurationSec;
         }
@@ -78,6 +171,7 @@ export function RecordButton({
     } else if (state === 'recording') {
       clearTimer();
       setState('done');
+      haptic.success();
       onRecordingComplete(seconds);
     }
   };
@@ -114,17 +208,20 @@ export function RecordButton({
           <Text style={styles.hint}>Tap to start recording</Text>
         </>
       ) : state === 'recording' ? (
-        <>
+        <View style={styles.pulseContainer}>
+          <PulseRing delay={0} duration={1500} />
+          <PulseRing delay={500} duration={1500} />
+          <PulseRing delay={1000} duration={1500} />
           <TouchableOpacity style={styles.recordButtonActive} onPress={handlePress} activeOpacity={0.7}>
-            <View style={styles.stopDot} />
+            <Animated.View style={[styles.stopDot, { transform: [{ scale: innerPulse }] }]} />
           </TouchableOpacity>
           <Text style={styles.hint}>Tap to stop</Text>
-        </>
+        </View>
       ) : (
         <>
-          <View style={styles.doneCircle}>
+          <Animated.View style={[styles.doneCircle, { transform: [{ scale: doneScale }] }]}>
             <Text style={styles.doneCheck}>{'\u2713'}</Text>
-          </View>
+          </Animated.View>
           <Text style={styles.doneText}>Recording saved {'\u2713'}</Text>
           <TouchableOpacity onPress={handleReRecord} style={styles.reRecordLink}>
             <Text style={styles.reRecordText}>Re-record</Text>
@@ -146,6 +243,21 @@ const styles = StyleSheet.create({
     fontWeight: typography.weightBold,
     color: colors.text,
     fontVariant: ['tabular-nums'],
+  },
+  pulseContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 160,
+    height: 160,
+    gap: spacing.md,
+  },
+  pulseRing: {
+    position: 'absolute',
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    borderWidth: 2,
+    borderColor: '#ef4444',
   },
   recordButton: {
     width: 80,
@@ -172,6 +284,7 @@ const styles = StyleSheet.create({
     borderColor: '#ef4444',
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 2,
   },
   stopDot: {
     width: 28,
