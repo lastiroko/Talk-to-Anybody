@@ -49,11 +49,11 @@ interface AppNavigatorProps {
 }
 
 const TAB_ICONS: Record<string, { active: string; inactive: string }> = {
-  Home: { active: '\ud83c\udfe0', inactive: '\ud83c\udfe0' },
-  Plan: { active: '\ud83d\udccb', inactive: '\ud83d\udccb' },
-  Practice: { active: '\ud83c\udf99\ufe0f', inactive: '\ud83c\udf99\ufe0f' },
-  Progress: { active: '\ud83d\udcca', inactive: '\ud83d\udcca' },
-  Settings: { active: '\u2699\ufe0f', inactive: '\u2699\ufe0f' },
+  Home: { active: '⌂', inactive: '⌂' },
+  Plan: { active: '🏆', inactive: '🏆' },
+  Practice: { active: '✦', inactive: '✦' },
+  Progress: { active: '♛', inactive: '♛' },
+  Settings: { active: '◉', inactive: '◉' },
 };
 
 function AuthNavigator({ onAuthenticated }: { onAuthenticated: () => void }) {
@@ -116,15 +116,18 @@ function MainTabs() {
         headerStyle: { backgroundColor: colors.background },
         headerTintColor: colors.text,
         tabBarStyle: {
-          backgroundColor: colors.tabBg,
-          borderTopColor: colors.divider,
-          height: 60,
-          paddingBottom: 6,
+          backgroundColor: '#FFFFFF',
+          borderTopWidth: 0,
+          elevation: 0,
+          shadowOpacity: 0,
+          height: 66,
+          paddingBottom: 10,
+          paddingTop: 8,
         },
         tabBarActiveTintColor: colors.tabActive,
         tabBarInactiveTintColor: colors.tabInactive,
         tabBarLabelStyle: {
-          fontSize: typography.tiny,
+          display: 'none',
           fontWeight: '600' as const,
         },
         tabBarIcon: ({ focused }) => {

@@ -80,24 +80,20 @@ const mockNavigate = jest.fn();
 const mockGoBack = jest.fn();
 const mockSetParams = jest.fn();
 
-jest.mock('@react-navigation/native', () => {
-  const actual = jest.requireActual('@react-navigation/native');
-  return {
-    ...actual,
-    useNavigation: () => ({
-      navigate: mockNavigate,
-      goBack: mockGoBack,
-      setParams: mockSetParams,
-      addListener: jest.fn(() => jest.fn()),
-      pop: jest.fn(),
-      replace: jest.fn(),
-    }),
-    useRoute: () => ({
-      params: {},
-    }),
-    NavigationContainer: ({ children }: any) => children,
-  };
-});
+jest.mock('@react-navigation/native', () => ({
+  useNavigation: () => ({
+    navigate: mockNavigate,
+    goBack: mockGoBack,
+    setParams: mockSetParams,
+    addListener: jest.fn(() => jest.fn()),
+    pop: jest.fn(),
+    replace: jest.fn(),
+  }),
+  useRoute: () => ({
+    params: {},
+  }),
+  NavigationContainer: ({ children }: any) => children,
+}));
 
 jest.mock('@react-navigation/native-stack', () => ({
   createNativeStackNavigator: () => ({

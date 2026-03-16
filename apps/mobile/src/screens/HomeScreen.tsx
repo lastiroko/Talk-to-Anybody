@@ -1,13 +1,6 @@
-import { useMemo } from 'react';
-import { Animated, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { PointsBadge } from '../components/PointsBadge';
-import { XPBar } from '../components/XPBar';
-import { StreakBadge } from '../components/StreakBadge';
-import { ChallengeCard } from '../components/ChallengeCard';
-import { CategoryPill } from '../components/CategoryPill';
-import { PrimaryButton } from '../components/PrimaryButton';
-import { EmptyState } from '../components/EmptyState';
 import { SkeletonCard, SkeletonLine } from '../components/Skeleton';
 import { useEntryAnimation } from '../hooks/useEntryAnimation';
 import { useGamification } from '../hooks/useGamification';
@@ -16,52 +9,29 @@ import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
 import { shadows } from '../theme/shadows';
 import { useProgress } from '../hooks/useProgress';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { MainStackParamList } from '../navigation/types';
-import planData from '../content/plan.v1.json';
-import { PlanDay } from '../types/progress';
-
-type HomeNavigation = NativeStackNavigationProp<MainStackParamList>;
-
-function getGreeting(): string {
-  const hour = new Date().getHours();
-  if (hour < 12) return 'Good morning!';
-  if (hour < 17) return 'Good afternoon!';
-  return 'Good evening!';
-}
 
 const CATEGORIES = [
-  { label: 'Pauses', color: colors.categoryBlue, icon: '\u23f8\ufe0f' },
-  { label: 'Fillers', color: colors.categoryRed, icon: '\ud83d\udeab' },
-  { label: 'Structure', color: colors.categoryPurple, icon: '\ud83d\udcda' },
-  { label: 'Vocal', color: colors.categoryOrange, icon: '\ud83c\udfa4' },
-  { label: 'Story', color: colors.categoryTeal, icon: '\ud83d\udcd6' },
+  { label: 'Ethics', icon: '🛡️', tint: '#FCE8D6' },
+  { label: 'Technology', icon: '⚙️', tint: '#E6EDFF' },
+  { label: 'History', icon: '🌍', tint: '#E9F6DE' },
 ];
+
+const WAVE = [8, 14, 7, 20, 12, 10, 16, 11, 19, 8, 13, 9, 16, 12, 8, 14, 18, 10, 12, 15, 7, 13, 18, 11, 9, 13];
 
 export function HomeScreen() {
   const { progress, loading } = useProgress();
-  const navigation = useNavigation<HomeNavigation>();
-  const plan = useMemo(() => planData as PlanDay[], []);
-  const { fadeIn } = useEntryAnimation(6);
+  const { fadeIn } = useEntryAnimation(5);
   const gam = useGamification();
 
-  const currentDay = progress?.currentDayUnlocked ?? 1;
-  const currentStreak = progress?.currentStreak ?? 0;
   const completedCount = progress?.completedDays.length ?? 0;
-  const todayData = useMemo(
-    () => plan.find((d) => d.dayNumber === currentDay),
-    [plan, currentDay],
-  );
-  const isTodayCompleted = progress?.completedDays.includes(currentDay) ?? false;
-  const allCompleted = completedCount >= 60;
+  const rank = Math.max(1, 30 - Math.round(completedCount / 2));
 
   if (loading || !progress) {
     return (
       <ScreenContainer>
         <View style={styles.topBar}>
           <SkeletonLine width={40} />
-          <SkeletonLine width={120} />
+          <SkeletonLine width={130} />
         </View>
         <SkeletonCard />
         <SkeletonCard />
@@ -69,206 +39,95 @@ export function HomeScreen() {
     );
   }
 
-  if (completedCount === 0 && currentDay === 1) {
-    return (
-      <ScreenContainer>
-        <EmptyState
-          icon={'\ud83d\udc4b'}
-          title="Welcome!"
-          subtitle="Let's begin with your baseline recording"
-          action={{
-            label: 'Get Started',
-            onPress: () => navigation.navigate('DayDetail', { dayNumber: 1 }),
-          }}
-        />
-      </ScreenContainer>
-    );
-  }
-
   return (
     <ScreenContainer padded={false} scroll={false}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Top bar: avatar + points */}
         <Animated.View style={[styles.topBar, fadeIn(0)]}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>
-              {'\ud83d\udc64'}
-            </Text>
-          </View>
+          <View style={styles.backBtn}><Text style={styles.backTxt}>‹</Text></View>
           <PointsBadge gems={gam.gems} coins={gam.coins} />
         </Animated.View>
 
-        {/* XP bar */}
-        <Animated.View style={fadeIn(1)}>
-          <XPBar current={gam.xpInLevel} target={gam.xpToNextLevel} level={gam.level} />
+        <Animated.View style={[styles.hero, fadeIn(1)]}>
+          <Text style={styles.bot}>🤖</Text>
+          <View style={styles.rankWrap}>
+            <Text style={styles.rank}>{rank}</Text>
+            <Text style={styles.rankSuffix}>rd</Text>
+          </View>
+          <Text style={styles.insight}>Listen every <Text style={styles.insightTag}>Day Insight</Text></Text>
+          <Text style={styles.sub}>about your education</Text>
         </Animated.View>
 
-        {/* Greeting + streak */}
-        <Animated.View style={[styles.greetingRow, fadeIn(2)]}>
-          <Text style={styles.greeting}>{getGreeting()}</Text>
-          {currentStreak > 0 ? <StreakBadge count={currentStreak} /> : null}
+        <Animated.View style={[styles.voiceCard, fadeIn(2)]}>
+          <View style={styles.waveRow}>
+            {WAVE.map((h, i) => <View key={i} style={[styles.waveBar, { height: h }]} />)}
+          </View>
+          <View style={styles.mic}><Text style={styles.micTxt}>🎙️</Text></View>
         </Animated.View>
 
-        {/* Today's challenge card or graduation */}
-        <Animated.View style={fadeIn(3)}>
-          {allCompleted ? (
-            <View style={[styles.gradCard, shadows.card]}>
-              <Text style={styles.gradEmoji}>{'\ud83c\udf93'}</Text>
-              <Text style={styles.gradTitle}>Congratulations!</Text>
-              <Text style={styles.gradSub}>
-                You've completed all 60 days. You're a speaking champion!
-              </Text>
+        <Animated.View style={[styles.sectionHeader, fadeIn(3)]}>
+          <Text style={styles.sectionTitle}>Select Category <Text style={styles.badge}>34</Text></Text>
+          <Text style={styles.link}>View all</Text>
+        </Animated.View>
+
+        <Animated.View style={[styles.categoryRow, fadeIn(4)]}>
+          {CATEGORIES.map((cat) => (
+            <View key={cat.label} style={[styles.catCard, { backgroundColor: cat.tint }]}>
+              <Text style={styles.catIcon}>{cat.icon}</Text>
+              <Text style={styles.catLabel}>{cat.label}</Text>
             </View>
-          ) : todayData ? (
-            <ChallengeCard
-              title={todayData.title}
-              subtitle={todayData.objective}
-              progress={`Day ${todayData.dayNumber}/60`}
-              gems={5}
-              coins={100}
-              icon={isTodayCompleted ? '\u2705' : '\ud83c\udfa4'}
-              onPress={() => navigation.navigate('DayDetail', { dayNumber: currentDay })}
-            />
-          ) : null}
+          ))}
         </Animated.View>
 
-        {/* Quick categories */}
-        <Animated.View style={fadeIn(4)}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoriesRow}>
-            {CATEGORIES.map((cat) => (
-              <CategoryPill key={cat.label} label={cat.label} color={cat.color} icon={cat.icon} />
-            ))}
-          </ScrollView>
+        <Animated.View style={[styles.featureCard, shadows.card, fadeIn(4)]}>
+          <View style={styles.rewardRow}><Text style={styles.reward}>💎 +5</Text><Text style={styles.reward}>🪙 +145</Text><Text style={styles.fire}>🔥</Text></View>
+          <View style={styles.featureBody}>
+            <Text style={styles.featureBot}>🦾</Text>
+            <View style={styles.featureTextWrap}>
+              <Text style={styles.featureTag}>Mind Unlocked</Text>
+              <Text style={styles.featureTitle}>The Human Mind</Text>
+              <Text style={styles.featureSub}>A Deep Dive into Thoughts, Emotions, and Behavior</Text>
+            </View>
+          </View>
         </Animated.View>
-
-        {/* Mini-game spotlight */}
-        <Animated.View style={fadeIn(5)}>
-          <TouchableOpacity style={[styles.spotlightCard, shadows.card]} activeOpacity={0.8}>
-            <View style={styles.spotlightIconCircle}>
-              <Text style={styles.spotlightIcon}>{'\ud83c\udfae'}</Text>
-            </View>
-            <View style={styles.spotlightText}>
-              <Text style={styles.spotlightTitle}>Daily Quiz</Text>
-              <Text style={styles.spotlightSub}>Your daily challenge is waiting!</Text>
-            </View>
-            <View style={styles.spotlightReward}>
-              <Text style={styles.spotlightRewardText}>{'\ud83d\udc8e'}+5</Text>
-            </View>
-          </TouchableOpacity>
-        </Animated.View>
-
-        {/* Continue Practice */}
-        <PrimaryButton
-          title="Continue Practice"
-          variant="secondary"
-          onPress={() => {}}
-        />
-
-        <View style={styles.bottomSpacer} />
       </ScrollView>
     </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  content: {
-    padding: spacing.lg,
-    gap: spacing.lg,
-    paddingBottom: spacing.xl,
-  },
-  topBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.primaryLight,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  avatarText: {
-    fontSize: 20,
-  },
-  greetingRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  greeting: {
-    fontSize: typography.title,
-    fontWeight: typography.weightBold,
-    color: colors.text,
-  },
-
-  // Graduation
-  gradCard: {
-    backgroundColor: colors.surfaceHighlight,
-    borderRadius: 18,
-    padding: spacing.xl,
-    alignItems: 'center',
-    gap: spacing.md,
-  },
-  gradEmoji: { fontSize: 48 },
-  gradTitle: {
-    fontSize: typography.heading,
-    fontWeight: typography.weightBold,
-    color: colors.text,
-  },
-  gradSub: {
-    fontSize: typography.body,
-    color: colors.textMuted,
-    textAlign: 'center',
-    lineHeight: 22,
-  },
-
-  // Categories
-  categoriesRow: {
-    gap: spacing.sm,
-    paddingVertical: 2,
-  },
-
-  // Spotlight
-  spotlightCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.surface,
-    borderRadius: 18,
-    padding: spacing.lg,
-    gap: spacing.md,
-  },
-  spotlightIconCircle: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: colors.gameBg,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  spotlightIcon: { fontSize: 24 },
-  spotlightText: { flex: 1, gap: 2 },
-  spotlightTitle: {
-    fontSize: typography.body,
-    fontWeight: typography.weightBold,
-    color: colors.text,
-  },
-  spotlightSub: {
-    fontSize: typography.small,
-    color: colors.textMuted,
-  },
-  spotlightReward: {
-    backgroundColor: colors.goldLight,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 999,
-  },
-  spotlightRewardText: {
-    fontSize: typography.small,
-    fontWeight: typography.weightBold,
-    color: colors.gold,
-  },
-
-  bottomSpacer: { height: spacing.xl },
+  content: { padding: spacing.lg, gap: spacing.md, paddingBottom: spacing.xl },
+  topBar: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  backBtn: { width: 42, height: 42, borderRadius: 21, backgroundColor: '#ffffffd9', alignItems: 'center', justifyContent: 'center' },
+  backTxt: { fontSize: 28, color: colors.textMuted, lineHeight: 30 },
+  hero: { alignItems: 'center', gap: 2 },
+  bot: { fontSize: 70 },
+  rankWrap: { flexDirection: 'row', alignItems: 'flex-end' },
+  rank: { fontSize: 54, color: '#2F7A98', fontWeight: typography.weightBold },
+  rankSuffix: { fontSize: typography.subheading, color: '#2F7A98', fontWeight: typography.weightBold, marginBottom: 8 },
+  insight: { fontSize: typography.body, fontWeight: typography.weightSemi, color: colors.text },
+  insightTag: { backgroundColor: '#BFDEEC', color: '#1f5f7a' },
+  sub: { fontSize: typography.small, color: colors.textBody },
+  voiceCard: { backgroundColor: '#CEE5EF', borderRadius: 22, padding: spacing.md, flexDirection: 'row', alignItems: 'center', gap: spacing.md },
+  waveRow: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  waveBar: { width: 2, borderRadius: 2, backgroundColor: '#3B7892' },
+  mic: { width: 52, height: 52, borderRadius: 26, backgroundColor: '#5F93A8', alignItems: 'center', justifyContent: 'center' },
+  micTxt: { fontSize: 20 },
+  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 4 },
+  sectionTitle: { fontSize: typography.subheading, fontWeight: typography.weightBold, color: colors.text },
+  badge: { color: '#2F7A98' },
+  link: { color: '#2F7A98', fontWeight: typography.weightSemi },
+  categoryRow: { flexDirection: 'row', gap: spacing.sm },
+  catCard: { flex: 1, borderRadius: 16, paddingVertical: spacing.md, alignItems: 'center', gap: 6 },
+  catIcon: { fontSize: 24 },
+  catLabel: { fontSize: typography.tiny, color: colors.textBody, fontWeight: typography.weightSemi },
+  featureCard: { backgroundColor: '#FFF6C9', borderRadius: 22, padding: spacing.md, gap: spacing.sm },
+  rewardRow: { flexDirection: 'row', gap: spacing.sm, alignItems: 'center' },
+  reward: { fontWeight: typography.weightBold, color: '#2f6d86', fontSize: typography.caption },
+  fire: { marginLeft: 'auto' },
+  featureBody: { flexDirection: 'row', gap: spacing.sm, alignItems: 'center' },
+  featureBot: { fontSize: 64 },
+  featureTextWrap: { flex: 1 },
+  featureTag: { color: '#B86B17', fontWeight: typography.weightSemi, fontSize: typography.caption },
+  featureTitle: { fontSize: 33/1.5, fontWeight: typography.weightBold, color: colors.text },
+  featureSub: { fontSize: typography.small, color: colors.textBody, marginTop: 4 },
 });

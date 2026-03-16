@@ -7,7 +7,7 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web",
+    "web": "node ./scripts/start-web.js",
     "test": "jest --watchAll=false"
   },
   "jest": {
@@ -18,9 +18,20 @@
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|react-native-worklets)"
     ],
-    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"],
-    "setupFiles": ["./__tests__/setup.ts"],
-    "testPathIgnorePatterns": ["/__tests__/setup\\.ts$", "/__tests__/mocks/"],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ],
+    "setupFiles": [
+      "./__tests__/setup.ts"
+    ],
+    "testPathIgnorePatterns": [
+      "/__tests__/setup\\.ts$",
+      "/__tests__/mocks/"
+    ],
     "moduleNameMapper": {
       "^expo-status-bar$": "<rootDir>/__tests__/mocks/expo-status-bar.js",
       "^expo$": "<rootDir>/__tests__/mocks/expo.js"
@@ -52,7 +63,7 @@
     "@types/jest": "*",
     "@types/react": "~19.1.10",
     "jest-expo": "*",
-    "react-test-renderer": "*",
+    "react-test-renderer": "19.1.0",
     "ts-jest": "*",
     "typescript": "^5.3.3"
   }
