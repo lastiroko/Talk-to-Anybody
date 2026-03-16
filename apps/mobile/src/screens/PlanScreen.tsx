@@ -1,13 +1,15 @@
 import { useMemo } from 'react';
-import { Alert, Animated, FlatList, StyleSheet, Text, View } from 'react-native';
+import { Alert, Animated, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
-import { DayTile } from '../components/DayTile';
+import { PointsBadge } from '../components/PointsBadge';
 import { ProgressBar } from '../components/ProgressBar';
 import { SkeletonCard, SkeletonLine } from '../components/Skeleton';
 import { useEntryAnimation } from '../hooks/useEntryAnimation';
+import { useGamification } from '../hooks/useGamification';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
+import { shadows } from '../theme/shadows';
 import planData from '../content/plan.v1.json';
 import { PlanDay } from '../types/progress';
 import { useProgress } from '../hooks/useProgress';
@@ -18,39 +20,25 @@ import { MainStackParamList } from '../navigation/types';
 
 type PlanNavigation = NativeStackNavigationProp<MainStackParamList>;
 
-const NUM_COLUMNS = 5;
-
-interface GridItem {
-  type: 'day' | 'weekLabel';
-  dayNumber?: number;
-  weekNumber?: number;
-  key: string;
-}
-
 export function PlanScreen() {
   const { progress, loading } = useProgress();
   const navigation = useNavigation<PlanNavigation>();
   const { isGated } = usePaywallGate();
   const plan = useMemo(() => planData as PlanDay[], []);
   const { fadeIn } = useEntryAnimation(3);
+  const gam = useGamification();
 
   const completedCount = progress?.completedDays.length ?? 0;
   const progressFraction = completedCount / 60;
 
-  const gridData = useMemo(() => {
-    const items: GridItem[] = [];
-    let currentWeek = 0;
-
+  const weeks = useMemo(() => {
+    const grouped: PlanDay[][] = [];
     plan.forEach((day) => {
-      const week = Math.ceil(day.dayNumber / 7);
-      if (week !== currentWeek) {
-        currentWeek = week;
-        items.push({ type: 'weekLabel', weekNumber: week, key: `week-${week}` });
-      }
-      items.push({ type: 'day', dayNumber: day.dayNumber, key: `day-${day.dayNumber}` });
+      const weekIdx = Math.floor((day.dayNumber - 1) / 7);
+      if (!grouped[weekIdx]) grouped[weekIdx] = [];
+      grouped[weekIdx].push(day);
     });
-
-    return items;
+    return grouped;
   }, [plan]);
 
   const getDayStatus = (dayNumber: number): 'completed' | 'current' | 'locked' => {
@@ -63,10 +51,7 @@ export function PlanScreen() {
   const handleDayPress = (dayNumber: number) => {
     const status = getDayStatus(dayNumber);
     if (status === 'locked') {
-      Alert.alert(
-        'Locked',
-        `Complete Day ${progress?.currentDayUnlocked ?? 1} first`,
-      );
+      Alert.alert('Locked', `Complete Day ${progress?.currentDayUnlocked ?? 1} first`);
       return;
     }
     if (isGated({ dayNumber })) {
@@ -90,106 +75,208 @@ export function PlanScreen() {
 
   return (
     <ScreenContainer padded={false} scroll={false}>
-      {/* Header */}
-      <Animated.View style={[styles.header, fadeIn(0)]}>
-        <Text style={styles.title}>Your 60-Day Plan</Text>
-      </Animated.View>
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        {/* Header */}
+        <Animated.View style={[styles.header, fadeIn(0)]}>
+          <Text style={styles.title}>Your Journey</Text>
+          <PointsBadge gems={gam.gems} coins={gam.coins} />
+        </Animated.View>
 
-      <Animated.View style={[styles.progressWrap, fadeIn(1)]}>
-        <ProgressBar progress={progressFraction} />
-        <Text style={styles.progressLabel}>
-          {completedCount} of 60 days completed
-        </Text>
-      </Animated.View>
+        {/* Progress card */}
+        <Animated.View style={[styles.progressCard, shadows.card, fadeIn(1)]}>
+          <View style={styles.progressTop}>
+            <View style={styles.progressRing}>
+              <Text style={styles.progressPercent}>{Math.round(progressFraction * 100)}%</Text>
+            </View>
+            <View style={styles.progressInfo}>
+              <Text style={styles.progressDays}>Day {completedCount}/60</Text>
+              <Text style={styles.progressSub}>{60 - completedCount} days remaining</Text>
+              <View style={styles.progressBarWrap}>
+                <ProgressBar progress={progressFraction} />
+              </View>
+            </View>
+          </View>
+        </Animated.View>
 
-      {/* Day grid */}
-      <Animated.View style={[{ flex: 1 }, fadeIn(2)]}>
-        <FlatList
-          data={gridData}
-          keyExtractor={(item) => item.key}
-          numColumns={NUM_COLUMNS}
-          contentContainerStyle={styles.gridContainer}
-          renderItem={({ item }) => {
-            if (item.type === 'weekLabel') {
-              return (
-                <View style={styles.weekLabel}>
-                  <Text style={styles.weekLabelText}>Week {item.weekNumber}</Text>
-                </View>
-              );
-            }
+        {/* Week sections */}
+        <Animated.View style={[styles.weeksList, fadeIn(2)]}>
+          {weeks.map((weekDays, weekIdx) => (
+            <View key={weekIdx} style={[styles.weekCard, shadows.card]}>
+              <Text style={styles.weekTitle}>Week {weekIdx + 1}</Text>
+              {weekDays.map((day) => {
+                const status = getDayStatus(day.dayNumber);
+                return (
+                  <TouchableOpacity
+                    key={day.dayNumber}
+                    style={styles.dayRow}
+                    onPress={() => handleDayPress(day.dayNumber)}
+                    activeOpacity={status === 'locked' ? 1 : 0.7}
+                  >
+                    <View style={[
+                      styles.dayCircle,
+                      status === 'completed' && styles.dayCircleCompleted,
+                      status === 'current' && styles.dayCircleCurrent,
+                      status === 'locked' && styles.dayCircleLocked,
+                    ]}>
+                      <Text style={[
+                        styles.dayCircleText,
+                        status === 'completed' && { color: '#fff' },
+                        status === 'current' && { color: '#fff' },
+                      ]}>
+                        {status === 'completed' ? '\u2713' : status === 'current' ? '\u25b6' : day.dayNumber}
+                      </Text>
+                    </View>
+                    <View style={styles.dayInfo}>
+                      <Text style={[styles.dayTitle, status === 'locked' && styles.dayTitleLocked]}>
+                        {day.title}
+                      </Text>
+                      <Text style={styles.dayMeta}>~{day.estimatedMinutes} min</Text>
+                    </View>
+                    <Text style={styles.dayReward}>{'\ud83d\udc8e'}5</Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          ))}
+        </Animated.View>
 
-            const dayNumber = item.dayNumber!;
-            const status = getDayStatus(dayNumber);
-
-            return (
-              <DayTile
-                dayNumber={dayNumber}
-                status={status}
-                onPress={() => handleDayPress(dayNumber)}
-              />
-            );
-          }}
-          getItemLayout={undefined}
-        />
-      </Animated.View>
-
-      {/* Bottom stats */}
-      <View style={styles.bottomBar}>
-        <Text style={styles.bottomText}>
-          {completedCount} of 60 days completed
-        </Text>
-      </View>
+        <View style={styles.bottomSpacer} />
+      </ScrollView>
     </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
+  content: {
+    padding: spacing.lg,
+    gap: spacing.lg,
+    paddingBottom: spacing.xl,
+  },
   header: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.lg,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   title: {
-    fontSize: typography.heading,
+    fontSize: typography.title,
     fontWeight: typography.weightBold,
     color: colors.text,
   },
-  progressWrap: {
-    paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.sm,
-    gap: spacing.sm,
+
+  // Progress card
+  progressCard: {
+    backgroundColor: colors.surface,
+    borderRadius: 18,
+    padding: spacing.lg,
   },
-  progressLabel: {
+  progressTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.lg,
+  },
+  progressRing: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    borderWidth: 5,
+    borderColor: colors.teal,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.tealLight,
+  },
+  progressPercent: {
+    fontSize: typography.heading,
+    fontWeight: typography.weightBold,
+    color: colors.teal,
+  },
+  progressInfo: {
+    flex: 1,
+    gap: spacing.xs,
+  },
+  progressDays: {
+    fontSize: typography.subheading,
+    fontWeight: typography.weightBold,
+    color: colors.text,
+  },
+  progressSub: {
     fontSize: typography.small,
-    color: colors.muted,
-    textAlign: 'right',
+    color: colors.textMuted,
   },
-  gridContainer: {
-    paddingHorizontal: spacing.md,
-    paddingBottom: spacing.lg,
+  progressBarWrap: {
+    marginTop: spacing.xs,
   },
-  weekLabel: {
-    width: '100%',
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.xs,
-    marginTop: spacing.sm,
+
+  // Weeks
+  weeksList: {
+    gap: spacing.md,
   },
-  weekLabelText: {
-    fontSize: typography.small,
-    fontWeight: typography.weightSemi,
-    color: colors.muted,
+  weekCard: {
+    backgroundColor: colors.surface,
+    borderRadius: 18,
+    padding: spacing.md,
+    gap: 2,
+  },
+  weekTitle: {
+    fontSize: typography.caption,
+    fontWeight: typography.weightBold,
+    color: colors.textMuted,
     textTransform: 'uppercase',
     letterSpacing: 1,
+    paddingHorizontal: spacing.sm,
+    paddingBottom: spacing.sm,
   },
-  bottomBar: {
-    padding: spacing.md,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
+  dayRow: {
+    flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.surface,
+    paddingVertical: 10,
+    paddingHorizontal: spacing.sm,
+    gap: spacing.md,
   },
-  bottomText: {
+  dayCircle: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dayCircleCompleted: {
+    backgroundColor: colors.success,
+  },
+  dayCircleCurrent: {
+    backgroundColor: colors.primary,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
+  dayCircleLocked: {
+    backgroundColor: colors.surfaceMuted,
+  },
+  dayCircleText: {
+    fontSize: typography.caption,
+    fontWeight: typography.weightBold,
+    color: colors.textMuted,
+  },
+  dayInfo: {
+    flex: 1,
+    gap: 2,
+  },
+  dayTitle: {
     fontSize: typography.body,
     fontWeight: typography.weightSemi,
-    color: colors.muted,
+    color: colors.text,
   },
+  dayTitleLocked: {
+    color: colors.textMuted,
+  },
+  dayMeta: {
+    fontSize: typography.tiny,
+    color: colors.textMuted,
+  },
+  dayReward: {
+    fontSize: typography.small,
+    fontWeight: typography.weightBold,
+    color: colors.gold,
+  },
+
+  bottomSpacer: { height: spacing.xl },
 });

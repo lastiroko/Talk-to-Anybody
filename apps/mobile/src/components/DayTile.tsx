@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { colors } from '../theme/colors';
-import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
+import { shadows } from '../theme/shadows';
 
 interface DayTileProps {
   dayNumber: number;
@@ -11,22 +11,19 @@ interface DayTileProps {
 
 const STATUS_CONFIG = {
   completed: {
-    bg: '#dcfce7',
-    border: '#86efac',
+    bg: colors.successBg,
     icon: '\u2713',
     iconColor: '#16a34a',
   },
   current: {
-    bg: '#dbeafe',
-    border: colors.primary,
+    bg: colors.primaryLight,
     icon: '\u25b6',
     iconColor: colors.primary,
   },
   locked: {
-    bg: '#f1f5f9',
-    border: colors.border,
+    bg: colors.surfaceMuted,
     icon: '\ud83d\udd12',
-    iconColor: colors.muted,
+    iconColor: colors.textMuted,
   },
 };
 
@@ -37,8 +34,9 @@ export function DayTile({ dayNumber, status, onPress }: DayTileProps) {
     <TouchableOpacity
       style={[
         styles.tile,
-        { backgroundColor: config.bg, borderColor: config.border },
+        { backgroundColor: config.bg },
         status === 'current' && styles.currentHighlight,
+        shadows.soft,
       ]}
       onPress={onPress}
       activeOpacity={status === 'locked' ? 1 : 0.7}
@@ -55,8 +53,7 @@ const styles = StyleSheet.create({
   tile: {
     flex: 1,
     aspectRatio: 1,
-    borderRadius: 12,
-    borderWidth: 1.5,
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
     margin: 4,
@@ -65,6 +62,7 @@ const styles = StyleSheet.create({
   },
   currentHighlight: {
     borderWidth: 2.5,
+    borderColor: colors.primary,
     shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.3,
@@ -80,6 +78,6 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   lockedText: {
-    color: colors.muted,
+    color: colors.textMuted,
   },
 });

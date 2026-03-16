@@ -10,13 +10,14 @@ import { Celebration } from '../components/Celebration';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
+import { shadows } from '../theme/shadows';
 import { MainStackParamList } from '../navigation/types';
 import { getAnalysis } from '../services/api';
 
 function scoreColor(score: number): string {
-  if (score > 70) return '#16a34a';
-  if (score >= 40) return '#eab308';
-  return '#ef4444';
+  if (score > 70) return colors.teal;
+  if (score >= 40) return colors.gold;
+  return colors.error;
 }
 
 function pauseLabel(val: number): string {
@@ -64,6 +65,11 @@ export function AnalysisResultScreen() {
       <Celebration trigger={showConfetti} variant="confetti" />
       <Celebration trigger={showGlow} variant="glow" />
       <ScrollView contentContainerStyle={styles.content}>
+        {/* XP earned */}
+        <View style={styles.xpBanner}>
+          <Text style={styles.xpText}>+50 XP  {'\ud83d\udc8e'}+5  {'\ud83e\ude99'}+100</Text>
+        </View>
+
         {/* Header */}
         <Text style={styles.title}>Your Results</Text>
 
@@ -81,7 +87,7 @@ export function AnalysisResultScreen() {
 
         {/* Sub-scores row */}
         <View style={styles.subScoresRow}>
-          <View style={styles.subScoreCard}>
+          <View style={[styles.subScoreCard, shadows.card]}>
             <Text style={styles.subScoreIcon}>{'\ud83c\udfa4'}</Text>
             <AnimatedNumber
               value={analysis.scores.delivery}
@@ -89,7 +95,7 @@ export function AnalysisResultScreen() {
             />
             <Text style={styles.subScoreLabel}>Delivery</Text>
           </View>
-          <View style={styles.subScoreCard}>
+          <View style={[styles.subScoreCard, shadows.card]}>
             <Text style={styles.subScoreIcon}>{'\ud83d\udc8e'}</Text>
             <AnimatedNumber
               value={analysis.scores.clarity}
@@ -97,7 +103,7 @@ export function AnalysisResultScreen() {
             />
             <Text style={styles.subScoreLabel}>Clarity</Text>
           </View>
-          <View style={styles.subScoreCard}>
+          <View style={[styles.subScoreCard, shadows.card]}>
             <Text style={styles.subScoreIcon}>{'\ud83d\udcd6'}</Text>
             <AnimatedNumber
               value={analysis.scores.story}
@@ -142,34 +148,36 @@ export function AnalysisResultScreen() {
           </View>
         </View>
 
-        {/* Wins */}
+        {/* Wins - green left stripe */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>{'\ud83c\udf1f'} What went well</Text>
           {analysis.wins.map((win, i) => (
-            <View key={i} style={styles.winCard}>
-              <Text style={styles.winText}>{'\u2705'} {win}</Text>
+            <View key={i} style={[styles.stripeCard, shadows.soft]}>
+              <View style={[styles.stripe, { backgroundColor: colors.success }]} />
+              <Text style={styles.stripeCardText}>{'\u2705'} {win}</Text>
             </View>
           ))}
         </View>
 
-        {/* Fixes */}
+        {/* Fixes - orange left stripe */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>{'\ud83c\udfaf'} Focus areas</Text>
           {analysis.fixes.map((fix, i) => (
             <TouchableOpacity
               key={i}
-              style={styles.fixCard}
+              style={[styles.stripeCard, shadows.soft]}
               onPress={() => Alert.alert('Drill coming soon', `"${fix.title}" drill will be available in a future update.`)}
               activeOpacity={0.7}
             >
-              <Text style={styles.fixText}>{'\ud83d\udd27'} {fix.title}</Text>
+              <View style={[styles.stripe, { backgroundColor: colors.categoryOrange }]} />
+              <Text style={styles.stripeCardText}>{'\ud83d\udd27'} {fix.title}</Text>
               <Text style={styles.fixArrow}>{'\u203a'}</Text>
             </TouchableOpacity>
           ))}
         </View>
 
-        {/* Coaching message */}
-        <View style={styles.coachingCard}>
+        {/* Coaching message - gold tint */}
+        <View style={[styles.coachingCard, shadows.card]}>
           <Text style={styles.coachingLabel}>{'\ud83e\uddd1\u200d\ud83c\udfeb'} Coach says:</Text>
           <Text style={styles.coachingText}>{analysis.coachingText}</Text>
         </View>
@@ -180,7 +188,10 @@ export function AnalysisResultScreen() {
             title="Continue"
             onPress={() => {
               if (dayNumber) {
-                navigation.pop(1);
+                navigation.navigate('DayDetail', {
+                  dayNumber,
+                  completedExerciseId: route.params.exerciseId,
+                });
               } else {
                 navigation.goBack();
               }
@@ -213,10 +224,25 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: typography.body,
-    color: colors.muted,
+    color: colors.textMuted,
   },
+
+  // XP banner
+  xpBanner: {
+    alignSelf: 'center',
+    backgroundColor: colors.goldLight,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+    borderRadius: 999,
+  },
+  xpText: {
+    fontSize: typography.body,
+    fontWeight: typography.weightBold,
+    color: colors.gold,
+  },
+
   title: {
-    fontSize: typography.heading,
+    fontSize: typography.title,
     fontWeight: typography.weightBold,
     color: colors.text,
   },
@@ -233,7 +259,7 @@ const styles = StyleSheet.create({
     borderWidth: 6,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.surface,
   },
   scoreNumber: {
     fontSize: 48,
@@ -253,29 +279,23 @@ const styles = StyleSheet.create({
   subScoreCard: {
     flex: 1,
     backgroundColor: colors.surface,
-    borderRadius: 12,
+    borderRadius: 14,
     padding: spacing.md,
     alignItems: 'center',
     gap: 4,
-    borderWidth: 1,
-    borderColor: colors.border,
   },
-  subScoreIcon: {
-    fontSize: 20,
-  },
+  subScoreIcon: { fontSize: 20 },
   subScoreValue: {
     fontSize: 22,
     fontWeight: typography.weightBold,
   },
   subScoreLabel: {
     fontSize: typography.small,
-    color: colors.muted,
+    color: colors.textMuted,
   },
 
   // Sections
-  section: {
-    gap: spacing.sm,
-  },
+  section: { gap: spacing.sm },
   sectionTitle: {
     fontSize: typography.subheading,
     fontWeight: typography.weightBold,
@@ -283,61 +303,47 @@ const styles = StyleSheet.create({
   },
 
   // Metrics
-  metricsGrid: {
-    gap: spacing.sm,
-  },
+  metricsGrid: { gap: spacing.sm },
   metricsRow: {
     flexDirection: 'row',
     gap: spacing.sm,
   },
 
-  // Wins
-  winCard: {
-    backgroundColor: '#dcfce7',
-    borderRadius: 10,
-    padding: spacing.md,
-    borderWidth: 1,
-    borderColor: '#86efac',
-  },
-  winText: {
-    fontSize: typography.body,
-    color: '#15803d',
-  },
-
-  // Fixes
-  fixCard: {
-    backgroundColor: '#fff7ed',
-    borderRadius: 10,
-    padding: spacing.md,
-    borderWidth: 1,
-    borderColor: '#fed7aa',
+  // Stripe cards (wins/fixes)
+  stripeCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    backgroundColor: colors.surface,
+    borderRadius: 14,
+    overflow: 'hidden',
   },
-  fixText: {
-    fontSize: typography.body,
-    color: '#c2410c',
+  stripe: {
+    width: 5,
+    alignSelf: 'stretch',
+  },
+  stripeCardText: {
     flex: 1,
+    fontSize: typography.body,
+    color: colors.text,
+    padding: spacing.md,
   },
   fixArrow: {
     fontSize: 20,
-    color: '#c2410c',
+    color: colors.textMuted,
+    paddingRight: spacing.md,
   },
 
   // Coaching
   coachingCard: {
-    backgroundColor: '#eff6ff',
-    borderRadius: 14,
+    backgroundColor: colors.surfaceHighlight,
+    borderRadius: 18,
     padding: spacing.lg,
     gap: spacing.sm,
-    borderWidth: 1,
-    borderColor: '#bfdbfe',
   },
   coachingLabel: {
-    fontSize: typography.small,
+    fontSize: typography.caption,
     fontWeight: typography.weightBold,
-    color: colors.primary,
+    color: colors.gold,
   },
   coachingText: {
     fontSize: typography.body,
@@ -346,9 +352,7 @@ const styles = StyleSheet.create({
   },
 
   // Actions
-  actions: {
-    gap: spacing.md,
-  },
+  actions: { gap: spacing.md },
   shareButton: {
     alignItems: 'center',
     paddingVertical: spacing.sm,
@@ -359,7 +363,5 @@ const styles = StyleSheet.create({
     fontWeight: typography.weightSemi,
   },
 
-  bottomSpacer: {
-    height: spacing.lg,
-  },
+  bottomSpacer: { height: spacing.lg },
 });

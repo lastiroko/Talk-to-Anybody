@@ -2,7 +2,6 @@ import { Alert, Animated, ScrollView, StyleSheet, Text, View } from 'react-nativ
 import { ScreenContainer } from '../components/ScreenContainer';
 import { ModeCard } from '../components/ModeCard';
 import { GameCard } from '../components/GameCard';
-import { EmptyState } from '../components/EmptyState';
 import { useEntryAnimation } from '../hooks/useEntryAnimation';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
@@ -32,13 +31,9 @@ export function PracticeScreen() {
   const isGameUnlocked = (gameId: string) =>
     completedDays.some((d) => d >= GAME_UNLOCK_DAYS[gameId]);
 
-  const handleLockedGame = (unlockDay: number) => {
-    Alert.alert('Locked', `Complete Day ${unlockDay} to unlock this game.`);
-  };
-
   return (
     <ScreenContainer padded={false} scroll={false}>
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <Animated.View style={[styles.header, fadeIn(0)]}>
           <Text style={styles.title}>Practice</Text>
@@ -47,7 +42,7 @@ export function PracticeScreen() {
 
         {/* Practice Modes */}
         <Animated.View style={[styles.section, fadeIn(1)]}>
-          <Text style={styles.sectionLabel}>{'\ud83c\udf99\ufe0f'} Practice Modes</Text>
+          <Text style={styles.sectionLabel}>Practice Modes</Text>
         </Animated.View>
 
         <Animated.View style={[styles.modes, fadeIn(2)]}>
@@ -85,7 +80,7 @@ export function PracticeScreen() {
 
         {/* Mini-Games */}
         <Animated.View style={[styles.section, fadeIn(3)]}>
-          <Text style={styles.sectionLabel}>{'\ud83c\udfae'} Mini-Games</Text>
+          <Text style={styles.sectionLabel}>Mini-Games</Text>
           <View style={styles.gameGrid}>
             <View style={styles.gameRow}>
               <GameCard
@@ -144,32 +139,24 @@ const styles = StyleSheet.create({
     gap: spacing.lg,
     paddingBottom: spacing.xl,
   },
-  header: {
-    gap: spacing.xs,
-  },
+  header: { gap: spacing.xs },
   title: {
-    fontSize: typography.heading,
+    fontSize: typography.title,
     fontWeight: typography.weightBold,
     color: colors.text,
   },
   subtitle: {
     fontSize: typography.body,
-    color: colors.muted,
+    color: colors.textMuted,
   },
-  section: {
-    gap: spacing.md,
-  },
+  section: { gap: spacing.md },
   sectionLabel: {
     fontSize: typography.subheading,
     fontWeight: typography.weightBold,
     color: colors.text,
   },
-  modes: {
-    gap: spacing.md,
-  },
-  gameGrid: {
-    gap: spacing.md,
-  },
+  modes: { gap: spacing.md },
+  gameGrid: { gap: spacing.md },
   gameRow: {
     flexDirection: 'row',
     gap: spacing.md,

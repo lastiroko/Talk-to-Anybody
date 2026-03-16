@@ -1,16 +1,20 @@
 import { useMemo } from 'react';
-import { Animated, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Animated, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
-import { StatCard } from '../components/StatCard';
+import { PointsBadge } from '../components/PointsBadge';
+import { XPBar } from '../components/XPBar';
+import { StreakBadge } from '../components/StreakBadge';
+import { ChallengeCard } from '../components/ChallengeCard';
+import { CategoryPill } from '../components/CategoryPill';
 import { PrimaryButton } from '../components/PrimaryButton';
-import { AnimatedNumber } from '../components/AnimatedNumber';
-import { GradientOrb } from '../components/Decorative';
-import { SkeletonCard, SkeletonLine } from '../components/Skeleton';
 import { EmptyState } from '../components/EmptyState';
+import { SkeletonCard, SkeletonLine } from '../components/Skeleton';
 import { useEntryAnimation } from '../hooks/useEntryAnimation';
+import { useGamification } from '../hooks/useGamification';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
+import { shadows } from '../theme/shadows';
 import { useProgress } from '../hooks/useProgress';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -27,11 +31,20 @@ function getGreeting(): string {
   return 'Good evening!';
 }
 
+const CATEGORIES = [
+  { label: 'Pauses', color: colors.categoryBlue, icon: '\u23f8\ufe0f' },
+  { label: 'Fillers', color: colors.categoryRed, icon: '\ud83d\udeab' },
+  { label: 'Structure', color: colors.categoryPurple, icon: '\ud83d\udcda' },
+  { label: 'Vocal', color: colors.categoryOrange, icon: '\ud83c\udfa4' },
+  { label: 'Story', color: colors.categoryTeal, icon: '\ud83d\udcd6' },
+];
+
 export function HomeScreen() {
   const { progress, loading } = useProgress();
   const navigation = useNavigation<HomeNavigation>();
   const plan = useMemo(() => planData as PlanDay[], []);
-  const { fadeIn } = useEntryAnimation(4);
+  const { fadeIn } = useEntryAnimation(6);
+  const gam = useGamification();
 
   const currentDay = progress?.currentDayUnlocked ?? 1;
   const currentStreak = progress?.currentStreak ?? 0;
@@ -43,21 +56,15 @@ export function HomeScreen() {
   const isTodayCompleted = progress?.completedDays.includes(currentDay) ?? false;
   const allCompleted = completedCount >= 60;
 
-  const avgMinutes = 4;
-  const totalPracticeMin = completedCount * avgMinutes;
-
   if (loading || !progress) {
     return (
       <ScreenContainer>
-        <View style={styles.greetingBar}>
-          <SkeletonLine width={160} />
+        <View style={styles.topBar}>
+          <SkeletonLine width={40} />
+          <SkeletonLine width={120} />
         </View>
         <SkeletonCard />
-        <View style={[styles.statsRow, { marginTop: spacing.lg }]}>
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
-        </View>
+        <SkeletonCard />
       </ScreenContainer>
     );
   }
@@ -79,191 +86,132 @@ export function HomeScreen() {
   }
 
   return (
-    <ScreenContainer>
-      {/* Greeting bar */}
-      <Animated.View style={[styles.greetingBar, fadeIn(0)]}>
-        <Text style={styles.greeting}>{getGreeting()}</Text>
-        <View style={styles.streakBadge}>
-          <GradientOrb size={100} color={colors.primary} style={{ top: -30, right: -30 }} />
-          <Text style={styles.streakFlame}>{'\ud83d\udd25'}</Text>
-          <AnimatedNumber value={currentStreak} style={styles.streakCount} />
-        </View>
-      </Animated.View>
-
-      {/* Today's card or graduation */}
-      <Animated.View style={fadeIn(1)}>
-        {allCompleted ? (
-          <View style={styles.gradCard}>
-            <Text style={styles.gradEmoji}>{'\ud83c\udf93'}</Text>
-            <Text style={styles.gradTitle}>Congratulations!</Text>
-            <Text style={styles.gradSub}>
-              You've completed all 60 days. You're a speaking champion!
+    <ScreenContainer padded={false} scroll={false}>
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        {/* Top bar: avatar + points */}
+        <Animated.View style={[styles.topBar, fadeIn(0)]}>
+          <View style={styles.avatar}>
+            <Text style={styles.avatarText}>
+              {'\ud83d\udc64'}
             </Text>
           </View>
-        ) : todayData ? (
-          <View style={styles.todayCard}>
-            <View style={styles.dayBadge}>
-              <Text style={styles.dayBadgeText}>Day {todayData.dayNumber}</Text>
-            </View>
-            <Text style={styles.todayTitle}>{todayData.title}</Text>
-            <Text style={styles.todayObjective}>{todayData.objective}</Text>
-            <View style={styles.minPill}>
-              <Text style={styles.minPillText}>~{todayData.estimatedMinutes} min</Text>
-            </View>
-            {isTodayCompleted ? (
-              <View style={styles.completedRow}>
-                <Text style={styles.completedText}>{'\u2713'} Completed!</Text>
-                <PrimaryButton
-                  title="Review"
-                  onPress={() =>
-                    navigation.navigate('DayDetail', { dayNumber: currentDay })
-                  }
-                />
-              </View>
-            ) : (
-              <PrimaryButton
-                title="Start Today's Workout"
-                onPress={() =>
-                  navigation.navigate('DayDetail', { dayNumber: currentDay })
-                }
-              />
-            )}
-          </View>
-        ) : null}
-      </Animated.View>
+          <PointsBadge gems={gam.gems} coins={gam.coins} />
+        </Animated.View>
 
-      {/* Quick stats row */}
-      <Animated.View style={[styles.statsRow, fadeIn(2)]}>
-        <StatCard label="Completed" value={`${completedCount}/60`} icon={'\ud83d\udcca'} />
-        <StatCard label="Streak" value={`${currentStreak} days`} icon={'\ud83d\udd25'} />
-        <StatCard label="Practice" value={`${totalPracticeMin} min`} icon={'\u23f1\ufe0f'} />
-      </Animated.View>
+        {/* XP bar */}
+        <Animated.View style={fadeIn(1)}>
+          <XPBar current={gam.xpInLevel} target={gam.xpToNextLevel} level={gam.level} />
+        </Animated.View>
 
-      {/* SRS review banner */}
-      <Animated.View style={fadeIn(3)}>
-        {currentDay > 7 && !allCompleted ? (
-          <TouchableOpacity style={styles.reviewBanner} activeOpacity={0.8}>
-            <View style={styles.reviewBannerLeft}>
-              <Text style={styles.reviewIcon}>{'\ud83d\udcdd'}</Text>
-              <Text style={styles.reviewBannerText}>
-                You have review drills due
+        {/* Greeting + streak */}
+        <Animated.View style={[styles.greetingRow, fadeIn(2)]}>
+          <Text style={styles.greeting}>{getGreeting()}</Text>
+          {currentStreak > 0 ? <StreakBadge count={currentStreak} /> : null}
+        </Animated.View>
+
+        {/* Today's challenge card or graduation */}
+        <Animated.View style={fadeIn(3)}>
+          {allCompleted ? (
+            <View style={[styles.gradCard, shadows.card]}>
+              <Text style={styles.gradEmoji}>{'\ud83c\udf93'}</Text>
+              <Text style={styles.gradTitle}>Congratulations!</Text>
+              <Text style={styles.gradSub}>
+                You've completed all 60 days. You're a speaking champion!
               </Text>
             </View>
-            <Text style={styles.reviewButton}>Review</Text>
+          ) : todayData ? (
+            <ChallengeCard
+              title={todayData.title}
+              subtitle={todayData.objective}
+              progress={`Day ${todayData.dayNumber}/60`}
+              gems={5}
+              coins={100}
+              icon={isTodayCompleted ? '\u2705' : '\ud83c\udfa4'}
+              onPress={() => navigation.navigate('DayDetail', { dayNumber: currentDay })}
+            />
+          ) : null}
+        </Animated.View>
+
+        {/* Quick categories */}
+        <Animated.View style={fadeIn(4)}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoriesRow}>
+            {CATEGORIES.map((cat) => (
+              <CategoryPill key={cat.label} label={cat.label} color={cat.color} icon={cat.icon} />
+            ))}
+          </ScrollView>
+        </Animated.View>
+
+        {/* Mini-game spotlight */}
+        <Animated.View style={fadeIn(5)}>
+          <TouchableOpacity style={[styles.spotlightCard, shadows.card]} activeOpacity={0.8}>
+            <View style={styles.spotlightIconCircle}>
+              <Text style={styles.spotlightIcon}>{'\ud83c\udfae'}</Text>
+            </View>
+            <View style={styles.spotlightText}>
+              <Text style={styles.spotlightTitle}>Daily Quiz</Text>
+              <Text style={styles.spotlightSub}>Your daily challenge is waiting!</Text>
+            </View>
+            <View style={styles.spotlightReward}>
+              <Text style={styles.spotlightRewardText}>{'\ud83d\udc8e'}+5</Text>
+            </View>
           </TouchableOpacity>
-        ) : null}
+        </Animated.View>
 
         {/* Continue Practice */}
-        <TouchableOpacity style={styles.secondaryButton} activeOpacity={0.7}>
-          <Text style={styles.secondaryButtonText}>Continue Practice</Text>
-        </TouchableOpacity>
-      </Animated.View>
+        <PrimaryButton
+          title="Continue Practice"
+          variant="secondary"
+          onPress={() => {}}
+        />
+
+        <View style={styles.bottomSpacer} />
+      </ScrollView>
     </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  greetingBar: {
+  content: {
+    padding: spacing.lg,
+    gap: spacing.lg,
+    paddingBottom: spacing.xl,
+  },
+  topBar: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: spacing.lg,
   },
-  greeting: {
-    fontSize: typography.heading,
-    fontWeight: typography.weightBold,
-    color: colors.text,
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.primaryLight,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  streakBadge: {
+  avatarText: {
+    fontSize: 20,
+  },
+  greetingRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff7ed',
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-    borderRadius: 20,
-    gap: 4,
-    borderWidth: 1,
-    borderColor: '#fed7aa',
-    overflow: 'hidden',
+    justifyContent: 'space-between',
   },
-  streakFlame: {
-    fontSize: 18,
-  },
-  streakCount: {
-    fontSize: typography.body,
-    fontWeight: typography.weightBold,
-    color: '#ea580c',
-  },
-
-  // Today's card
-  todayCard: {
-    backgroundColor: colors.surface,
-    borderRadius: 16,
-    padding: spacing.lg,
-    gap: spacing.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    marginBottom: spacing.lg,
-  },
-  dayBadge: {
-    alignSelf: 'flex-start',
-    backgroundColor: colors.primary,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-    borderRadius: 20,
-  },
-  dayBadgeText: {
-    color: '#fff',
-    fontSize: typography.small,
-    fontWeight: typography.weightBold,
-  },
-  todayTitle: {
-    fontSize: typography.heading,
+  greeting: {
+    fontSize: typography.title,
     fontWeight: typography.weightBold,
     color: colors.text,
-  },
-  todayObjective: {
-    fontSize: typography.body,
-    color: colors.muted,
-    lineHeight: 22,
-  },
-  minPill: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#e0f2fe',
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-    borderRadius: 12,
-  },
-  minPillText: {
-    fontSize: typography.small,
-    fontWeight: typography.weightSemi,
-    color: colors.primary,
-  },
-  completedRow: {
-    gap: spacing.sm,
-  },
-  completedText: {
-    fontSize: typography.body,
-    fontWeight: typography.weightSemi,
-    color: '#16a34a',
-    textAlign: 'center',
-    marginBottom: spacing.xs,
   },
 
   // Graduation
   gradCard: {
-    backgroundColor: '#fef3c7',
-    borderRadius: 16,
+    backgroundColor: colors.surfaceHighlight,
+    borderRadius: 18,
     padding: spacing.xl,
     alignItems: 'center',
     gap: spacing.md,
-    borderWidth: 1,
-    borderColor: '#fcd34d',
-    marginBottom: spacing.lg,
   },
-  gradEmoji: {
-    fontSize: 48,
-  },
+  gradEmoji: { fontSize: 48 },
   gradTitle: {
     fontSize: typography.heading,
     fontWeight: typography.weightBold,
@@ -271,60 +219,56 @@ const styles = StyleSheet.create({
   },
   gradSub: {
     fontSize: typography.body,
-    color: colors.muted,
+    color: colors.textMuted,
     textAlign: 'center',
     lineHeight: 22,
   },
 
-  // Stats
-  statsRow: {
-    flexDirection: 'row',
+  // Categories
+  categoriesRow: {
     gap: spacing.sm,
-    marginBottom: spacing.lg,
+    paddingVertical: 2,
   },
 
-  // SRS banner
-  reviewBanner: {
+  // Spotlight
+  spotlightCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#fef3c7',
-    borderRadius: 12,
-    padding: spacing.md,
-    borderWidth: 1,
-    borderColor: '#fcd34d',
-    marginBottom: spacing.lg,
+    backgroundColor: colors.surface,
+    borderRadius: 18,
+    padding: spacing.lg,
+    gap: spacing.md,
   },
-  reviewBannerLeft: {
-    flexDirection: 'row',
+  spotlightIconCircle: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: colors.gameBg,
     alignItems: 'center',
-    gap: spacing.sm,
+    justifyContent: 'center',
   },
-  reviewIcon: {
-    fontSize: 18,
-  },
-  reviewBannerText: {
+  spotlightIcon: { fontSize: 24 },
+  spotlightText: { flex: 1, gap: 2 },
+  spotlightTitle: {
     fontSize: typography.body,
-    color: colors.text,
-    fontWeight: typography.weightSemi,
-  },
-  reviewButton: {
-    fontSize: typography.body,
-    color: colors.primary,
     fontWeight: typography.weightBold,
+    color: colors.text,
+  },
+  spotlightSub: {
+    fontSize: typography.small,
+    color: colors.textMuted,
+  },
+  spotlightReward: {
+    backgroundColor: colors.goldLight,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 999,
+  },
+  spotlightRewardText: {
+    fontSize: typography.small,
+    fontWeight: typography.weightBold,
+    color: colors.gold,
   },
 
-  // Secondary button
-  secondaryButton: {
-    borderWidth: 1.5,
-    borderColor: colors.primary,
-    borderRadius: 12,
-    paddingVertical: spacing.md,
-    alignItems: 'center',
-  },
-  secondaryButtonText: {
-    fontSize: typography.body,
-    fontWeight: typography.weightSemi,
-    color: colors.primary,
-  },
+  bottomSpacer: { height: spacing.xl },
 });

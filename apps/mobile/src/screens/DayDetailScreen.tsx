@@ -12,17 +12,20 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { PrimaryButton } from '../components/PrimaryButton';
+import { PointsBadge } from '../components/PointsBadge';
 import { ExerciseCard } from '../components/ExerciseCard';
 import { AnxietyRater } from '../components/AnxietyRater';
 import { Celebration } from '../components/Celebration';
 import { ScrollHeader } from '../components/ScrollHeader';
 import { SkeletonCard, SkeletonLine } from '../components/Skeleton';
 import { useEntryAnimation } from '../hooks/useEntryAnimation';
+import { useGamification } from '../hooks/useGamification';
 import planData from '../content/plan.v1.json';
 import { PlanDay } from '../types/progress';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
+import { shadows } from '../theme/shadows';
 import { useProgress } from '../hooks/useProgress';
 import { usePaywallGate } from '../hooks/usePaywallGate';
 import { MainStackParamList } from '../navigation/types';
@@ -33,6 +36,7 @@ export function DayDetailScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
   const { progress, loading, completeDay } = useProgress();
   const { isGated } = usePaywallGate();
+  const gam = useGamification();
 
   const plan = useMemo(() => planData as PlanDay[], []);
   const day = useMemo(
@@ -46,7 +50,6 @@ export function DayDetailScreen() {
 
   const isCompleted = progress?.completedDays.includes(day.dayNumber) ?? false;
 
-  // Local exercise completion tracking
   const [completedExercises, setCompletedExercises] = useState<Set<string>>(
     () => new Set(isCompleted ? day.exercises.map((e) => e.id) : []),
   );
@@ -78,9 +81,16 @@ export function DayDetailScreen() {
   };
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {});
-    return unsubscribe;
-  }, [navigation]);
+    const completedId = route.params.completedExerciseId;
+    if (completedId) {
+      setCompletedExercises((prev) => {
+        const next = new Set(prev);
+        next.add(completedId);
+        return next;
+      });
+      navigation.setParams({ completedExerciseId: undefined });
+    }
+  }, [route.params.completedExerciseId, navigation]);
 
   const handleComplete = async () => {
     if (!allExercisesDone) return;
@@ -115,13 +125,7 @@ export function DayDetailScreen() {
           <Text style={styles.gatedSubtitle}>
             Unlock the full 60-day plan to access Day {route.params.dayNumber} and beyond.
           </Text>
-          <TouchableOpacity
-            style={styles.gatedButton}
-            onPress={() => navigation.navigate('Paywall')}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.gatedButtonText}>View Plans</Text>
-          </TouchableOpacity>
+          <PrimaryButton title="View Plans" onPress={() => navigation.navigate('Paywall')} />
         </View>
       </ScreenContainer>
     );
@@ -140,12 +144,16 @@ export function DayDetailScreen() {
         )}
         scrollEventThrottle={16}
       >
-        {/* Day header */}
-        <Animated.View style={[styles.dayHeader, fadeIn(0)]}>
-          <View style={styles.dayBadge}>
-            <Text style={styles.dayBadgeText}>Day {day.dayNumber}</Text>
+        {/* Hero card */}
+        <Animated.View style={[styles.heroCard, shadows.card, fadeIn(0)]}>
+          <View style={styles.heroHeader}>
+            <View style={styles.dayBadge}>
+              <Text style={styles.dayBadgeText}>Day {day.dayNumber}</Text>
+            </View>
+            <PointsBadge gems={5} coins={100} />
           </View>
-          <Text style={styles.title}>{day.title}</Text>
+          <Text style={styles.heroTitle}>{day.title}</Text>
+          <Text style={styles.heroObjective}>{day.objective}</Text>
           <View style={styles.difficultyRow}>
             {Array.from({ length: 5 }, (_, i) => (
               <View
@@ -160,25 +168,24 @@ export function DayDetailScreen() {
           </View>
         </Animated.View>
 
-        {/* Objective */}
-        <View style={styles.objectiveCard}>
-          <Text style={styles.objectiveLabel}>Objective</Text>
-          <Text style={styles.objectiveText}>{day.objective}</Text>
-        </View>
-
         {/* Pre-rating */}
         {showPreRating && !isCompleted ? (
-          <AnxietyRater
-            label="How anxious do you feel right now?"
-            value={preRating}
-            onChange={setPreRating}
-          />
+          <View style={[styles.raterCard, shadows.card]}>
+            <AnxietyRater
+              label="How anxious do you feel right now?"
+              value={preRating}
+              onChange={setPreRating}
+            />
+          </View>
         ) : null}
 
-        {/* Lesson card */}
-        <Animated.View style={[styles.lessonCard, fadeIn(1)]}>
-          <Text style={styles.lessonLabel}>{'\ud83d\udcd6'} Lesson</Text>
-          <Text style={styles.lessonText}>{day.lessonText}</Text>
+        {/* Lesson card with colored left stripe */}
+        <Animated.View style={[styles.lessonCard, shadows.card, fadeIn(1)]}>
+          <View style={styles.lessonStripe} />
+          <View style={styles.lessonContent}>
+            <Text style={styles.lessonLabel}>{'\ud83d\udcd6'} Lesson</Text>
+            <Text style={styles.lessonText}>{day.lessonText}</Text>
+          </View>
         </Animated.View>
 
         {/* Exercise list */}
@@ -199,7 +206,7 @@ export function DayDetailScreen() {
 
         {/* Games section */}
         {day.games && day.games.length > 0 ? (
-          <View style={styles.gamesSection}>
+          <View style={styles.section}>
             <Text style={styles.sectionTitle}>{'\ud83c\udfae'} Mini-Games Unlocked</Text>
             <View style={styles.gamesRow}>
               {day.games.map((game) => (
@@ -213,17 +220,19 @@ export function DayDetailScreen() {
 
         {/* Post-rating */}
         {showPostRating && !isCompleted ? (
-          <AnxietyRater
-            label="How do you feel now?"
-            value={postRating}
-            onChange={setPostRating}
-          />
+          <View style={[styles.raterCard, shadows.card]}>
+            <AnxietyRater
+              label="How do you feel now?"
+              value={postRating}
+              onChange={setPostRating}
+            />
+          </View>
         ) : null}
 
         {/* Complete button */}
         {!isCompleted && !justCompleted ? (
           <PrimaryButton
-            title={`Complete Day ${day.dayNumber} \u2192`}
+            title={`Complete Day ${day.dayNumber}`}
             onPress={handleComplete}
             disabled={!allExercisesDone || working}
           />
@@ -231,15 +240,18 @@ export function DayDetailScreen() {
 
         {/* Just completed celebration */}
         {justCompleted ? (
-          <View style={styles.celebration}>
+          <View style={[styles.celebration, shadows.card]}>
             <Text style={styles.celebrationEmoji}>{'\ud83c\udf89'}</Text>
             <Text style={styles.celebrationTitle}>
               Day {day.dayNumber} complete!
             </Text>
+            <View style={styles.rewardRow}>
+              <Text style={styles.rewardText}>{'\ud83d\udc8e'}+5  {'\ud83e\ude99'}+100  +50 XP</Text>
+            </View>
             <Text style={styles.celebrationSub}>Great work! Keep the momentum going.</Text>
             {nextDay ? (
               <TouchableOpacity
-                style={styles.nextDayCard}
+                style={[styles.nextDayCard, shadows.soft]}
                 onPress={() => navigation.goBack()}
                 activeOpacity={0.7}
               >
@@ -283,85 +295,74 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
   },
 
-  // Day header
-  dayHeader: {
-    gap: spacing.sm,
+  // Hero card
+  heroCard: {
+    backgroundColor: colors.surface,
+    borderRadius: 18,
+    padding: spacing.lg,
+    gap: spacing.md,
+  },
+  heroHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   dayBadge: {
-    alignSelf: 'flex-start',
     backgroundColor: colors.primary,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
-    borderRadius: 20,
+    borderRadius: 999,
   },
   dayBadgeText: {
     color: '#fff',
     fontSize: typography.small,
     fontWeight: typography.weightBold,
   },
-  title: {
-    fontSize: 28,
+  heroTitle: {
+    fontSize: typography.title,
     fontWeight: typography.weightBold,
     color: colors.text,
-    lineHeight: 34,
+    lineHeight: 32,
+  },
+  heroObjective: {
+    fontSize: typography.body,
+    color: colors.textBody,
+    lineHeight: 22,
   },
   difficultyRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
   },
-  difficultyDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-  },
-  difficultyFilled: {
-    backgroundColor: '#f59e0b',
-  },
-  difficultyEmpty: {
-    backgroundColor: colors.border,
-  },
+  difficultyDot: { width: 10, height: 10, borderRadius: 5 },
+  difficultyFilled: { backgroundColor: colors.gold },
+  difficultyEmpty: { backgroundColor: colors.border },
   difficultyLabel: {
     fontSize: typography.small,
-    color: colors.muted,
+    color: colors.textMuted,
     marginLeft: 4,
   },
 
-  // Objective
-  objectiveCard: {
-    backgroundColor: colors.surface,
-    borderRadius: 12,
-    padding: spacing.md,
-    gap: spacing.xs,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  objectiveLabel: {
-    fontSize: typography.small,
-    fontWeight: typography.weightSemi,
-    color: colors.muted,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  objectiveText: {
-    fontSize: typography.body,
-    color: colors.text,
-    lineHeight: 22,
-  },
-
-  // Lesson
+  // Lesson card
   lessonCard: {
-    backgroundColor: '#eff6ff',
-    borderRadius: 12,
+    backgroundColor: colors.surface,
+    borderRadius: 18,
+    overflow: 'hidden',
+    flexDirection: 'row',
+  },
+  lessonStripe: {
+    width: 5,
+    backgroundColor: colors.gold,
+  },
+  lessonContent: {
+    flex: 1,
     padding: spacing.lg,
     gap: spacing.sm,
-    borderWidth: 1,
-    borderColor: '#bfdbfe',
   },
   lessonLabel: {
-    fontSize: typography.small,
-    fontWeight: typography.weightSemi,
-    color: colors.primary,
+    fontSize: typography.caption,
+    fontWeight: typography.weightBold,
+    color: colors.gold,
   },
   lessonText: {
     fontSize: typography.body,
@@ -369,10 +370,15 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
 
-  // Exercises section
-  section: {
-    gap: spacing.md,
+  // Rater card
+  raterCard: {
+    backgroundColor: colors.surface,
+    borderRadius: 18,
+    padding: spacing.lg,
   },
+
+  // Section
+  section: { gap: spacing.md },
   sectionTitle: {
     fontSize: typography.subheading,
     fontWeight: typography.weightBold,
@@ -380,21 +386,16 @@ const styles = StyleSheet.create({
   },
 
   // Games
-  gamesSection: {
-    gap: spacing.sm,
-  },
   gamesRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: spacing.sm,
   },
   gamePill: {
-    backgroundColor: '#dcfce7',
+    backgroundColor: colors.gameBg,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#86efac',
+    borderRadius: 999,
   },
   gamePillText: {
     fontSize: typography.small,
@@ -404,39 +405,44 @@ const styles = StyleSheet.create({
 
   // Celebration
   celebration: {
-    backgroundColor: '#fef3c7',
-    borderRadius: 16,
+    backgroundColor: colors.surfaceHighlight,
+    borderRadius: 18,
     padding: spacing.xl,
     alignItems: 'center',
     gap: spacing.md,
-    borderWidth: 1,
-    borderColor: '#fcd34d',
   },
-  celebrationEmoji: {
-    fontSize: 48,
-  },
+  celebrationEmoji: { fontSize: 48 },
   celebrationTitle: {
     fontSize: typography.heading,
     fontWeight: typography.weightBold,
     color: colors.text,
   },
+  rewardRow: {
+    backgroundColor: colors.goldLight,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    borderRadius: 999,
+  },
+  rewardText: {
+    fontSize: typography.body,
+    fontWeight: typography.weightBold,
+    color: colors.gold,
+  },
   celebrationSub: {
     fontSize: typography.body,
-    color: colors.muted,
+    color: colors.textMuted,
     textAlign: 'center',
   },
   nextDayCard: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
+    backgroundColor: colors.surface,
+    borderRadius: 14,
     padding: spacing.md,
     width: '100%',
     gap: 4,
-    borderWidth: 1,
-    borderColor: colors.border,
   },
   nextDayLabel: {
     fontSize: typography.small,
-    color: colors.muted,
+    color: colors.textMuted,
   },
   nextDayTitle: {
     fontSize: typography.body,
@@ -457,18 +463,13 @@ const styles = StyleSheet.create({
   },
   nextDayHint: {
     fontSize: typography.body,
-    color: colors.muted,
+    color: colors.textMuted,
   },
 
-  bottomSpacer: {
-    height: spacing.xl,
-  },
+  bottomSpacer: { height: spacing.xl },
 
-  // Gated / paywall overlay
-  gatedIcon: {
-    fontSize: 48,
-    marginBottom: spacing.md,
-  },
+  // Gated
+  gatedIcon: { fontSize: 48, marginBottom: spacing.md },
   gatedTitle: {
     fontSize: typography.subheading,
     fontWeight: typography.weightBold,
@@ -478,21 +479,10 @@ const styles = StyleSheet.create({
   },
   gatedSubtitle: {
     fontSize: typography.body,
-    color: colors.muted,
+    color: colors.textMuted,
     textAlign: 'center',
     lineHeight: 22,
     paddingHorizontal: spacing.lg,
     marginBottom: spacing.lg,
-  },
-  gatedButton: {
-    backgroundColor: colors.primary,
-    borderRadius: 12,
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.xl,
-  },
-  gatedButtonText: {
-    color: '#ffffff',
-    fontSize: typography.body,
-    fontWeight: typography.weightBold,
   },
 });

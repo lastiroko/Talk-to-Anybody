@@ -29,7 +29,7 @@ export type RootStackParamList = {
 
 export type MainStackParamList = {
   Tabs: NavigatorScreenParams<TabsParamList>;
-  DayDetail: { dayNumber: number };
+  DayDetail: { dayNumber: number; completedExerciseId?: string };
   Main: NavigatorScreenParams<TabsParamList>;
   Freestyle: undefined;
   ScriptMode: undefined;

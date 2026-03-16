@@ -1,11 +1,11 @@
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { PrimaryButton } from '../components/PrimaryButton';
-import { GradientOrb } from '../components/Decorative';
 import { useEntryAnimation } from '../hooks/useEntryAnimation';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
+import { shadows } from '../theme/shadows';
 
 interface WelcomeScreenProps {
   onLogin: () => void;
@@ -13,9 +13,9 @@ interface WelcomeScreenProps {
 }
 
 const BENEFITS = [
-  '\ud83d\udcca AI-powered feedback on every session',
-  '\ud83e\udde0 Psychology-backed learning system',
-  '\ud83c\udfaf Personalized 60-day plan',
+  { icon: '\ud83d\udcca', text: 'AI-powered feedback on every session' },
+  { icon: '\ud83e\udde0', text: 'Psychology-backed learning system' },
+  { icon: '\ud83c\udfaf', text: 'Personalized 60-day plan' },
 ];
 
 export function WelcomeScreen({ onLogin, onSignup }: WelcomeScreenProps) {
@@ -26,12 +26,8 @@ export function WelcomeScreen({ onLogin, onSignup }: WelcomeScreenProps) {
       <View style={styles.container}>
         {/* Hero section */}
         <View style={styles.hero}>
-          {/* Visual element */}
-          <Animated.View style={[styles.micCircleWrap, fadeIn(0)]}>
-            <GradientOrb size={200} color={colors.primary} style={{ top: -50, right: -60 }} />
-            <View style={styles.micCircle}>
-              <Text style={styles.micEmoji}>{'\ud83c\udf99\ufe0f'}</Text>
-            </View>
+          <Animated.View style={[styles.logoCircle, fadeIn(0)]}>
+            <Text style={styles.logoEmoji}>{'\ud83c\udf99\ufe0f'}</Text>
           </Animated.View>
 
           <Animated.View style={fadeIn(1)}>
@@ -40,9 +36,12 @@ export function WelcomeScreen({ onLogin, onSignup }: WelcomeScreenProps) {
           </Animated.View>
 
           <Animated.View style={[styles.benefits, fadeIn(2)]}>
-            {BENEFITS.map((benefit) => (
-              <View key={benefit} style={styles.benefitPill}>
-                <Text style={styles.benefitText}>{benefit}</Text>
+            {BENEFITS.map((b) => (
+              <View key={b.text} style={[styles.benefitCard, shadows.card]}>
+                <View style={styles.benefitIconCircle}>
+                  <Text style={styles.benefitIcon}>{b.icon}</Text>
+                </View>
+                <Text style={styles.benefitText}>{b.text}</Text>
               </View>
             ))}
           </Animated.View>
@@ -74,28 +73,21 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing.md,
+    gap: spacing.lg,
     paddingTop: spacing.xl,
   },
-  micCircleWrap: {
-    marginBottom: spacing.md,
-    overflow: 'visible',
-  },
-  micCircle: {
+  logoCircle: {
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: '#eff6ff',
-    borderWidth: 3,
-    borderColor: '#bfdbfe',
+    backgroundColor: colors.primaryLight,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: spacing.sm,
   },
-  micEmoji: {
-    fontSize: 44,
-  },
+  logoEmoji: { fontSize: 44 },
   appName: {
-    fontSize: 36,
+    fontSize: typography.hero,
     fontWeight: typography.weightBold,
     color: colors.text,
     letterSpacing: -0.5,
@@ -103,26 +95,35 @@ const styles = StyleSheet.create({
   },
   tagline: {
     fontSize: typography.subheading,
-    color: colors.muted,
-    marginBottom: spacing.lg,
+    color: colors.textMuted,
+    marginBottom: spacing.md,
     textAlign: 'center',
   },
   benefits: {
     gap: spacing.sm,
     width: '100%',
   },
-  benefitPill: {
+  benefitCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: colors.surface,
-    borderRadius: 12,
-    paddingVertical: 12,
-    paddingHorizontal: spacing.md,
-    borderWidth: 1,
-    borderColor: colors.border,
+    borderRadius: 14,
+    padding: spacing.md,
+    gap: spacing.md,
   },
+  benefitIconCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.primaryLight,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  benefitIcon: { fontSize: 20 },
   benefitText: {
+    flex: 1,
     fontSize: typography.body,
     color: colors.text,
-    textAlign: 'center',
   },
   actions: {
     gap: spacing.md,
@@ -139,8 +140,8 @@ const styles = StyleSheet.create({
     fontWeight: typography.weightSemi,
   },
   legal: {
-    fontSize: 12,
-    color: colors.muted,
+    fontSize: typography.tiny,
+    color: colors.textMuted,
     textAlign: 'center',
     lineHeight: 16,
   },

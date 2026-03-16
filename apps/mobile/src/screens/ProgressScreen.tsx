@@ -1,20 +1,23 @@
 import { useMemo, useRef } from 'react';
-import { Animated, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Animated, FlatList, StyleSheet, Text, View } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { ProgressBar } from '../components/ProgressBar';
+import { XPBar } from '../components/XPBar';
+import { PointsBadge } from '../components/PointsBadge';
 import { SkillBar } from '../components/SkillBar';
 import { DotChart } from '../components/DotChart';
 import { MetricCard } from '../components/MetricCard';
 import { AchievementBadge } from '../components/AchievementBadge';
 import { AnimatedNumber } from '../components/AnimatedNumber';
-import { GradientOrb } from '../components/Decorative';
 import { ScrollHeader } from '../components/ScrollHeader';
 import { EmptyState } from '../components/EmptyState';
 import { SkeletonCard, SkeletonCircle, SkeletonLine } from '../components/Skeleton';
 import { useEntryAnimation } from '../hooks/useEntryAnimation';
+import { useGamification } from '../hooks/useGamification';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
+import { shadows } from '../theme/shadows';
 import { useProgress } from '../hooks/useProgress';
 
 const ACHIEVEMENTS = [
@@ -29,19 +32,12 @@ const ACHIEVEMENTS = [
 
 const SKILL_NAMES = ['Pace', 'Pauses', 'Fillers', 'Structure', 'Vocal Variety', 'Clarity', 'Storytelling'];
 
-const COMFORT_LEVELS = [
-  'Audio Private',
-  'Audio + AI',
-  'Camera Private',
-  'Camera + AI',
-  'Community',
-  'Live Group',
-];
-
 function seededRandom(seed: number) {
   const x = Math.sin(seed + 1) * 10000;
   return x - Math.floor(x);
 }
+
+const WEEKDAYS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
 export function ProgressScreen() {
   const { progress, loading } = useProgress();
@@ -50,6 +46,7 @@ export function ProgressScreen() {
   const streak = progress?.currentStreak ?? 0;
   const scrollY = useRef(new Animated.Value(0)).current;
   const { fadeIn } = useEntryAnimation(5);
+  const gam = useGamification();
 
   const speakingScore = useMemo(
     () => Math.min(100, Math.round(completedCount * 1.5 + 30)),
@@ -86,16 +83,14 @@ export function ProgressScreen() {
   );
   const vocalRange = completedCount >= 30 ? 'Wide' : completedCount >= 12 ? 'Moderate' : 'Narrow';
 
-  const anxietyPre = useMemo(
-    () => parseFloat(Math.max(3, 8 - completedCount * 0.1).toFixed(1)),
-    [completedCount],
-  );
-  const anxietyPost = useMemo(
-    () => parseFloat(Math.max(2, 6 - completedCount * 0.12).toFixed(1)),
-    [completedCount],
-  );
-
-  const comfortLevel = completedCount >= 55 ? 6 : completedCount >= 49 ? 5 : completedCount >= 36 ? 4 : completedCount >= 25 ? 3 : completedCount >= 12 ? 2 : 1;
+  // Weekly streak calendar
+  const streakDays = useMemo(() => {
+    const today = new Date().getDay(); // 0=Sun
+    return WEEKDAYS.map((day, i) => {
+      const dayIdx = (i + 1) % 7; // Mon=1..Sun=0
+      return { label: day, active: dayIdx <= today && i < streak };
+    });
+  }, [streak]);
 
   if (loading || !progress) {
     return (
@@ -135,27 +130,19 @@ export function ProgressScreen() {
         )}
         scrollEventThrottle={16}
       >
-        {/* Streak & Days banner */}
-        <Animated.View style={[styles.streakBanner, fadeIn(0)]}>
-          <View style={styles.streakLeft}>
-            <Text style={styles.streakEmoji}>{'\ud83d\udd25'}</Text>
-            <AnimatedNumber value={streak} style={styles.streakNumber} />
-            <Text style={styles.streakLabel}>day streak</Text>
-          </View>
-          <View style={styles.dividerVert} />
-          <View style={styles.streakRight}>
-            <AnimatedNumber value={completedCount} suffix="/60" style={styles.daysNumber} />
-            <Text style={styles.streakLabel}>days</Text>
-            <View style={styles.miniProgress}>
-              <ProgressBar progress={completedCount / 60} />
-            </View>
+        {/* Level card with XP + gems + coins */}
+        <Animated.View style={[styles.levelCard, shadows.card, fadeIn(0)]}>
+          <XPBar current={gam.xpInLevel} target={gam.xpToNextLevel} level={gam.level} />
+          <View style={styles.levelBadges}>
+            <PointsBadge gems={gam.gems} coins={gam.coins} />
           </View>
         </Animated.View>
 
-        {/* Speaking Score card */}
-        <Animated.View style={[styles.scoreCard, fadeIn(1)]}>
-          <GradientOrb size={160} color={colors.primary} style={{ top: -20, alignSelf: 'center' }} />
-          <AnimatedNumber value={speakingScore} style={styles.scoreNumber} />
+        {/* Speaking Score */}
+        <Animated.View style={[styles.scoreCard, shadows.card, fadeIn(1)]}>
+          <View style={styles.scoreCircle}>
+            <AnimatedNumber value={speakingScore} style={styles.scoreNumber} />
+          </View>
           <Text style={styles.scoreLabel}>Speaking Score</Text>
           <Text style={styles.scoreSub}>Based on your latest session</Text>
           {scoreChange > 0 ? (
@@ -163,106 +150,31 @@ export function ProgressScreen() {
           ) : null}
         </Animated.View>
 
-        {/* Trend charts */}
+        {/* Skills card */}
         <Animated.View style={[styles.section, fadeIn(2)]}>
-          <Text style={styles.sectionTitle}>{'\ud83d\udcc8'} Your Trends</Text>
-
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>Skills Radar</Text>
+          <Text style={styles.sectionTitle}>Skills Radar</Text>
+          <View style={[styles.card, shadows.card]}>
             <View style={styles.skillBars}>
               {skillScores.map((s) => (
                 <SkillBar key={s.label} label={s.label} value={s.value} />
               ))}
             </View>
           </View>
-
-          {chartData.length > 1 ? (
-            <View style={styles.card}>
-              <Text style={styles.cardTitle}>Score Over Time</Text>
-              <DotChart data={chartData} maxValue={100} height={120} />
-            </View>
-          ) : null}
         </Animated.View>
 
-        {/* Key metrics */}
-        <Animated.View style={[styles.section, fadeIn(3)]}>
-          <View style={styles.metricsGrid}>
-            <View style={styles.metricsRow}>
-              <MetricCard
-                label="WPM"
-                value={String(wpm)}
-                trend={completedCount > 3 ? 'up' : 'stable'}
-                trendLabel="improving"
-              />
-              <MetricCard
-                label="Fillers/min"
-                value={String(fillersPerMin)}
-                trend={completedCount > 3 ? 'down' : 'stable'}
-                trendLabel={completedCount > 3 ? 'decreasing' : ''}
-              />
-            </View>
-            <View style={styles.metricsRow}>
-              <MetricCard
-                label="Avg Pause"
-                value={`${avgPause}s`}
-                trend={completedCount > 3 ? 'up' : 'stable'}
-                trendLabel="longer"
-              />
-              <MetricCard
-                label="Vocal Range"
-                value={vocalRange}
-                trend={vocalRange === 'Wide' ? 'up' : 'stable'}
-                trendLabel={vocalRange === 'Narrow' ? '' : 'expanding'}
-              />
-            </View>
-          </View>
-        </Animated.View>
-
-        {/* Anxiety Trend */}
-        {completedCount >= 4 ? (
+        {/* Score Over Time */}
+        {chartData.length > 1 ? (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>{'\ud83d\ude0c'} Anxiety Trend</Text>
-            <View style={styles.card}>
-              <View style={styles.anxietyRow}>
-                <View style={styles.anxietyItem}>
-                  <AnimatedNumber value={anxietyPre} style={styles.anxietyValue} />
-                  <Text style={styles.anxietyLabel}>Before sessions</Text>
-                </View>
-                <View style={styles.anxietyItem}>
-                  <AnimatedNumber value={anxietyPost} style={styles.anxietyValue} />
-                  <Text style={styles.anxietyLabel}>After sessions</Text>
-                </View>
-              </View>
-              <View style={styles.anxietyBars}>
-                <View style={styles.anxietyBarRow}>
-                  <Text style={styles.anxietyBarLabel}>Before</Text>
-                  <View style={styles.anxietyBarTrack}>
-                    <View
-                      style={[styles.anxietyBarFill, styles.anxietyBarPre, { width: `${anxietyPre * 10}%` }]}
-                    />
-                  </View>
-                </View>
-                <View style={styles.anxietyBarRow}>
-                  <Text style={styles.anxietyBarLabel}>After</Text>
-                  <View style={styles.anxietyBarTrack}>
-                    <View
-                      style={[styles.anxietyBarFill, styles.anxietyBarPost, { width: `${anxietyPost * 10}%` }]}
-                    />
-                  </View>
-                </View>
-              </View>
-              {anxietyPre - anxietyPost > 0.5 ? (
-                <Text style={styles.anxietyMilestone}>
-                  Your anxiety dropped {(anxietyPre - anxietyPost).toFixed(1)} points! {'\ud83c\udf89'}
-                </Text>
-              ) : null}
+            <Text style={styles.sectionTitle}>Score Over Time</Text>
+            <View style={[styles.card, shadows.card]}>
+              <DotChart data={chartData} maxValue={100} height={120} />
             </View>
           </View>
         ) : null}
 
         {/* Achievements */}
-        <Animated.View style={[styles.section, fadeIn(4)]}>
-          <Text style={styles.sectionTitle}>{'\ud83c\udfc6'} Achievements</Text>
+        <Animated.View style={[styles.section, fadeIn(3)]}>
+          <Text style={styles.sectionTitle}>Achievements</Text>
           <FlatList
             data={ACHIEVEMENTS}
             horizontal
@@ -278,29 +190,36 @@ export function ProgressScreen() {
           />
         </Animated.View>
 
-        {/* Comfort Level / Desensitization */}
-        {completedCount >= 4 ? (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>{'\ud83e\udea8'} Comfort Level</Text>
-            <View style={styles.card}>
-              {COMFORT_LEVELS.slice().reverse().map((level, i) => {
-                const stepNum = COMFORT_LEVELS.length - i;
-                const reached = stepNum <= comfortLevel;
-                return (
-                  <View key={level} style={styles.ladderStep}>
-                    <View style={[styles.ladderDot, reached ? styles.ladderReached : styles.ladderUnreached]} />
-                    <Text style={[styles.ladderLabel, reached && styles.ladderLabelReached]}>
-                      {level}
-                    </Text>
-                    {stepNum === comfortLevel ? (
-                      <Text style={styles.ladderCurrent}>{'\u25c0'} You are here</Text>
-                    ) : null}
+        {/* Weekly streak calendar */}
+        <Animated.View style={[styles.section, fadeIn(4)]}>
+          <Text style={styles.sectionTitle}>This Week</Text>
+          <View style={[styles.weekCard, shadows.card]}>
+            <View style={styles.weekRow}>
+              {streakDays.map((d, i) => (
+                <View key={i} style={styles.weekDay}>
+                  <View style={[styles.weekCircle, d.active && styles.weekCircleActive]}>
+                    {d.active ? <Text style={styles.weekCheck}>{'\u2713'}</Text> : null}
                   </View>
-                );
-              })}
+                  <Text style={styles.weekLabel}>{d.label}</Text>
+                </View>
+              ))}
             </View>
           </View>
-        ) : null}
+        </Animated.View>
+
+        {/* Key metrics */}
+        <View style={styles.section}>
+          <View style={styles.metricsGrid}>
+            <View style={styles.metricsRow}>
+              <MetricCard label="WPM" value={String(wpm)} trend={completedCount > 3 ? 'up' : 'stable'} trendLabel="improving" />
+              <MetricCard label="Fillers/min" value={String(fillersPerMin)} trend={completedCount > 3 ? 'down' : 'stable'} trendLabel={completedCount > 3 ? 'decreasing' : ''} />
+            </View>
+            <View style={styles.metricsRow}>
+              <MetricCard label="Avg Pause" value={`${avgPause}s`} trend={completedCount > 3 ? 'up' : 'stable'} trendLabel="longer" />
+              <MetricCard label="Vocal Range" value={vocalRange} trend={vocalRange === 'Wide' ? 'up' : 'stable'} trendLabel={vocalRange === 'Narrow' ? '' : 'expanding'} />
+            </View>
+          </View>
+        </View>
 
         <View style={styles.bottomSpacer} />
       </Animated.ScrollView>
@@ -315,67 +234,37 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.xl,
   },
 
-  // Streak banner
-  streakBanner: {
-    flexDirection: 'row',
+  // Level card
+  levelCard: {
     backgroundColor: colors.surface,
-    borderRadius: 16,
+    borderRadius: 18,
     padding: spacing.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    alignItems: 'center',
+    gap: spacing.md,
   },
-  streakLeft: {
-    flex: 1,
-    alignItems: 'center',
-    gap: 4,
-  },
-  streakRight: {
-    flex: 1,
-    alignItems: 'center',
-    gap: 4,
-  },
-  streakEmoji: {
-    fontSize: 22,
-  },
-  streakNumber: {
-    fontSize: 28,
-    fontWeight: typography.weightBold,
-    color: colors.text,
-  },
-  daysNumber: {
-    fontSize: 22,
-    fontWeight: typography.weightBold,
-    color: colors.text,
-  },
-  streakLabel: {
-    fontSize: typography.small,
-    color: colors.muted,
-  },
-  dividerVert: {
-    width: 1,
-    height: 50,
-    backgroundColor: colors.border,
-    marginHorizontal: spacing.md,
-  },
-  miniProgress: {
-    width: '80%',
-    marginTop: 4,
+  levelBadges: {
+    alignItems: 'flex-start',
   },
 
   // Score card
   scoreCard: {
-    backgroundColor: '#eff6ff',
-    borderRadius: 16,
+    backgroundColor: colors.surface,
+    borderRadius: 18,
     padding: spacing.xl,
     alignItems: 'center',
     gap: spacing.xs,
-    borderWidth: 1,
-    borderColor: '#bfdbfe',
-    overflow: 'hidden',
+  },
+  scoreCircle: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    borderWidth: 5,
+    borderColor: colors.primary,
+    backgroundColor: colors.primaryLight,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   scoreNumber: {
-    fontSize: 56,
+    fontSize: 48,
     fontWeight: typography.weightBold,
     color: colors.primary,
   },
@@ -386,7 +275,7 @@ const styles = StyleSheet.create({
   },
   scoreSub: {
     fontSize: typography.small,
-    color: colors.muted,
+    color: colors.textMuted,
   },
   scoreChange: {
     fontSize: typography.small,
@@ -396,9 +285,7 @@ const styles = StyleSheet.create({
   },
 
   // Sections
-  section: {
-    gap: spacing.md,
-  },
+  section: { gap: spacing.md },
   sectionTitle: {
     fontSize: typography.subheading,
     fontWeight: typography.weightBold,
@@ -406,123 +293,54 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: colors.surface,
-    borderRadius: 14,
+    borderRadius: 18,
     padding: spacing.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
     gap: spacing.md,
   },
-  cardTitle: {
-    fontSize: typography.body,
-    fontWeight: typography.weightBold,
-    color: colors.text,
-    marginBottom: spacing.xs,
+  skillBars: { gap: spacing.sm },
+
+  // Weekly streak
+  weekCard: {
+    backgroundColor: colors.surface,
+    borderRadius: 18,
+    padding: spacing.lg,
   },
-  skillBars: {
-    gap: spacing.sm,
+  weekRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  weekDay: {
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  weekCircle: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: colors.surfaceMuted,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  weekCircleActive: {
+    backgroundColor: colors.teal,
+  },
+  weekCheck: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: typography.weightBold,
+  },
+  weekLabel: {
+    fontSize: typography.tiny,
+    fontWeight: typography.weightSemi,
+    color: colors.textMuted,
   },
 
   // Metrics grid
-  metricsGrid: {
-    gap: spacing.sm,
-  },
+  metricsGrid: { gap: spacing.sm },
   metricsRow: {
     flexDirection: 'row',
     gap: spacing.sm,
   },
 
-  // Anxiety
-  anxietyRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  anxietyItem: {
-    alignItems: 'center',
-    gap: 4,
-  },
-  anxietyValue: {
-    fontSize: 28,
-    fontWeight: typography.weightBold,
-    color: colors.text,
-  },
-  anxietyLabel: {
-    fontSize: typography.small,
-    color: colors.muted,
-  },
-  anxietyBars: {
-    gap: spacing.sm,
-  },
-  anxietyBarRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
-  },
-  anxietyBarLabel: {
-    width: 45,
-    fontSize: typography.small,
-    color: colors.muted,
-  },
-  anxietyBarTrack: {
-    flex: 1,
-    height: 10,
-    backgroundColor: colors.border,
-    borderRadius: 5,
-    overflow: 'hidden',
-  },
-  anxietyBarFill: {
-    height: '100%',
-    borderRadius: 5,
-  },
-  anxietyBarPre: {
-    backgroundColor: '#f97316',
-  },
-  anxietyBarPost: {
-    backgroundColor: '#22c55e',
-  },
-  anxietyMilestone: {
-    fontSize: typography.body,
-    fontWeight: typography.weightSemi,
-    color: '#16a34a',
-    textAlign: 'center',
-  },
-
-  // Ladder
-  ladderStep: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
-    paddingVertical: 6,
-  },
-  ladderDot: {
-    width: 14,
-    height: 14,
-    borderRadius: 7,
-    borderWidth: 2,
-  },
-  ladderReached: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
-  },
-  ladderUnreached: {
-    backgroundColor: '#fff',
-    borderColor: colors.border,
-  },
-  ladderLabel: {
-    fontSize: typography.small,
-    color: colors.muted,
-    flex: 1,
-  },
-  ladderLabelReached: {
-    color: colors.text,
-    fontWeight: typography.weightSemi,
-  },
-  ladderCurrent: {
-    fontSize: 12,
-    color: colors.primary,
-    fontWeight: typography.weightBold,
-  },
-
-  bottomSpacer: {
-    height: spacing.xl,
-  },
+  bottomSpacer: { height: spacing.xl },
 });

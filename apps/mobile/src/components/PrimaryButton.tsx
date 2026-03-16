@@ -3,17 +3,29 @@ import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
+import { shadows } from '../theme/shadows';
 import { haptic } from '../utils/haptics';
+
+type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
 
 interface PrimaryButtonProps {
   title: string;
   onPress: () => void;
   leftIcon?: ReactNode;
   disabled?: boolean;
+  variant?: Variant;
 }
 
-export function PrimaryButton({ title, onPress, leftIcon, disabled = false }: PrimaryButtonProps) {
+const VARIANT_STYLES: Record<Variant, { bg: string; pressedBg: string; textColor: string; borderColor?: string }> = {
+  primary: { bg: colors.primary, pressedBg: colors.primaryDark, textColor: colors.textOnPrimary },
+  secondary: { bg: 'transparent', pressedBg: colors.primaryLight, textColor: colors.primary, borderColor: colors.primary },
+  ghost: { bg: 'transparent', pressedBg: colors.surfaceMuted, textColor: colors.textBody },
+  danger: { bg: colors.error, pressedBg: '#E05555', textColor: '#FFFFFF' },
+};
+
+export function PrimaryButton({ title, onPress, leftIcon, disabled = false, variant = 'primary' }: PrimaryButtonProps) {
   const scale = useRef(new Animated.Value(1)).current;
+  const v = VARIANT_STYLES[variant];
 
   const handlePressIn = () => {
     if (disabled) return;
@@ -44,7 +56,9 @@ export function PrimaryButton({ title, onPress, leftIcon, disabled = false }: Pr
       <Pressable
         style={({ pressed }) => [
           styles.button,
-          pressed && !disabled && styles.pressed,
+          { backgroundColor: pressed && !disabled ? v.pressedBg : v.bg },
+          v.borderColor ? { borderWidth: 1.5, borderColor: v.borderColor } : undefined,
+          variant === 'primary' && shadows.card,
           disabled && styles.disabled,
         ]}
         onPress={handlePress}
@@ -53,7 +67,7 @@ export function PrimaryButton({ title, onPress, leftIcon, disabled = false }: Pr
         disabled={disabled}
       >
         {leftIcon ? <View style={styles.iconSlot}>{leftIcon}</View> : null}
-        <Text style={[styles.title, disabled && styles.disabledText]}>{title}</Text>
+        <Text style={[styles.title, { color: disabled ? colors.textLight : v.textColor }]}>{title}</Text>
       </Pressable>
     </Animated.View>
   );
@@ -61,28 +75,21 @@ export function PrimaryButton({ title, onPress, leftIcon, disabled = false }: Pr
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: colors.primary,
-    borderRadius: 12,
+    borderRadius: 14,
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.lg,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
   },
-  pressed: {
-    backgroundColor: colors.primaryDark,
-  },
   disabled: {
-    backgroundColor: '#cbd5e1',
-  },
-  disabledText: {
-    color: '#94a3b8',
+    backgroundColor: '#CBD5E1',
+    opacity: 0.7,
   },
   iconSlot: {
     marginRight: spacing.sm,
   },
   title: {
-    color: '#fff',
     fontSize: typography.body,
     fontWeight: typography.weightSemi,
   },

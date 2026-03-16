@@ -1,8 +1,16 @@
 import { useRef } from 'react';
-import { Animated, Pressable, StyleSheet, Text } from 'react-native';
+import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
+import { shadows } from '../theme/shadows';
+
+const GAME_COLORS: Record<string, string> = {
+  '\ud83d\udd04': colors.categoryOrange,
+  '\u23f8\ufe0f': colors.teal,
+  '\ud83d\udcd6': colors.gold,
+  '\ud83d\udc8e': colors.categoryPurple,
+};
 
 interface GameCardProps {
   icon: string;
@@ -15,40 +23,39 @@ interface GameCardProps {
 
 export function GameCard({ icon, title, description, locked, unlockDay, onPress }: GameCardProps) {
   const scale = useRef(new Animated.Value(1)).current;
+  const circleColor = GAME_COLORS[icon] ?? colors.primary;
 
   const handlePressIn = () => {
     if (locked) return;
-    Animated.timing(scale, {
-      toValue: 0.97,
-      duration: 100,
-      useNativeDriver: true,
-    }).start();
+    Animated.timing(scale, { toValue: 0.97, duration: 100, useNativeDriver: true }).start();
   };
 
   const handlePressOut = () => {
     if (locked) return;
-    Animated.spring(scale, {
-      toValue: 1,
-      tension: 300,
-      friction: 10,
-      useNativeDriver: true,
-    }).start();
+    Animated.spring(scale, { toValue: 1, tension: 300, friction: 10, useNativeDriver: true }).start();
   };
 
   return (
     <Animated.View style={[{ flex: 1, transform: [{ scale }] }]}>
       <Pressable
-        style={[styles.card, locked && styles.locked]}
+        style={[styles.card, shadows.card, locked && styles.locked]}
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         disabled={locked}
       >
-        <Text style={styles.icon}>{locked ? '\ud83d\udd12' : icon}</Text>
+        <View style={[styles.iconCircle, { backgroundColor: locked ? colors.textLight : circleColor }]}>
+          <Text style={styles.icon}>{locked ? '\ud83d\udd12' : icon}</Text>
+        </View>
         <Text style={[styles.title, locked && styles.lockedText]}>{title}</Text>
         <Text style={styles.description} numberOfLines={2}>
-          {locked ? `Unlocks on Day ${unlockDay}` : description}
+          {locked ? `Unlocks Day ${unlockDay}` : description}
         </Text>
+        {!locked ? (
+          <View style={styles.playBadge}>
+            <Text style={styles.playText}>Play</Text>
+          </View>
+        ) : null}
       </Pressable>
     </Animated.View>
   );
@@ -57,34 +64,51 @@ export function GameCard({ icon, title, description, locked, unlockDay, onPress 
 const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.surface,
-    borderRadius: 14,
+    borderRadius: 18,
     padding: spacing.md,
-    borderWidth: 1,
-    borderColor: colors.border,
     alignItems: 'center',
     gap: spacing.xs,
-    minHeight: 130,
+    minHeight: 140,
   },
   locked: {
     opacity: 0.55,
-    backgroundColor: '#f8fafc',
+  },
+  iconCircle: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   icon: {
-    fontSize: 28,
+    fontSize: 20,
+    color: '#FFFFFF',
   },
   title: {
-    fontSize: typography.small,
+    fontSize: typography.caption,
     fontWeight: typography.weightBold,
     color: colors.text,
     textAlign: 'center',
   },
   lockedText: {
-    color: colors.muted,
+    color: colors.textMuted,
   },
   description: {
-    fontSize: 12,
-    color: colors.muted,
+    fontSize: typography.tiny,
+    color: colors.textMuted,
     textAlign: 'center',
-    lineHeight: 16,
+    lineHeight: 14,
+  },
+  playBadge: {
+    backgroundColor: colors.primaryLight,
+    paddingHorizontal: 12,
+    paddingVertical: 3,
+    borderRadius: 999,
+    marginTop: 2,
+  },
+  playText: {
+    fontSize: typography.tiny,
+    fontWeight: typography.weightBold,
+    color: colors.primary,
   },
 });

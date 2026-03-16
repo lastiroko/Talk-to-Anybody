@@ -9,6 +9,7 @@ export default function App() {
   const [flow, setFlow] = useState<'auth' | 'onboarding' | 'main'>('auth');
 
   return (
+    <ProgressProvider>
     <PurchaseProvider>
       <StatusBar style="dark" />
       <AppNavigator
@@ -17,5 +18,6 @@ export default function App() {
         onOnboardingComplete={() => setFlow('main')}
       />
     </PurchaseProvider>
+    </ProgressProvider>
   );
 }

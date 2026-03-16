@@ -10,5 +10,16 @@
     "lint": "echo \"lint placeholder\"",
     "format": "echo \"format placeholder\"",
     "typecheck": "echo \"typecheck placeholder\""
+  },
+  "devDependencies": {
+    "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react-native": "^13.3.3",
+    "@types/jest": "^30.0.0",
+    "jest-expo": "^55.0.9",
+    "react-test-renderer": "^19.1.0",
+    "ts-jest": "^29.4.6"
+  },
+  "dependencies": {
+    "react-native-worklets": "^0.7.4"
   }
 }

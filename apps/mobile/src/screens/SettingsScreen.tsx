@@ -6,6 +6,7 @@ import { SettingsToggle } from '../components/SettingsToggle';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
+import { shadows } from '../theme/shadows';
 import { useProgress } from '../hooks/useProgress';
 
 export function SettingsScreen() {
@@ -37,12 +38,13 @@ export function SettingsScreen() {
     <ScreenContainer padded={false} scroll={false}>
       <ScrollView contentContainerStyle={styles.content}>
         {/* Profile section */}
-        <View style={styles.sectionCard}>
+        <View style={[styles.sectionCard, shadows.card]}>
           <View style={styles.profileHeader}>
             <View style={styles.avatar}>
-              <Text style={styles.avatarText}>{'\ud83d\udc64'}</Text>
+              <Text style={styles.avatarText}>S</Text>
             </View>
             <View style={styles.profileInfo}>
+              <Text style={styles.profileName}>SpeakCoach User</Text>
               <Text style={styles.profileEmail}>user@example.com</Text>
               <TouchableOpacity onPress={comingSoon('Edit profile')}>
                 <Text style={styles.editLink}>Edit Profile</Text>
@@ -52,7 +54,7 @@ export function SettingsScreen() {
         </View>
 
         {/* Plan section */}
-        <View style={styles.sectionCard}>
+        <View style={[styles.sectionCard, shadows.card]}>
           <Text style={styles.sectionTitle}>Your Plan</Text>
           <SettingsRow label="Goal" value="Public Speaking" onPress={comingSoon('Goal editing')} />
           <View style={styles.separator} />
@@ -62,7 +64,7 @@ export function SettingsScreen() {
         </View>
 
         {/* Subscription section */}
-        <View style={styles.sectionCard}>
+        <View style={[styles.sectionCard, shadows.card]}>
           <Text style={styles.sectionTitle}>Subscription</Text>
           <View style={styles.subRow}>
             <Text style={styles.subLabel}>Status</Text>
@@ -85,7 +87,7 @@ export function SettingsScreen() {
         </View>
 
         {/* Notifications section */}
-        <View style={styles.sectionCard}>
+        <View style={[styles.sectionCard, shadows.card]}>
           <Text style={styles.sectionTitle}>Notifications</Text>
           <SettingsRow
             label="Daily reminder"
@@ -109,7 +111,7 @@ export function SettingsScreen() {
         </View>
 
         {/* Data section */}
-        <View style={styles.sectionCard}>
+        <View style={[styles.sectionCard, shadows.card]}>
           <Text style={styles.sectionTitle}>Your Data</Text>
           <SettingsRow label="Export my data" onPress={comingSoon('Data export')} />
           <View style={styles.separator} />
@@ -125,7 +127,7 @@ export function SettingsScreen() {
         </View>
 
         {/* About section */}
-        <View style={styles.sectionCard}>
+        <View style={[styles.sectionCard, shadows.card]}>
           <Text style={styles.sectionTitle}>About</Text>
           <SettingsRow label="Version" value="0.1.0" />
           <View style={styles.separator} />
@@ -166,15 +168,13 @@ const styles = StyleSheet.create({
   // Section card
   sectionCard: {
     backgroundColor: colors.surface,
-    borderRadius: 14,
+    borderRadius: 18,
     overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: colors.border,
   },
   sectionTitle: {
     fontSize: typography.small,
     fontWeight: typography.weightBold,
-    color: colors.muted,
+    color: colors.textMuted,
     textTransform: 'uppercase',
     letterSpacing: 1,
     paddingHorizontal: spacing.md,
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     height: 1,
-    backgroundColor: colors.border,
+    backgroundColor: colors.divider,
     marginHorizontal: spacing.md,
   },
 
@@ -198,28 +198,33 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#dbeafe',
+    backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 2,
-    borderColor: '#93c5fd',
   },
   avatarText: {
-    fontSize: 28,
+    fontSize: 24,
+    fontWeight: typography.weightBold,
+    color: '#FFFFFF',
   },
   profileInfo: {
     flex: 1,
-    gap: 4,
+    gap: 2,
   },
-  profileEmail: {
+  profileName: {
     fontSize: typography.body,
-    fontWeight: typography.weightSemi,
+    fontWeight: typography.weightBold,
     color: colors.text,
   },
+  profileEmail: {
+    fontSize: typography.caption,
+    color: colors.textMuted,
+  },
   editLink: {
-    fontSize: typography.small,
+    fontSize: typography.caption,
     color: colors.primary,
     fontWeight: typography.weightSemi,
+    marginTop: 2,
   },
 
   // Subscription
@@ -235,24 +240,22 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   freeBadge: {
-    backgroundColor: '#fef3c7',
+    backgroundColor: colors.goldLight,
     paddingHorizontal: spacing.sm,
     paddingVertical: 2,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#fcd34d',
+    borderRadius: 999,
   },
   freeBadgeText: {
     fontSize: typography.small,
     fontWeight: typography.weightBold,
-    color: '#b45309',
+    color: colors.goldDark,
   },
   upgradeButton: {
     marginHorizontal: spacing.md,
     marginBottom: spacing.md,
     marginTop: spacing.xs,
     backgroundColor: colors.primary,
-    borderRadius: 10,
+    borderRadius: 12,
     paddingVertical: 12,
     alignItems: 'center',
   },
@@ -265,18 +268,16 @@ const styles = StyleSheet.create({
   // Sign out
   signOutButton: {
     borderWidth: 1.5,
-    borderColor: '#ef4444',
-    borderRadius: 12,
+    borderColor: colors.error,
+    borderRadius: 14,
     paddingVertical: spacing.md,
     alignItems: 'center',
   },
   signOutText: {
     fontSize: typography.body,
     fontWeight: typography.weightSemi,
-    color: '#ef4444',
+    color: colors.error,
   },
 
-  bottomSpacer: {
-    height: spacing.xl,
-  },
+  bottomSpacer: { height: spacing.xl },
 });
