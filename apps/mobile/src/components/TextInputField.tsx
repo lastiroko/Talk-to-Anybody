@@ -48,7 +48,7 @@ export function TextInputField({
           autoCapitalize={autoCapitalize}
           returnKeyType={returnKeyType}
           placeholder={placeholder}
-          placeholderTextColor={colors.muted}
+          placeholderTextColor="#4A4A4A"
         />
         {rightIcon ? <View style={styles.rightIcon}>{rightIcon}</View> : null}
       </View>
@@ -64,24 +64,24 @@ const styles = StyleSheet.create({
   label: {
     fontSize: typography.small,
     fontWeight: typography.weightSemi,
-    color: colors.text,
+    color: '#8A8A8A',
   },
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1.5,
-    borderColor: colors.border,
+    borderColor: 'rgba(255,255,255,0.08)',
     borderRadius: 12,
-    backgroundColor: colors.surface,
+    backgroundColor: '#1F1F1F',
     paddingHorizontal: spacing.md,
   },
   inputError: {
-    borderColor: '#ef4444',
+    borderColor: '#E63946',
   },
   input: {
     flex: 1,
     fontSize: typography.body,
-    color: colors.text,
+    color: '#FFFFFF',
     paddingVertical: 14,
   },
   rightIcon: {
@@ -89,6 +89,6 @@ const styles = StyleSheet.create({
   },
   error: {
     fontSize: typography.small,
-    color: '#ef4444',
+    color: '#E63946',
   },
 });

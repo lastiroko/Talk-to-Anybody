@@ -50,16 +50,16 @@ export function SignupScreen({ onCreated, onBack }: SignupScreenProps) {
       <View style={styles.container}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>Create your account</Text>
+          <Text style={styles.title}>Create account</Text>
           <Text style={styles.subtitle}>
-            Join 10,000+ people finding their voice
+            Start training your voice today
           </Text>
         </View>
 
         {/* Form */}
         <View style={styles.form}>
           <TextInputField
-            label="Email"
+            label="EMAIL"
             value={email}
             onChangeText={(t) => {
               setEmail(t);
@@ -74,7 +74,7 @@ export function SignupScreen({ onCreated, onBack }: SignupScreenProps) {
 
           <View>
             <TextInputField
-              label="Password"
+              label="PASSWORD"
               value={password}
               onChangeText={(t) => {
                 setPassword(t);
@@ -90,7 +90,7 @@ export function SignupScreen({ onCreated, onBack }: SignupScreenProps) {
                 </TouchableOpacity>
               }
             />
-            <Text style={styles.hint}>At least 8 characters</Text>
+            <Text style={styles.hint}>Min 8 characters</Text>
           </View>
 
           <PrimaryButton
@@ -103,7 +103,7 @@ export function SignupScreen({ onCreated, onBack }: SignupScreenProps) {
         {/* Divider */}
         <View style={styles.divider}>
           <View style={styles.dividerLine} />
-          <Text style={styles.dividerText}>or</Text>
+          <Text style={styles.dividerText}>OR</Text>
           <View style={styles.dividerLine} />
         </View>
 
@@ -116,7 +116,8 @@ export function SignupScreen({ onCreated, onBack }: SignupScreenProps) {
         {/* Footer */}
         <TouchableOpacity onPress={onBack} style={styles.footer}>
           <Text style={styles.footerText}>
-            Already have an account? <Text style={styles.footerLink}>Log in</Text>
+            Already have an account?{' '}
+            <Text style={styles.footerLink}>Log in</Text>
           </Text>
         </TouchableOpacity>
       </View>
@@ -128,26 +129,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     gap: spacing.lg,
+    backgroundColor: colors.background,
   },
   header: {
     gap: spacing.xs,
     marginTop: spacing.md,
   },
   title: {
+    fontFamily: typography.fontFamily.display,
     fontSize: typography.heading,
-    fontWeight: typography.weightBold,
     color: colors.text,
   },
   subtitle: {
+    fontFamily: typography.fontFamily.regular,
     fontSize: typography.body,
-    color: colors.muted,
+    color: colors.textMuted,
   },
   form: {
     gap: spacing.md,
   },
   hint: {
+    fontFamily: typography.fontFamily.regular,
     fontSize: typography.small,
-    color: colors.muted,
+    color: colors.textLight,
     marginTop: spacing.xs,
   },
   eyeIcon: {
@@ -164,8 +168,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.border,
   },
   dividerText: {
+    fontFamily: typography.fontFamily.regular,
     fontSize: typography.small,
-    color: colors.muted,
+    color: colors.textLight,
+    letterSpacing: 2,
   },
   socials: {
     gap: spacing.sm,
@@ -175,11 +181,12 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
   },
   footerText: {
+    fontFamily: typography.fontFamily.regular,
     fontSize: typography.body,
-    color: colors.muted,
+    color: colors.textMuted,
   },
   footerLink: {
     color: colors.primary,
-    fontWeight: typography.weightSemi,
+    fontFamily: typography.fontFamily.semiBold,
   },
 });

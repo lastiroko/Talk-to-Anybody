@@ -23,18 +23,18 @@ const styles = StyleSheet.create({
     width: 50,
     height: 28,
     borderRadius: 14,
-    backgroundColor: colors.border,
+    backgroundColor: '#1F1F1F',
     justifyContent: 'center',
     paddingHorizontal: 3,
   },
   trackOn: {
-    backgroundColor: colors.primary,
+    backgroundColor: '#FF4500',
   },
   knob: {
     width: 22,
     height: 22,
     borderRadius: 11,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
   },
   knobOn: {
     alignSelf: 'flex-end',

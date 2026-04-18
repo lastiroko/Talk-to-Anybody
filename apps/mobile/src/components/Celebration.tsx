@@ -3,7 +3,7 @@ import { Animated, Dimensions, StyleSheet, View } from 'react-native';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-const CONFETTI_COLORS = ['#3b82f6', '#93c5fd', '#22c55e', '#facc15', '#f59e0b', '#fb923c'];
+const CONFETTI_COLORS = ['#FF4500', '#FF7A1A', '#E63946', '#FACC15', '#4ADE80', '#FFFFFF'];
 const PARTICLE_COUNT = 25;
 
 interface CelebrationProps {
@@ -167,6 +167,6 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 100,
-    backgroundColor: '#facc15',
+    backgroundColor: '#FF4500',
   },
 });

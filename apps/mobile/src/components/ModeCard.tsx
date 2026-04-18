@@ -56,10 +56,12 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.surface,
+    backgroundColor: '#141414',
     borderRadius: 18,
     padding: spacing.lg,
     gap: spacing.md,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
   },
   iconCircle: {
     width: 48,
@@ -79,15 +81,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: typography.subheading,
     fontWeight: typography.weightBold,
-    color: colors.text,
+    color: '#FFFFFF',
   },
   description: {
     fontSize: typography.small,
-    color: colors.textMuted,
+    color: '#8A8A8A',
     lineHeight: 18,
   },
   arrow: {
     fontSize: 24,
-    color: colors.textMuted,
+    color: '#8A8A8A',
   },
 });

@@ -36,13 +36,13 @@ export function PracticeScreen() {
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <Animated.View style={[styles.header, fadeIn(0)]}>
-          <Text style={styles.title}>Practice</Text>
-          <Text style={styles.subtitle}>Train any skill, anytime</Text>
+          <Text style={styles.headerCaption}>PRACTICE</Text>
+          <Text style={styles.title}>Train any skill, anytime.</Text>
         </Animated.View>
 
         {/* Practice Modes */}
         <Animated.View style={[styles.section, fadeIn(1)]}>
-          <Text style={styles.sectionLabel}>Practice Modes</Text>
+          <Text style={styles.sectionCaption}>PRACTICE MODES</Text>
         </Animated.View>
 
         <Animated.View style={[styles.modes, fadeIn(2)]}>
@@ -80,7 +80,7 @@ export function PracticeScreen() {
 
         {/* Mini-Games */}
         <Animated.View style={[styles.section, fadeIn(3)]}>
-          <Text style={styles.sectionLabel}>Mini-Games</Text>
+          <Text style={styles.sectionCaption}>MINI-GAMES</Text>
           <View style={styles.gameGrid}>
             <View style={styles.gameRow}>
               <GameCard
@@ -139,21 +139,26 @@ const styles = StyleSheet.create({
     gap: spacing.lg,
     paddingBottom: spacing.xl,
   },
-  header: { gap: spacing.xs },
-  title: {
-    fontSize: typography.title,
-    fontWeight: typography.weightBold,
-    color: colors.text,
-  },
-  subtitle: {
-    fontSize: typography.body,
+  header: { gap: 6 },
+  headerCaption: {
+    fontSize: typography.caption,
+    fontFamily: typography.fontFamily.regular,
     color: colors.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 1.5,
+  },
+  title: {
+    fontSize: typography.heading,
+    fontFamily: typography.fontFamily.display,
+    color: colors.text,
   },
   section: { gap: spacing.md },
-  sectionLabel: {
-    fontSize: typography.subheading,
-    fontWeight: typography.weightBold,
-    color: colors.text,
+  sectionCaption: {
+    fontSize: typography.caption,
+    fontFamily: typography.fontFamily.regular,
+    color: colors.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 1.5,
   },
   modes: { gap: spacing.md },
   gameGrid: { gap: spacing.md },

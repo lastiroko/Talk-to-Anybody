@@ -320,31 +320,32 @@ const styles = StyleSheet.create({
   },
   timer: {
     fontSize: 28,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
-    color: colors.text,
+    color: '#FFFFFF',
     fontVariant: ['tabular-nums'],
   },
   hint: {
     fontSize: typography.small,
-    color: colors.muted,
+    color: '#8A8A8A',
   },
   maxDuration: {
     fontSize: 12,
-    color: colors.muted,
+    color: '#8A8A8A',
   },
 
   // Prompt
   promptCard: {
-    backgroundColor: '#fef3c7',
-    borderRadius: 12,
+    backgroundColor: '#1F1F1F',
+    borderRadius: 16,
     padding: spacing.md,
     borderWidth: 1,
-    borderColor: '#fcd34d',
+    borderColor: 'rgba(255,255,255,0.08)',
     width: '100%',
   },
   promptText: {
     fontSize: typography.body,
-    color: colors.text,
+    color: '#FFFFFF',
     lineHeight: 22,
     textAlign: 'center',
   },
@@ -354,9 +355,9 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#fee2e2',
+    backgroundColor: '#1F1F1F',
     borderWidth: 3,
-    borderColor: '#fca5a5',
+    borderColor: '#E63946',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -364,7 +365,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#ef4444',
+    backgroundColor: '#E63946',
   },
 
   // Stop button
@@ -372,17 +373,22 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: '#fecaca',
+    backgroundColor: '#E63946',
     borderWidth: 3,
-    borderColor: '#ef4444',
+    borderColor: '#E63946',
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: '#E63946',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 12,
+    elevation: 8,
   },
   stopSquare: {
     width: 24,
     height: 24,
     borderRadius: 4,
-    backgroundColor: '#ef4444',
+    backgroundColor: '#FFFFFF',
   },
 
   // Controls row
@@ -402,7 +408,7 @@ const styles = StyleSheet.create({
   },
   controlLabel: {
     fontSize: 12,
-    color: colors.muted,
+    color: '#8A8A8A',
   },
   controlSpacer: {
     width: 60,
@@ -419,7 +425,7 @@ const styles = StyleSheet.create({
   waveformBar: {
     width: 6,
     borderRadius: 3,
-    backgroundColor: '#ef4444',
+    backgroundColor: '#E63946',
   },
 
   // Done section
@@ -432,52 +438,52 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: '#dcfce7',
+    backgroundColor: 'rgba(74,222,128,0.15)',
     borderWidth: 3,
-    borderColor: '#86efac',
+    borderColor: '#4ADE80',
     alignItems: 'center',
     justifyContent: 'center',
   },
   doneCheck: {
     fontSize: 32,
-    color: '#16a34a',
+    color: '#4ADE80',
     fontWeight: typography.weightBold,
   },
   doneText: {
     fontSize: typography.body,
-    color: '#16a34a',
+    color: '#4ADE80',
     fontWeight: typography.weightSemi,
   },
 
   // Playback
   playbackButton: {
-    borderWidth: 1.5,
-    borderColor: colors.border,
-    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
+    borderRadius: 16,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.lg,
-    backgroundColor: colors.surface,
+    backgroundColor: '#141414',
   },
   playbackText: {
     fontSize: typography.body,
     fontWeight: typography.weightSemi,
-    color: colors.text,
+    color: '#FFFFFF',
   },
 
   // Use button
   useButton: {
-    backgroundColor: colors.primary,
-    borderRadius: 12,
+    backgroundColor: '#FF4500',
+    borderRadius: 999,
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.xl,
     width: '100%',
     alignItems: 'center',
   },
   useButtonDisabled: {
-    backgroundColor: '#cbd5e1',
+    backgroundColor: '#1F1F1F',
   },
   useButtonText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontSize: typography.body,
     fontWeight: typography.weightSemi,
   },
@@ -492,47 +498,49 @@ const styles = StyleSheet.create({
   },
   secondaryText: {
     fontSize: typography.body,
-    color: colors.primary,
+    color: '#FF7A1A',
     fontWeight: typography.weightSemi,
   },
   discardText: {
     fontSize: typography.body,
-    color: colors.muted,
+    color: '#8A8A8A',
     fontWeight: typography.weightSemi,
   },
 
   minWarning: {
     fontSize: typography.small,
-    color: '#f59e0b',
+    color: '#FACC15',
   },
 
   // Countdown
   countdownNumber: {
     fontSize: 64,
+    fontFamily: typography.fontFamily.display,
     fontWeight: typography.weightBold,
-    color: colors.primary,
+    color: '#FF7A1A',
   },
   countdownLabel: {
     fontSize: typography.body,
-    color: colors.muted,
+    color: '#8A8A8A',
   },
 
   // Error
   errorText: {
     fontSize: typography.body,
-    color: '#ef4444',
+    color: '#E63946',
     textAlign: 'center',
   },
   retryButton: {
-    borderWidth: 1.5,
-    borderColor: colors.primary,
-    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
+    borderRadius: 999,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.lg,
+    backgroundColor: '#141414',
   },
   retryText: {
     fontSize: typography.body,
-    color: colors.primary,
+    color: '#FF7A1A',
     fontWeight: typography.weightSemi,
   },
 });

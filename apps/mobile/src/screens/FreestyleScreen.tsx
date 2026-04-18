@@ -103,11 +103,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: typography.heading,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
     color: colors.text,
   },
   subtitle: {
     fontSize: typography.body,
+    fontFamily: typography.fontFamily.regular,
     color: colors.muted,
   },
   pills: {
@@ -121,14 +123,15 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: colors.border,
     alignItems: 'center',
-    backgroundColor: colors.surface,
+    backgroundColor: colors.surfaceMuted,
   },
   pillActive: {
     borderColor: colors.primary,
-    backgroundColor: '#eff6ff',
+    backgroundColor: 'rgba(255,69,0,0.1)',
   },
   pillText: {
     fontSize: typography.body,
+    fontFamily: typography.fontFamily.regular,
     fontWeight: typography.weightSemi,
     color: colors.muted,
   },

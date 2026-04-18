@@ -1,75 +1,81 @@
 export const colors = {
-  // Backgrounds
-  background: '#E8ECF4',          // light blue-gray (main screen bg)
-  backgroundLight: '#EEF1F8',     // slightly lighter variant
-  surface: '#FFFFFF',              // white cards
-  surfaceMuted: '#F4F6FA',        // off-white for secondary cards
-  surfaceHighlight: '#FFF8E8',    // warm highlight card (gold tint)
+  // Backgrounds — dark-first
+  background: '#0A0A0A',          // app background
+  backgroundLight: '#0F0F0F',     // slightly lighter variant
+  surface: '#141414',              // cards, sheets (elevated)
+  surfaceMuted: '#1F1F1F',        // inputs, chips, inactive tabs (subtle)
+  surfaceHighlight: '#1A0A04',    // warm highlight card (accent tint)
 
-  // Primary (teal-blue)
-  primary: '#4A90D9',             // main blue accent
-  primaryLight: '#E8F0FB',        // light blue bg for selected
-  primaryDark: '#3670B0',         // pressed blue
+  // Primary (orange accent)
+  primary: '#FF4500',             // main accent
+  primaryLight: '#FF7A1A',        // lighter accent / gradient end
+  primaryDark: '#CC3700',         // pressed accent
 
-  // Secondary (warm gold)
-  gold: '#F5A623',                // gold/amber for gems, streaks, XP
-  goldLight: '#FEF5E0',           // light gold background
-  goldDark: '#D4891A',            // dark gold
+  // Secondary (red for recording / live)
+  gold: '#E63946',                // recording / live states
+  goldLight: 'rgba(230,57,70,0.15)', // light red bg
+  goldDark: '#CC2F3C',            // dark red
 
-  // Accent (teal/green)
-  teal: '#2ABFB0',               // teal for progress, success states
-  tealLight: '#E0F7F4',          // light teal bg
+  // Accent (teal/green — kept for success)
+  teal: '#4ADE80',                // success green
+  tealLight: 'rgba(74,222,128,0.12)', // light green bg
 
   // Gamification colors
-  gem: '#5B8DEF',                 // blue gem
-  coin: '#F5A623',                // gold coin
-  fire: '#FF6B35',                // streak fire
-  xp: '#8B5CF6',                  // purple XP
+  gem: '#FF7A1A',                 // orange (was blue)
+  coin: '#FF4500',                // orange (was gold)
+  fire: '#FF4500',                // streak fire
+  xp: '#FF7A1A',                  // XP accent
 
   // Text
-  text: '#1A2138',                // dark navy headings
-  textBody: '#4A5568',            // dark gray body
-  textMuted: '#94A3B8',           // muted gray captions
-  textLight: '#CBD5E1',           // very light placeholders
+  text: '#FFFFFF',                // primary headings
+  textBody: '#FFFFFF',            // body text (white on dark)
+  textMuted: '#8A8A8A',           // muted gray captions
+  textLight: '#4A4A4A',           // disabled, hints
   textOnDark: '#FFFFFF',          // white on dark bg
   textOnPrimary: '#FFFFFF',       // white on primary
 
   // Status
-  success: '#34D399',             // green
-  successBg: '#ECFDF5',
-  warning: '#FBBF24',             // amber
-  warningBg: '#FFFBEB',
-  error: '#F87171',               // red
-  errorBg: '#FEF2F2',
+  success: '#4ADE80',             // green
+  successBg: 'rgba(74,222,128,0.12)',
+  warning: '#FACC15',             // amber
+  warningBg: 'rgba(250,204,21,0.12)',
+  error: '#E63946',               // red
+  errorBg: 'rgba(230,57,70,0.12)',
 
-  // Exercise type colors
-  recordBg: '#E8F0FB',           // soft blue
-  drillBg: '#FEF5E0',            // soft gold
-  reflectionBg: '#F3E8FF',       // soft purple
-  gameBg: '#ECFDF5',             // soft green
-  unlearningBg: '#FEF2F2',       // soft red
-  imitationBg: '#E0F7F4',        // soft teal
+  // Exercise type colors — dark mode variants
+  recordBg: 'rgba(255,69,0,0.12)',
+  drillBg: 'rgba(255,122,26,0.12)',
+  reflectionBg: 'rgba(138,138,138,0.12)',
+  gameBg: 'rgba(74,222,128,0.12)',
+  unlearningBg: 'rgba(230,57,70,0.12)',
+  imitationBg: 'rgba(250,204,21,0.12)',
 
   // Category pill colors
-  categoryRed: '#EF4444',
-  categoryBlue: '#3B82F6',
-  categoryGreen: '#22C55E',
-  categoryPurple: '#8B5CF6',
-  categoryOrange: '#F97316',
-  categoryTeal: '#14B8A6',
+  categoryRed: '#E63946',
+  categoryBlue: '#60A5FA',
+  categoryGreen: '#4ADE80',
+  categoryPurple: '#A78BFA',
+  categoryOrange: '#FF7A1A',
+  categoryTeal: '#4ADE80',
 
   // UI Chrome
-  divider: '#E2E8F0',
-  border: '#E2E8F0',
-  cardShadow: '#1A213815',        // dark navy at 8% opacity
-  overlay: 'rgba(15, 23, 42, 0.4)',
-  recording: '#EF4444',
+  divider: 'rgba(255,255,255,0.08)',
+  border: 'rgba(255,255,255,0.08)',
+  borderHi: 'rgba(255,255,255,0.16)',
+  borderAccent: 'rgba(255,69,0,0.45)',
+  cardShadow: 'rgba(0,0,0,0.5)',
+  overlay: 'rgba(10,10,10,0.72)',
+  recording: '#E63946',
+
+  // Glow effects
+  accentGlow: 'rgba(255,91,10,0.35)',
+  accentGlowSm: 'rgba(255,91,10,0.18)',
 
   // Tab bar
-  tabBg: '#FFFFFF',
-  tabActive: '#4A90D9',
-  tabInactive: '#94A3B8',
+  tabBg: 'rgba(10,10,10,0.78)',
+  tabActive: '#FF7A1A',
+  tabInactive: '#4A4A4A',
 
   // Backwards compat aliases
-  muted: '#94A3B8',
+  muted: '#8A8A8A',
 };

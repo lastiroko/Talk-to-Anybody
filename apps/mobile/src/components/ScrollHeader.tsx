@@ -47,7 +47,7 @@ export function ScrollHeader({ title, scrollY }: ScrollHeaderProps) {
         style={[
           StyleSheet.absoluteFill,
           {
-            backgroundColor: colors.surface,
+            backgroundColor: '#0A0A0A',
             opacity: backgroundOpacity,
           },
         ]}
@@ -76,6 +76,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: typography.weightBold,
-    color: colors.text,
+    color: '#FFFFFF',
   },
 });

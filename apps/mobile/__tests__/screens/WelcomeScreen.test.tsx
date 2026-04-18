@@ -7,27 +7,28 @@ describe('WelcomeScreen', () => {
     render(<WelcomeScreen onLogin={jest.fn()} onSignup={jest.fn()} />);
   });
 
-  it('shows SpeakCoach title', () => {
+  it('shows app branding', () => {
     render(<WelcomeScreen onLogin={jest.fn()} onSignup={jest.fn()} />);
-    expect(screen.getByText('SpeakCoach')).toBeTruthy();
+    expect(screen.getByText('TALK / TO / ANYBODY')).toBeTruthy();
   });
 
-  it('shows tagline', () => {
+  it('shows hero text', () => {
     render(<WelcomeScreen onLogin={jest.fn()} onSignup={jest.fn()} />);
-    expect(screen.getByText('Find your voice in 60 days')).toBeTruthy();
+    expect(screen.getByText(/FIND/)).toBeTruthy();
+    expect(screen.getByText(/VOICE/)).toBeTruthy();
   });
 
-  it('calls onSignup when Get Started pressed', () => {
+  it('calls onSignup when Start Training pressed', () => {
     const onSignup = jest.fn();
     render(<WelcomeScreen onLogin={jest.fn()} onSignup={onSignup} />);
-    fireEvent.press(screen.getByText('Get Started'));
+    fireEvent.press(screen.getByText('START TRAINING'));
     expect(onSignup).toHaveBeenCalledTimes(1);
   });
 
   it('calls onLogin when login link pressed', () => {
     const onLogin = jest.fn();
     render(<WelcomeScreen onLogin={onLogin} onSignup={jest.fn()} />);
-    fireEvent.press(screen.getByText('I already have an account'));
+    fireEvent.press(screen.getByText(/LOG IN/));
     expect(onLogin).toHaveBeenCalledTimes(1);
   });
 });

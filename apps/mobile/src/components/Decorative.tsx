@@ -56,7 +56,7 @@ interface WaveDividerProps {
   style?: ViewStyle;
 }
 
-export function WaveDivider({ color = '#e2e8f0', style }: WaveDividerProps) {
+export function WaveDivider({ color = 'rgba(255,255,255,0.08)', style }: WaveDividerProps) {
   return (
     <View style={[styles.waveContainer, style]}>
       {Array.from({ length: 6 }, (_, i) => (
@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
     width: 3,
     height: 3,
     borderRadius: 1.5,
-    backgroundColor: '#0f172a',
-    opacity: 0.08,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    opacity: 1,
   },
   waveContainer: {
     height: 16,

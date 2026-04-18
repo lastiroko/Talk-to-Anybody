@@ -46,11 +46,11 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: typography.body,
-    color: colors.text,
+    color: '#FFFFFF',
     flex: 1,
   },
   destructiveLabel: {
-    color: '#ef4444',
+    color: '#E63946',
   },
   right: {
     flexDirection: 'row',
@@ -59,10 +59,10 @@ const styles = StyleSheet.create({
   },
   value: {
     fontSize: typography.body,
-    color: colors.muted,
+    color: '#8A8A8A',
   },
   chevron: {
     fontSize: 20,
-    color: colors.muted,
+    color: '#8A8A8A',
   },
 });

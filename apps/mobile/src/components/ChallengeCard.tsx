@@ -59,16 +59,18 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.surface,
+    backgroundColor: '#141414',
     borderRadius: 18,
     padding: spacing.md,
     gap: spacing.md,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
   },
   iconCircle: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: colors.primaryLight,
+    backgroundColor: 'rgba(255,69,0,0.12)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -82,16 +84,16 @@ const styles = StyleSheet.create({
   title: {
     fontSize: typography.body,
     fontWeight: typography.weightBold,
-    color: colors.text,
+    color: '#FFFFFF',
   },
   subtitle: {
     fontSize: typography.small,
-    color: colors.textMuted,
+    color: '#8A8A8A',
   },
   progress: {
     fontSize: typography.tiny,
     fontWeight: typography.weightSemi,
-    color: colors.primary,
+    color: '#FF4500',
     marginTop: 2,
   },
   rewards: {
@@ -101,6 +103,6 @@ const styles = StyleSheet.create({
   reward: {
     fontSize: typography.small,
     fontWeight: typography.weightBold,
-    color: colors.gold,
+    color: '#FF7A1A',
   },
 });

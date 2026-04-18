@@ -20,11 +20,13 @@ const styles = StyleSheet.create({
   pill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFF3E8',
+    backgroundColor: 'rgba(255,69,0,0.12)',
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 999,
     gap: 4,
+    borderWidth: 1,
+    borderColor: '#FF7A1A',
   },
   fire: {
     fontSize: 14,
@@ -32,6 +34,6 @@ const styles = StyleSheet.create({
   count: {
     fontSize: typography.caption,
     fontWeight: typography.weightBold,
-    color: colors.fire,
+    color: '#FF7A1A',
   },
 });

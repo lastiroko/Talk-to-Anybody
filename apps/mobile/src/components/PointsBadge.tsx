@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   pill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.surfaceMuted,
+    backgroundColor: '#1F1F1F',
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 999,
@@ -44,11 +44,11 @@ const styles = StyleSheet.create({
   gemText: {
     fontSize: typography.caption,
     fontWeight: typography.weightBold,
-    color: colors.gem,
+    color: '#FF4500',
   },
   coinText: {
     fontSize: typography.caption,
     fontWeight: typography.weightBold,
-    color: colors.coin,
+    color: '#FF7A1A',
   },
 });

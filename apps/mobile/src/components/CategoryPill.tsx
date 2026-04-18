@@ -30,12 +30,14 @@ const styles = StyleSheet.create({
   pill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.surface,
+    backgroundColor: '#1F1F1F',
     paddingRight: 14,
     paddingLeft: 4,
     paddingVertical: 4,
     borderRadius: 999,
     gap: spacing.sm,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
   },
   iconCircle: {
     width: 28,
@@ -51,6 +53,6 @@ const styles = StyleSheet.create({
   label: {
     fontSize: typography.caption,
     fontWeight: typography.weightSemi,
-    color: colors.text,
+    color: '#FFFFFF',
   },
 });

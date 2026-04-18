@@ -1,20 +1,25 @@
 export const typography = {
   fontFamily: {
-    regular: 'Nunito-Regular',
-    medium: 'Nunito-Medium',
-    semiBold: 'Nunito-SemiBold',
-    bold: 'Nunito-Bold',
-    extraBold: 'Nunito-ExtraBold',
+    regular: 'JetBrainsMono_400Regular',
+    medium: 'JetBrainsMono_500Medium',
+    semiBold: 'JetBrainsMono_600SemiBold',
+    bold: 'JetBrainsMono_700Bold',
+    extraBold: 'JetBrainsMono_700Bold',
+    // Display face
+    display: 'SpaceGrotesk_700Bold',
+    displayMedium: 'SpaceGrotesk_500Medium',
+    displaySemiBold: 'SpaceGrotesk_600SemiBold',
   },
 
-  hero: 36,
-  title: 26,
-  heading: 20,
-  subheading: 17,
-  body: 15,
-  caption: 13,
-  small: 11,
-  tiny: 10,
+  // Type scale — tech-editorial
+  hero: 64,       // display XL
+  title: 40,      // display L
+  heading: 24,    // heading (mono)
+  subheading: 18, // subheading
+  body: 14,       // body
+  caption: 11,    // caption (uppercase)
+  small: 10,      // small labels
+  tiny: 9,        // tiny labels
 
   // Backwards compat aliases
   weightBold: '700' as const,

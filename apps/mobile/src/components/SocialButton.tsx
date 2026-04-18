@@ -12,16 +12,16 @@ const CONFIG = {
   apple: {
     emoji: '\ud83c\udf4e',
     label: 'Continue with Apple',
-    bg: '#0f172a',
-    textColor: '#fff',
-    borderColor: '#0f172a',
+    bg: '#FFFFFF',
+    textColor: '#000000',
+    borderColor: '#FFFFFF',
   },
   google: {
     emoji: 'G',
     label: 'Continue with Google',
-    bg: '#fff',
-    textColor: colors.text,
-    borderColor: colors.border,
+    bg: '#1F1F1F',
+    textColor: '#FFFFFF',
+    borderColor: 'rgba(255,255,255,0.08)',
   },
 };
 

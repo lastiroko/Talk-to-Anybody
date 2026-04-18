@@ -5,18 +5,11 @@ import { useEntryAnimation } from '../hooks/useEntryAnimation';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
-import { shadows } from '../theme/shadows';
 
 interface WelcomeScreenProps {
   onLogin: () => void;
   onSignup: () => void;
 }
-
-const BENEFITS = [
-  { icon: '\ud83d\udcca', text: 'AI-powered feedback on every session' },
-  { icon: '\ud83e\udde0', text: 'Psychology-backed learning system' },
-  { icon: '\ud83c\udfaf', text: 'Personalized 60-day plan' },
-];
 
 export function WelcomeScreen({ onLogin, onSignup }: WelcomeScreenProps) {
   const { fadeIn } = useEntryAnimation(4);
@@ -24,35 +17,41 @@ export function WelcomeScreen({ onLogin, onSignup }: WelcomeScreenProps) {
   return (
     <ScreenContainer>
       <View style={styles.container}>
+        {/* Radial glow at bottom */}
+        <View style={styles.glowWrap}>
+          <View style={styles.glow} />
+        </View>
+
         {/* Hero section */}
         <View style={styles.hero}>
-          <Animated.View style={[styles.logoCircle, fadeIn(0)]}>
-            <Text style={styles.logoEmoji}>{'\ud83c\udf99\ufe0f'}</Text>
+          <Animated.View style={fadeIn(0)}>
+            <Text style={styles.caption}>TALK / TO / ANYBODY</Text>
           </Animated.View>
 
           <Animated.View style={fadeIn(1)}>
-            <Text style={styles.appName}>SpeakCoach</Text>
-            <Text style={styles.tagline}>Find your voice in 60 days</Text>
+            <Text style={styles.displayText}>
+              FIND{' '}
+              <Text style={styles.displayHighlight}>YOUR</Text>
+              {'\n'}VOICE.
+            </Text>
           </Animated.View>
 
-          <Animated.View style={[styles.benefits, fadeIn(2)]}>
-            {BENEFITS.map((b) => (
-              <View key={b.text} style={[styles.benefitCard, shadows.card]}>
-                <View style={styles.benefitIconCircle}>
-                  <Text style={styles.benefitIcon}>{b.icon}</Text>
-                </View>
-                <Text style={styles.benefitText}>{b.text}</Text>
-              </View>
-            ))}
+          <Animated.View style={fadeIn(2)}>
+            <Text style={styles.subtitle}>
+              Practice talking to anybody — tough bosses, crushes, strangers, crowds.
+            </Text>
           </Animated.View>
         </View>
 
         {/* Action section */}
         <Animated.View style={[styles.actions, fadeIn(3)]}>
-          <PrimaryButton title="Get Started" onPress={onSignup} />
+          <PrimaryButton title="START TRAINING" onPress={onSignup} />
 
           <TouchableOpacity onPress={onLogin} style={styles.loginLink}>
-            <Text style={styles.loginLinkText}>I already have an account</Text>
+            <Text style={styles.loginLinkText}>
+              ALREADY A MEMBER?{' '}
+              <Text style={styles.loginLinkAccent}>LOG IN</Text>
+            </Text>
           </TouchableOpacity>
 
           <Text style={styles.legal}>
@@ -68,62 +67,52 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
+    backgroundColor: colors.background,
+  },
+  glowWrap: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 320,
+    overflow: 'hidden',
+  },
+  glow: {
+    flex: 1,
+    borderRadius: 160,
+    backgroundColor: 'rgba(255,91,10,0.25)',
   },
   hero: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
     gap: spacing.lg,
-    paddingTop: spacing.xl,
+    paddingTop: spacing.xxxl,
   },
-  logoCircle: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: colors.primaryLight,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: spacing.sm,
+  caption: {
+    fontFamily: typography.fontFamily.semiBold,
+    fontSize: typography.caption,
+    letterSpacing: 4,
+    color: colors.primary,
+    textTransform: 'uppercase',
   },
-  logoEmoji: { fontSize: 44 },
-  appName: {
+  displayText: {
+    fontFamily: typography.fontFamily.display,
     fontSize: typography.hero,
-    fontWeight: typography.weightBold,
+    lineHeight: 68,
     color: colors.text,
-    letterSpacing: -0.5,
-    textAlign: 'center',
+    letterSpacing: -1,
   },
-  tagline: {
-    fontSize: typography.subheading,
-    color: colors.textMuted,
-    marginBottom: spacing.md,
-    textAlign: 'center',
+  displayHighlight: {
+    fontFamily: typography.fontFamily.display,
+    color: colors.primaryLight,
+    fontStyle: 'italic',
   },
-  benefits: {
-    gap: spacing.sm,
-    width: '100%',
-  },
-  benefitCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.surface,
-    borderRadius: 14,
-    padding: spacing.md,
-    gap: spacing.md,
-  },
-  benefitIconCircle: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.primaryLight,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  benefitIcon: { fontSize: 20 },
-  benefitText: {
-    flex: 1,
+  subtitle: {
+    fontFamily: typography.fontFamily.regular,
     fontSize: typography.body,
-    color: colors.text,
+    color: colors.textMuted,
+    lineHeight: 22,
+    maxWidth: 320,
   },
   actions: {
     gap: spacing.md,
@@ -135,13 +124,20 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   loginLinkText: {
-    fontSize: typography.body,
+    fontFamily: typography.fontFamily.regular,
+    fontSize: typography.small,
+    letterSpacing: 2,
+    color: colors.textMuted,
+    textTransform: 'uppercase',
+  },
+  loginLinkAccent: {
     color: colors.primary,
-    fontWeight: typography.weightSemi,
+    fontFamily: typography.fontFamily.semiBold,
   },
   legal: {
+    fontFamily: typography.fontFamily.regular,
     fontSize: typography.tiny,
-    color: colors.textMuted,
+    color: colors.textLight,
     textAlign: 'center',
     lineHeight: 16,
   },

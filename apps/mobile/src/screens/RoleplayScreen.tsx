@@ -201,11 +201,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: typography.heading,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
     color: colors.text,
   },
   subtitle: {
     fontSize: typography.body,
+    fontFamily: typography.fontFamily.regular,
     color: colors.muted,
   },
   scenarioCard: {
@@ -218,7 +220,7 @@ const styles = StyleSheet.create({
   },
   scenarioSelected: {
     borderColor: colors.primary,
-    backgroundColor: '#f8faff',
+    backgroundColor: 'rgba(255,69,0,0.06)',
   },
   scenarioHeader: {
     flexDirection: 'row',
@@ -234,6 +236,7 @@ const styles = StyleSheet.create({
   },
   scenarioTitle: {
     fontSize: typography.body,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
     color: colors.text,
   },
@@ -243,7 +246,7 @@ const styles = StyleSheet.create({
   },
   chevron: {
     fontSize: 12,
-    color: colors.muted,
+    color: '#8A8A8A',
   },
   scenarioDetails: {
     borderTopWidth: 1,
@@ -262,6 +265,7 @@ const styles = StyleSheet.create({
   },
   detailLabel: {
     fontSize: typography.small,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
     color: colors.text,
   },

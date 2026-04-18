@@ -13,9 +13,9 @@ interface OnboardingScheduleScreenProps {
 }
 
 const TIME_OPTIONS = [
-  { id: '5', emoji: '\u26a1', minutes: '5 min', subtitle: 'Quick daily boost', badge: null },
-  { id: '10', emoji: '\ud83d\udd25', minutes: '10 min', subtitle: 'Recommended', badge: 'Best value' },
-  { id: '15', emoji: '\ud83d\udcaa', minutes: '15 min', subtitle: 'Maximum growth', badge: null },
+  { id: '5', minutes: '5 MIN', subtitle: 'Quick daily session', badge: null },
+  { id: '10', minutes: '10 MIN', subtitle: 'Recommended', badge: 'BEST VALUE' },
+  { id: '15', minutes: '15 MIN', subtitle: 'Maximum growth', badge: null },
 ];
 
 export function OnboardingScheduleScreen({ onNext }: OnboardingScheduleScreenProps) {
@@ -29,8 +29,8 @@ export function OnboardingScheduleScreen({ onNext }: OnboardingScheduleScreenPro
 
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>How much time per day?</Text>
-          <Text style={styles.subtitle}>Even 5 minutes makes a real difference</Text>
+          <Text style={styles.title}>Daily time commitment</Text>
+          <Text style={styles.subtitle}>Even 5 minutes moves the needle</Text>
         </View>
 
         {/* Time cards */}
@@ -42,7 +42,6 @@ export function OnboardingScheduleScreen({ onNext }: OnboardingScheduleScreenPro
               onPress={() => setSelectedTime(option.id)}
             >
               <View style={styles.optionContent}>
-                <Text style={styles.optionEmoji}>{option.emoji}</Text>
                 <View style={styles.optionText}>
                   <View style={styles.optionTitleRow}>
                     <Text style={styles.optionMinutes}>{option.minutes}</Text>
@@ -68,7 +67,7 @@ export function OnboardingScheduleScreen({ onNext }: OnboardingScheduleScreenPro
             onPress={() => setReminderOn(!reminderOn)}
             activeOpacity={0.7}
           >
-            <Text style={styles.reminderLabel}>Set a daily reminder?</Text>
+            <Text style={styles.reminderLabel}>Daily reminder</Text>
             <View style={[styles.toggle, reminderOn && styles.toggleOn]}>
               <View style={[styles.toggleKnob, reminderOn && styles.toggleKnobOn]} />
             </View>
@@ -76,7 +75,7 @@ export function OnboardingScheduleScreen({ onNext }: OnboardingScheduleScreenPro
           {reminderOn ? (
             <View style={styles.reminderInfo}>
               <Text style={styles.reminderTime}>9:00 AM</Text>
-              <Text style={styles.reminderNote}>(You can change this in Settings)</Text>
+              <Text style={styles.reminderNote}>(Change in Settings)</Text>
             </View>
           ) : null}
         </View>
@@ -97,19 +96,21 @@ export function OnboardingScheduleScreen({ onNext }: OnboardingScheduleScreenPro
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.background,
   },
   header: {
     gap: spacing.xs,
     marginBottom: spacing.lg,
   },
   title: {
+    fontFamily: typography.fontFamily.display,
     fontSize: typography.heading,
-    fontWeight: typography.weightBold,
     color: colors.text,
   },
   subtitle: {
+    fontFamily: typography.fontFamily.regular,
     fontSize: typography.body,
-    color: colors.muted,
+    color: colors.textMuted,
   },
   options: {
     gap: spacing.md,
@@ -118,9 +119,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.md,
-  },
-  optionEmoji: {
-    fontSize: 28,
   },
   optionText: {
     flex: 1,
@@ -132,30 +130,34 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   optionMinutes: {
+    fontFamily: typography.fontFamily.bold,
     fontSize: typography.subheading,
-    fontWeight: typography.weightBold,
     color: colors.text,
+    letterSpacing: 1,
   },
   optionSubtitle: {
+    fontFamily: typography.fontFamily.regular,
     fontSize: typography.small,
-    color: colors.muted,
+    color: colors.textMuted,
   },
   badge: {
-    backgroundColor: '#fef3c7',
+    backgroundColor: colors.surfaceMuted,
     paddingHorizontal: spacing.sm,
     paddingVertical: 2,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#fcd34d',
+    borderColor: colors.primary,
   },
   badgeText: {
+    fontFamily: typography.fontFamily.semiBold,
     fontSize: 11,
-    fontWeight: typography.weightBold,
-    color: '#b45309',
+    color: colors.primary,
+    letterSpacing: 1,
   },
   changeHint: {
+    fontFamily: typography.fontFamily.regular,
     fontSize: typography.small,
-    color: colors.muted,
+    color: colors.textLight,
     textAlign: 'center',
     marginTop: spacing.md,
   },
@@ -174,15 +176,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   reminderLabel: {
+    fontFamily: typography.fontFamily.semiBold,
     fontSize: typography.body,
-    fontWeight: typography.weightSemi,
     color: colors.text,
   },
   toggle: {
     width: 50,
     height: 28,
     borderRadius: 14,
-    backgroundColor: colors.border,
+    backgroundColor: colors.surfaceMuted,
     justifyContent: 'center',
     paddingHorizontal: 3,
   },
@@ -193,7 +195,7 @@ const styles = StyleSheet.create({
     width: 22,
     height: 22,
     borderRadius: 11,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
   },
   toggleKnobOn: {
     alignSelf: 'flex-end',
@@ -204,13 +206,14 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   reminderTime: {
+    fontFamily: typography.fontFamily.bold,
     fontSize: typography.body,
-    fontWeight: typography.weightBold,
     color: colors.text,
   },
   reminderNote: {
+    fontFamily: typography.fontFamily.regular,
     fontSize: typography.small,
-    color: colors.muted,
+    color: colors.textLight,
   },
   bottom: {
     flex: 1,

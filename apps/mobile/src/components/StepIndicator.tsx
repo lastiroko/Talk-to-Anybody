@@ -36,9 +36,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   active: {
-    backgroundColor: colors.primary,
+    backgroundColor: '#FF4500',
   },
   inactive: {
-    backgroundColor: colors.border,
+    backgroundColor: '#1F1F1F',
   },
 });

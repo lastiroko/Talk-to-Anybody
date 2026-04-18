@@ -37,37 +37,73 @@ export function PlanScreen() {
     <ScreenContainer padded={false} scroll={false}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Animated.View style={[styles.header, fadeIn(0)]}>
-          <Text style={styles.avatar}>🤓</Text>
+          <View style={styles.avatarCircle}>
+            <Text style={styles.avatarLetter}>U</Text>
+          </View>
           <PointsBadge gems={gam.gems} coins={gam.coins} />
         </Animated.View>
 
         <Animated.View style={[styles.titleRow, fadeIn(1)]}>
           <View>
-            <Text style={styles.title}>Complete</Text>
-            <Text style={styles.title}>Today’s Revenue</Text>
+            <Text style={styles.titleCaption}>COMPLETION</Text>
+            <Text style={styles.title}>Today's Revenue</Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
             <Text style={styles.percent}>{percent}%</Text>
-            <Text style={styles.delta}>⦿ {revenue.toFixed(1)}%</Text>
+            <Text style={styles.delta}>{revenue.toFixed(1)}%</Text>
           </View>
         </Animated.View>
 
-        <Animated.View style={[styles.chartCard, shadows.card, fadeIn(2)]}>
-          <View style={styles.chartHead}><Text style={styles.chartTitle}>Study Success</Text><Text style={styles.learn}>Learn more</Text></View>
-          <View style={styles.bars}>{BARS.map((h, i) => <View key={i} style={[styles.bar, { height: h }]} />)}</View>
-          <View style={styles.months}><Text style={styles.month}>Sep</Text><Text style={styles.month}>Oct</Text><Text style={styles.month}>Now</Text><Text style={styles.month}>Dec</Text><Text style={styles.month}>Jan</Text><Text style={styles.month}>Feb</Text></View>
+        <Animated.View style={[styles.chartCard, fadeIn(2)]}>
+          <View style={styles.chartHead}>
+            <Text style={styles.chartTitle}>Study Success</Text>
+            <View style={styles.learnPill}>
+              <Text style={styles.learnText}>LEARN MORE</Text>
+            </View>
+          </View>
+          <View style={styles.bars}>
+            {BARS.map((h, i) => (
+              <View key={i} style={[styles.bar, { height: h }]} />
+            ))}
+          </View>
+          <View style={styles.months}>
+            <Text style={styles.month}>Sep</Text>
+            <Text style={styles.month}>Oct</Text>
+            <Text style={styles.month}>Now</Text>
+            <Text style={styles.month}>Dec</Text>
+            <Text style={styles.month}>Jan</Text>
+            <Text style={styles.month}>Feb</Text>
+          </View>
         </Animated.View>
 
-        <Animated.View style={[styles.challengeHeader, fadeIn(3)]}><Text style={styles.challengeTitle}>Challenges <Text style={styles.challengeCount}>12</Text></Text><Text style={styles.link}>View all</Text></Animated.View>
+        <Animated.View style={[styles.challengeHeader, fadeIn(3)]}>
+          <Text style={styles.challengeCaption}>CHALLENGES</Text>
+          <Text style={styles.link}>View all</Text>
+        </Animated.View>
 
-        <Animated.View style={[styles.challengeCard, { backgroundColor: '#FBEFBE' }, fadeIn(3)]}>
-          <Text style={styles.challengeIcon}>🏆</Text><View style={styles.challengeText}><Text style={styles.challengeMain}>Day 10/32 💎 +5   🪙 +200</Text><Text style={styles.challengeSub}>Daily challenge</Text></View><Text style={styles.more}>•••</Text>
+        <Animated.View style={[styles.challengeCard, fadeIn(3)]}>
+          <Text style={styles.challengeNum}>01</Text>
+          <View style={styles.challengeText}>
+            <Text style={styles.challengeMain}>Day 10/32  +5  +200</Text>
+            <Text style={styles.challengeSub}>Daily challenge</Text>
+          </View>
+          <Text style={styles.more}>...</Text>
         </Animated.View>
-        <Animated.View style={[styles.challengeCard, { backgroundColor: '#DDF2D7' }, fadeIn(3)]}>
-          <Text style={styles.challengeIcon}>🧪</Text><View style={styles.challengeText}><Text style={styles.challengeMain}>Mastery Marathon 💎 +300</Text><Text style={styles.challengeSub}>Extra challenge</Text></View><Text style={styles.more}>•••</Text>
+        <Animated.View style={[styles.challengeCard, fadeIn(3)]}>
+          <Text style={styles.challengeNum}>02</Text>
+          <View style={styles.challengeText}>
+            <Text style={styles.challengeMain}>Mastery Marathon  +300</Text>
+            <Text style={styles.challengeSub}>Extra challenge</Text>
+          </View>
+          <Text style={styles.more}>...</Text>
         </Animated.View>
-        <Animated.View style={[styles.challengeCard, { backgroundColor: '#E1E6FA' }, fadeIn(3)]}>
-          <Text style={styles.challengeIcon}>🎯</Text><View style={styles.challengeText}><Text style={styles.challengeMain}>Deep Focus 💎 +250</Text><Text style={styles.challengeSub}>Extra challenge</Text></View><Text style={styles.more}>•••</Text>
+        <Animated.View style={[styles.challengeCard, fadeIn(3)]}>
+          <Text style={styles.challengeNum}>03</Text>
+          <View style={styles.challengeText}>
+            <Text style={styles.challengeMain}>Deep Focus  +250</Text>
+            <Text style={styles.challengeSub}>Extra challenge</Text>
+          </View>
+          <Text style={styles.more}>...</Text>
         </Animated.View>
       </ScrollView>
     </ScreenContainer>
@@ -77,27 +113,131 @@ export function PlanScreen() {
 const styles = StyleSheet.create({
   content: { padding: spacing.lg, gap: spacing.md, paddingBottom: spacing.xl },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  avatar: { fontSize: 44 },
+  avatarCircle: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarLetter: {
+    fontSize: 18,
+    fontFamily: typography.fontFamily.bold,
+    color: colors.text,
+  },
   titleRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' },
-  title: { fontSize: 38/1.5, fontWeight: typography.weightBold, color: colors.text },
-  percent: { fontSize: 44/1.5, fontWeight: typography.weightBold, color: '#111827' },
-  delta: { color: '#1f7ea4', fontWeight: typography.weightSemi },
-  chartCard: { backgroundColor: '#D6ECF7', borderRadius: 24, padding: spacing.md, gap: spacing.md },
+  titleCaption: {
+    fontSize: typography.caption,
+    fontFamily: typography.fontFamily.regular,
+    color: colors.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 1.5,
+    marginBottom: 4,
+  },
+  title: {
+    fontSize: typography.heading,
+    fontFamily: typography.fontFamily.display,
+    color: colors.text,
+  },
+  percent: {
+    fontSize: 28,
+    fontFamily: typography.fontFamily.display,
+    color: colors.text,
+  },
+  delta: {
+    fontSize: typography.body,
+    fontFamily: typography.fontFamily.semiBold,
+    color: colors.primary,
+  },
+  chartCard: {
+    backgroundColor: colors.surface,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: colors.border,
+    padding: spacing.md,
+    gap: spacing.md,
+  },
   chartHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  chartTitle: { fontWeight: typography.weightBold, fontSize: typography.subheading, color: colors.text },
-  learn: { color: '#1F7598', borderWidth: 1, borderColor: '#5AA9C8', borderRadius: 999, paddingHorizontal: 12, paddingVertical: 4, fontSize: typography.tiny },
+  chartTitle: {
+    fontFamily: typography.fontFamily.semiBold,
+    fontSize: typography.subheading,
+    color: colors.text,
+  },
+  learnPill: {
+    borderWidth: 1,
+    borderColor: colors.borderHi,
+    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+  },
+  learnText: {
+    fontSize: typography.tiny,
+    fontFamily: typography.fontFamily.regular,
+    color: colors.textMuted,
+    letterSpacing: 1,
+  },
   bars: { flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', height: 70 },
-  bar: { width: 5, borderRadius: 3, backgroundColor: '#2E7290' },
+  bar: {
+    width: 5,
+    borderRadius: 3,
+    backgroundColor: colors.primary,
+  },
   months: { flexDirection: 'row', justifyContent: 'space-between' },
-  month: { fontSize: typography.tiny, color: colors.textBody },
-  challengeHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: spacing.sm },
-  challengeTitle: { fontSize: typography.subheading, fontWeight: typography.weightBold, color: colors.text },
-  challengeCount: { color: '#2F7A98' },
-  link: { color: '#2F7A98', fontWeight: typography.weightSemi },
-  challengeCard: { borderRadius: 20, padding: spacing.md, flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  challengeIcon: { fontSize: 30 },
+  month: {
+    fontSize: typography.tiny,
+    fontFamily: typography.fontFamily.regular,
+    color: colors.textMuted,
+  },
+  challengeHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: spacing.sm,
+  },
+  challengeCaption: {
+    fontSize: typography.caption,
+    fontFamily: typography.fontFamily.regular,
+    color: colors.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 1.5,
+  },
+  link: {
+    color: colors.primary,
+    fontFamily: typography.fontFamily.semiBold,
+    fontSize: typography.caption,
+    letterSpacing: 1,
+  },
+  challengeCard: {
+    backgroundColor: colors.surface,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: colors.border,
+    padding: spacing.md,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  challengeNum: {
+    fontSize: typography.heading,
+    fontFamily: typography.fontFamily.display,
+    color: colors.textLight,
+    width: 32,
+  },
   challengeText: { flex: 1, gap: 2 },
-  challengeMain: { fontWeight: typography.weightBold, color: colors.text },
-  challengeSub: { fontSize: typography.small, color: colors.textBody },
-  more: { fontSize: 18, color: colors.textMuted },
+  challengeMain: {
+    fontFamily: typography.fontFamily.semiBold,
+    color: colors.text,
+    fontSize: typography.body,
+  },
+  challengeSub: {
+    fontSize: typography.small,
+    fontFamily: typography.fontFamily.regular,
+    color: colors.textMuted,
+  },
+  more: {
+    fontSize: 18,
+    color: colors.textLight,
+    fontFamily: typography.fontFamily.regular,
+  },
 });

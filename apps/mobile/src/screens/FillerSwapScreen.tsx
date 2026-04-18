@@ -17,13 +17,13 @@ import { PrimaryButton } from '../components/PrimaryButton';
 // Theme tokens (inlined so we don't depend on external theme files at runtime)
 // ---------------------------------------------------------------------------
 const colors = {
-  background: '#ffffff',
-  surface: '#f5f7fb',
-  primary: '#3b82f6',
-  primaryDark: '#1d4ed8',
-  text: '#0f172a',
-  muted: '#64748b',
-  border: '#e2e8f0',
+  background: '#0A0A0A',
+  surface: '#141414',
+  primary: '#FF4500',
+  primaryDark: '#E63946',
+  text: '#FFFFFF',
+  muted: '#8A8A8A',
+  border: 'rgba(255,255,255,0.08)',
 };
 
 const spacing = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 };
@@ -36,6 +36,10 @@ const typography = {
   weightBold: '700' as const,
   weightSemi: '600' as const,
   weightRegular: '400' as const,
+  fontRegular: 'JetBrainsMono_400Regular',
+  fontSemi: 'JetBrainsMono_600SemiBold',
+  fontBold: 'JetBrainsMono_700Bold',
+  fontDisplay: 'SpaceGrotesk_700Bold',
 };
 
 // ---------------------------------------------------------------------------
@@ -816,9 +820,9 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#fef3c7',
+    backgroundColor: 'rgba(255,122,26,0.12)',
     borderWidth: 2,
-    borderColor: '#fcd34d',
+    borderColor: 'rgba(255,122,26,0.3)',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: spacing.md,
@@ -829,10 +833,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: typography.heading,
     fontWeight: typography.weightBold,
+    fontFamily: typography.fontDisplay,
     color: colors.text,
   },
   description: {
     fontSize: typography.body,
+    fontFamily: typography.fontRegular,
     color: colors.muted,
     textAlign: 'center',
     lineHeight: 22,
@@ -874,14 +880,16 @@ const styles = StyleSheet.create({
   timer: {
     fontSize: 32,
     fontWeight: typography.weightBold,
+    fontFamily: typography.fontBold,
     color: colors.text,
   },
   timerDanger: {
-    color: '#ef4444',
+    color: '#E63946',
   },
   scoreDisplay: {
     fontSize: typography.subheading,
     fontWeight: typography.weightSemi,
+    fontFamily: typography.fontSemi,
     color: colors.primary,
   },
   progressText: {
@@ -902,14 +910,15 @@ const styles = StyleSheet.create({
   },
   sentenceText: {
     fontSize: typography.body,
+    fontFamily: typography.fontRegular,
     lineHeight: 28,
     color: colors.text,
     flexWrap: 'wrap',
   },
   fillerWord: {
-    backgroundColor: '#fef3c7',
+    backgroundColor: 'rgba(255,122,26,0.12)',
     borderWidth: 1,
-    borderColor: '#f59e0b',
+    borderColor: '#FF7A1A',
     borderRadius: 4,
     fontWeight: typography.weightBold,
     color: colors.text,
@@ -917,18 +926,18 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   fillerWordActive: {
-    backgroundColor: '#fed7aa',
-    borderColor: '#ea580c',
+    backgroundColor: 'rgba(255,122,26,0.2)',
+    borderColor: '#FF4500',
   },
   fillerWordFlash: {
-    backgroundColor: '#bbf7d0',
-    borderColor: '#16a34a',
+    backgroundColor: 'rgba(74,222,128,0.2)',
+    borderColor: '#4ADE80',
   },
   cleanBanner: {
     textAlign: 'center',
     fontSize: typography.subheading,
     fontWeight: typography.weightBold,
-    color: '#16a34a',
+    color: '#4ADE80',
     marginTop: spacing.md,
   },
   floatingPoints: {
@@ -937,7 +946,7 @@ const styles = StyleSheet.create({
     top: spacing.sm,
     fontSize: 22,
     fontWeight: typography.weightBold,
-    color: '#16a34a',
+    color: '#4ADE80',
   },
 
   // Options
@@ -957,7 +966,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   optionText: {
-    color: '#ffffff',
+    color: '#FFFFFF',
     fontSize: typography.small,
     fontWeight: typography.weightSemi,
   },

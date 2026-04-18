@@ -33,10 +33,14 @@ const styles = StyleSheet.create({
     marginRight: spacing.sm,
   },
   unlocked: {
-    backgroundColor: colors.surfaceHighlight,
+    backgroundColor: '#141414',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
   },
   locked: {
-    backgroundColor: colors.surfaceMuted,
+    backgroundColor: '#1F1F1F',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
   },
   circle: {
     width: 48,
@@ -46,10 +50,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   circleUnlocked: {
-    backgroundColor: colors.goldLight,
+    backgroundColor: 'rgba(255,69,0,0.12)',
   },
   circleLocked: {
-    backgroundColor: colors.border,
+    backgroundColor: 'rgba(255,255,255,0.08)',
   },
   icon: {
     fontSize: 24,
@@ -57,10 +61,10 @@ const styles = StyleSheet.create({
   label: {
     fontSize: typography.tiny,
     fontWeight: typography.weightSemi,
-    color: colors.text,
+    color: '#FFFFFF',
     textAlign: 'center',
   },
   lockedLabel: {
-    color: colors.textMuted,
+    color: '#8A8A8A',
   },
 });

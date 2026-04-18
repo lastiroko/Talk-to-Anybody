@@ -15,7 +15,7 @@ export async function getUploadUrl(sessionId: string) {
 
 export async function uploadRecording(uploadUrl: string, fileUri: string) {
   // TODO: Upload file to S3 using the presigned URL
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await new Promise<void>((resolve) => setTimeout(resolve, 1000));
   return { success: true };
 }
 

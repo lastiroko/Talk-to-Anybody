@@ -35,13 +35,13 @@ export function LoginScreen({ onAuthenticated, onBack }: LoginScreenProps) {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>Welcome back</Text>
-          <Text style={styles.subtitle}>Continue your speaking journey</Text>
+          <Text style={styles.subtitle}>Pick up where you left off</Text>
         </View>
 
         {/* Form */}
         <View style={styles.form}>
           <TextInputField
-            label="Email"
+            label="EMAIL"
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
@@ -52,7 +52,7 @@ export function LoginScreen({ onAuthenticated, onBack }: LoginScreenProps) {
 
           <View>
             <TextInputField
-              label="Password"
+              label="PASSWORD"
               value={password}
               onChangeText={setPassword}
               secureTextEntry={!showPassword}
@@ -87,7 +87,7 @@ export function LoginScreen({ onAuthenticated, onBack }: LoginScreenProps) {
         {/* Divider */}
         <View style={styles.divider}>
           <View style={styles.dividerLine} />
-          <Text style={styles.dividerText}>or</Text>
+          <Text style={styles.dividerText}>OR</Text>
           <View style={styles.dividerLine} />
         </View>
 
@@ -100,7 +100,8 @@ export function LoginScreen({ onAuthenticated, onBack }: LoginScreenProps) {
         {/* Footer */}
         <TouchableOpacity onPress={onBack} style={styles.footer}>
           <Text style={styles.footerText}>
-            Don't have an account? <Text style={styles.footerLink}>Sign up</Text>
+            No account yet?{' '}
+            <Text style={styles.footerLink}>Sign up</Text>
           </Text>
         </TouchableOpacity>
       </View>
@@ -112,19 +113,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     gap: spacing.lg,
+    backgroundColor: colors.background,
   },
   header: {
     gap: spacing.xs,
     marginTop: spacing.md,
   },
   title: {
+    fontFamily: typography.fontFamily.display,
     fontSize: typography.heading,
-    fontWeight: typography.weightBold,
     color: colors.text,
   },
   subtitle: {
+    fontFamily: typography.fontFamily.regular,
     fontSize: typography.body,
-    color: colors.muted,
+    color: colors.textMuted,
   },
   form: {
     gap: spacing.md,
@@ -137,9 +140,9 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
   },
   forgotText: {
+    fontFamily: typography.fontFamily.regular,
     fontSize: typography.small,
     color: colors.primary,
-    fontWeight: typography.weightSemi,
   },
   divider: {
     flexDirection: 'row',
@@ -152,8 +155,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.border,
   },
   dividerText: {
+    fontFamily: typography.fontFamily.regular,
     fontSize: typography.small,
-    color: colors.muted,
+    color: colors.textLight,
+    letterSpacing: 2,
   },
   socials: {
     gap: spacing.sm,
@@ -163,11 +168,12 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
   },
   footerText: {
+    fontFamily: typography.fontFamily.regular,
     fontSize: typography.body,
-    color: colors.muted,
+    color: colors.textMuted,
   },
   footerLink: {
     color: colors.primary,
-    fontWeight: typography.weightSemi,
+    fontFamily: typography.fontFamily.semiBold,
   },
 });

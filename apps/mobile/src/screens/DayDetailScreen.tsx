@@ -314,12 +314,14 @@ const styles = StyleSheet.create({
     borderRadius: 999,
   },
   dayBadgeText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontSize: typography.small,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
   },
   heroTitle: {
     fontSize: typography.title,
+    fontFamily: typography.fontFamily.display,
     fontWeight: typography.weightBold,
     color: colors.text,
     lineHeight: 32,
@@ -335,7 +337,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   difficultyDot: { width: 10, height: 10, borderRadius: 5 },
-  difficultyFilled: { backgroundColor: colors.gold },
+  difficultyFilled: { backgroundColor: colors.primary },
   difficultyEmpty: { backgroundColor: colors.border },
   difficultyLabel: {
     fontSize: typography.small,
@@ -352,7 +354,7 @@ const styles = StyleSheet.create({
   },
   lessonStripe: {
     width: 5,
-    backgroundColor: colors.gold,
+    backgroundColor: colors.primary,
   },
   lessonContent: {
     flex: 1,
@@ -361,8 +363,11 @@ const styles = StyleSheet.create({
   },
   lessonLabel: {
     fontSize: typography.caption,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
-    color: colors.gold,
+    color: colors.primary,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   lessonText: {
     fontSize: typography.body,
@@ -381,6 +386,7 @@ const styles = StyleSheet.create({
   section: { gap: spacing.md },
   sectionTitle: {
     fontSize: typography.subheading,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
     color: colors.text,
   },
@@ -399,8 +405,9 @@ const styles = StyleSheet.create({
   },
   gamePillText: {
     fontSize: typography.small,
+    fontFamily: typography.fontFamily.semiBold,
     fontWeight: typography.weightSemi,
-    color: '#16a34a',
+    color: colors.success,
   },
 
   // Celebration
@@ -411,22 +418,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.md,
   },
-  celebrationEmoji: { fontSize: 48 },
+  celebrationEmoji: { fontSize: 36 },
   celebrationTitle: {
     fontSize: typography.heading,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
     color: colors.text,
   },
   rewardRow: {
-    backgroundColor: colors.goldLight,
+    backgroundColor: 'rgba(255,69,0,0.12)',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
     borderRadius: 999,
   },
   rewardText: {
     fontSize: typography.body,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
-    color: colors.gold,
+    color: colors.primary,
   },
   celebrationSub: {
     fontSize: typography.body,
@@ -458,8 +467,9 @@ const styles = StyleSheet.create({
   },
   completedBadge: {
     fontSize: typography.subheading,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
-    color: '#16a34a',
+    color: colors.success,
   },
   nextDayHint: {
     fontSize: typography.body,

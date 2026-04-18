@@ -20,10 +20,10 @@ type PaywallNavigation = NativeStackNavigationProp<MainStackParamList>;
 type PlanOption = 'monthly' | 'lifetime';
 
 const FEATURES = [
-  { icon: '\u2705', label: 'Full 60-day plan' },
-  { icon: '\u2705', label: 'All practice modes' },
-  { icon: '\u2705', label: 'AI-powered analysis' },
-  { icon: '\u2705', label: 'Unlimited recordings' },
+  { icon: '\u2713', label: 'Full 60-day plan' },
+  { icon: '\u2713', label: 'All practice modes' },
+  { icon: '\u2713', label: 'AI-powered analysis' },
+  { icon: '\u2713', label: 'Unlimited recordings' },
 ];
 
 export function PaywallScreen() {
@@ -217,16 +217,19 @@ const styles = StyleSheet.create({
     width: 96,
     height: 96,
     borderRadius: 48,
-    backgroundColor: '#eff6ff',
+    backgroundColor: 'rgba(255,69,0,0.12)',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: spacing.sm,
+    borderWidth: 1,
+    borderColor: 'rgba(255,69,0,0.3)',
   },
   iconEmoji: {
     fontSize: 44,
   },
   heading: {
     fontSize: typography.heading,
+    fontFamily: typography.fontFamily.display,
     fontWeight: typography.weightBold,
     color: colors.text,
     textAlign: 'center',
@@ -251,9 +254,11 @@ const styles = StyleSheet.create({
   },
   featureIcon: {
     fontSize: 18,
+    color: colors.success,
   },
   featureLabel: {
     fontSize: typography.body,
+    fontFamily: typography.fontFamily.semiBold,
     color: colors.text,
     fontWeight: typography.weightSemi,
   },
@@ -271,10 +276,11 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderRadius: 12,
     padding: spacing.md,
+    backgroundColor: colors.surface,
   },
   planCardSelected: {
     borderColor: colors.primary,
-    backgroundColor: '#f0f7ff',
+    backgroundColor: 'rgba(255,69,0,0.06)',
   },
   planCardHeader: {
     flexDirection: 'row',
@@ -304,6 +310,7 @@ const styles = StyleSheet.create({
   },
   planTitle: {
     fontSize: typography.body,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
     color: colors.text,
   },
@@ -312,21 +319,22 @@ const styles = StyleSheet.create({
     color: colors.muted,
   },
   planTag: {
-    backgroundColor: colors.surface,
+    backgroundColor: colors.surfaceMuted,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
     borderRadius: 8,
   },
   planTagText: {
     fontSize: typography.small,
+    fontFamily: typography.fontFamily.semiBold,
     fontWeight: typography.weightSemi,
     color: colors.muted,
   },
   planTagBest: {
-    backgroundColor: '#dcfce7',
+    backgroundColor: 'rgba(74,222,128,0.12)',
   },
   planTagBestText: {
-    color: '#16a34a',
+    color: colors.success,
   },
 
   // CTA
@@ -338,8 +346,9 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   ctaText: {
-    color: '#ffffff',
+    color: '#FFFFFF',
     fontSize: typography.body,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
   },
 

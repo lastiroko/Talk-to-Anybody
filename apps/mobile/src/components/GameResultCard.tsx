@@ -20,9 +20,9 @@ interface GameResultCardProps {
 
 function getScoreColor(score: number, maxScore: number): string {
   const ratio = score / maxScore;
-  if (ratio > 0.8) return '#16a34a';
-  if (ratio > 0.5) return '#f59e0b';
-  return '#ef4444';
+  if (ratio > 0.8) return '#4ADE80';
+  if (ratio > 0.5) return '#FACC15';
+  return '#E63946';
 }
 
 function getEncouragement(score: number, maxScore: number): string {
@@ -99,22 +99,24 @@ export default function GameResultCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.surface,
+    backgroundColor: '#141414',
     borderRadius: 16,
     padding: spacing.lg,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
   },
   heading: {
     fontSize: typography.heading,
     fontWeight: typography.weightBold as '700',
-    color: colors.text,
+    color: '#FFFFFF',
     textAlign: 'center',
     marginBottom: spacing.xs,
   },
   subtext: {
     fontSize: typography.body,
     fontWeight: typography.weightRegular as '400',
-    color: colors.muted,
+    color: '#8A8A8A',
     textAlign: 'center',
     marginBottom: spacing.lg,
   },
@@ -129,14 +131,14 @@ const styles = StyleSheet.create({
   previousBest: {
     fontSize: typography.small,
     fontWeight: typography.weightRegular as '400',
-    color: colors.muted,
+    color: '#8A8A8A',
     marginBottom: spacing.lg,
   },
   statsContainer: {
     width: '100%',
     marginBottom: spacing.lg,
     borderTopWidth: 1,
-    borderTopColor: colors.border,
+    borderTopColor: 'rgba(255,255,255,0.08)',
     paddingTop: spacing.md,
   },
   statRow: {
@@ -148,12 +150,12 @@ const styles = StyleSheet.create({
   statLabel: {
     fontSize: typography.body,
     fontWeight: typography.weightRegular as '400',
-    color: colors.muted,
+    color: '#8A8A8A',
   },
   statValue: {
     fontSize: typography.body,
     fontWeight: typography.weightBold as '700',
-    color: colors.text,
+    color: '#FFFFFF',
   },
   primaryButton: {
     backgroundColor: colors.primary,
@@ -171,7 +173,7 @@ const styles = StyleSheet.create({
   secondaryButton: {
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: 'rgba(255,255,255,0.16)',
     paddingVertical: spacing.md,
     width: '100%',
     alignItems: 'center',
@@ -179,6 +181,6 @@ const styles = StyleSheet.create({
   secondaryButtonText: {
     fontSize: typography.body,
     fontWeight: typography.weightSemi as '600',
-    color: colors.primary,
+    color: '#FF4500',
   },
 });

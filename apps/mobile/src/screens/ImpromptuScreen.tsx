@@ -113,25 +113,33 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: typography.heading,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
     color: colors.text,
   },
   subtitle: {
     fontSize: typography.body,
+    fontFamily: typography.fontFamily.regular,
     color: colors.muted,
   },
   shuffleButton: {
     alignSelf: 'center',
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.lg,
+    backgroundColor: 'rgba(255,69,0,0.1)',
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255,69,0,0.3)',
   },
   shuffleText: {
     fontSize: typography.body,
+    fontFamily: typography.fontFamily.semiBold,
     color: colors.primary,
     fontWeight: typography.weightSemi,
   },
   timerNote: {
     fontSize: typography.small,
+    fontFamily: typography.fontFamily.regular,
     color: colors.muted,
     textAlign: 'center',
   },

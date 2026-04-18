@@ -11,12 +11,12 @@ import { MainStackParamList } from '../navigation/types';
 import { createSession, getUploadUrl, uploadRecording, submitSession } from '../services/api';
 
 const TYPE_CONFIG: Record<string, { bg: string; border: string; label: string }> = {
-  record: { bg: '#dbeafe', border: '#93c5fd', label: 'Record' },
-  drill: { bg: '#ffedd5', border: '#fdba74', label: 'Drill' },
-  reflection: { bg: '#f3e8ff', border: '#c4b5fd', label: 'Reflection' },
-  game: { bg: '#dcfce7', border: '#86efac', label: 'Game' },
-  unlearning_drill: { bg: '#ffe4e6', border: '#fda4af', label: 'Unlearning' },
-  imitation_drill: { bg: '#ccfbf1', border: '#5eead4', label: 'Imitation' },
+  record: { bg: 'rgba(255,69,0,0.12)', border: 'rgba(255,69,0,0.3)', label: 'Record' },
+  drill: { bg: 'rgba(255,122,26,0.12)', border: 'rgba(255,122,26,0.3)', label: 'Drill' },
+  reflection: { bg: 'rgba(138,138,138,0.12)', border: 'rgba(138,138,138,0.3)', label: 'Reflection' },
+  game: { bg: 'rgba(74,222,128,0.12)', border: 'rgba(74,222,128,0.3)', label: 'Game' },
+  unlearning_drill: { bg: 'rgba(230,57,70,0.12)', border: 'rgba(230,57,70,0.3)', label: 'Unlearning' },
+  imitation_drill: { bg: 'rgba(250,204,21,0.12)', border: 'rgba(250,204,21,0.3)', label: 'Imitation' },
 };
 
 export function ExerciseRecordScreen() {
@@ -38,7 +38,7 @@ export function ExerciseRecordScreen() {
       await submitSession(session.id);
 
       // Simulate analysis delay
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise<void>((resolve) => setTimeout(resolve, 2000));
 
       setAnalyzing(false);
       navigation.replace('AnalysisResult', {
@@ -116,11 +116,13 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     fontSize: typography.small,
+    fontFamily: typography.fontFamily.semiBold,
     fontWeight: typography.weightSemi,
-    color: '#fff',
+    color: '#FFFFFF',
   },
   prompt: {
     fontSize: typography.body,
+    fontFamily: typography.fontFamily.semiBold,
     color: colors.text,
     lineHeight: 24,
     fontWeight: typography.weightSemi,
@@ -145,6 +147,7 @@ const styles = StyleSheet.create({
   },
   analyzingTitle: {
     fontSize: typography.heading,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
     color: colors.text,
     textAlign: 'center',

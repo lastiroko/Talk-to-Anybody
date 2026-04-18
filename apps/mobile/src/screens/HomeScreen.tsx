@@ -10,13 +10,14 @@ import { colors } from '../theme/colors';
 import { shadows } from '../theme/shadows';
 import { useProgress } from '../hooks/useProgress';
 
-const CATEGORIES = [
-  { label: 'Ethics', icon: '🛡️', tint: '#FCE8D6' },
-  { label: 'Technology', icon: '⚙️', tint: '#E6EDFF' },
-  { label: 'History', icon: '🌍', tint: '#E9F6DE' },
-];
+const WEEK_DAYS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+const WEEK_BARS = [40, 25, 55, 70, 35, 20, 60];
 
-const WAVE = [8, 14, 7, 20, 12, 10, 16, 11, 19, 8, 13, 9, 16, 12, 8, 14, 18, 10, 12, 15, 7, 13, 18, 11, 9, 13];
+const TRACKS = [
+  { num: '01', title: 'Vocal Presence', progress: 0.72 },
+  { num: '02', title: 'Story Structure', progress: 0.45 },
+  { num: '03', title: 'Impromptu Flow', progress: 0.18 },
+];
 
 export function HomeScreen() {
   const { progress, loading } = useProgress();
@@ -25,6 +26,16 @@ export function HomeScreen() {
 
   const completedCount = progress?.completedDays.length ?? 0;
   const rank = Math.max(1, 30 - Math.round(completedCount / 2));
+  const streakDays = Math.min(completedCount, 99);
+
+  const now = new Date();
+  const dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+  const dayLabel = dayNames[now.getDay()];
+  const monthNum = String(now.getMonth() + 1).padStart(2, '0');
+  const dayNum = String(now.getDate()).padStart(2, '0');
+  const hour = now.getHours();
+  const greeting = hour < 12 ? 'Morning' : hour < 18 ? 'Afternoon' : 'Evening';
+  const todayIndex = (now.getDay() + 6) % 7; // Mon=0
 
   if (loading || !progress) {
     return (
@@ -42,52 +53,71 @@ export function HomeScreen() {
   return (
     <ScreenContainer padded={false} scroll={false}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        {/* Header */}
         <Animated.View style={[styles.topBar, fadeIn(0)]}>
-          <View style={styles.backBtn}><Text style={styles.backTxt}>‹</Text></View>
-          <PointsBadge gems={gam.gems} coins={gam.coins} />
-        </Animated.View>
-
-        <Animated.View style={[styles.hero, fadeIn(1)]}>
-          <Text style={styles.bot}>🤖</Text>
-          <View style={styles.rankWrap}>
-            <Text style={styles.rank}>{rank}</Text>
-            <Text style={styles.rankSuffix}>rd</Text>
+          <View>
+            <Text style={styles.dateCaption}>{dayLabel} / {monthNum}.{dayNum}</Text>
+            <Text style={styles.greeting}>{greeting}, User.</Text>
           </View>
-          <Text style={styles.insight}>Listen every <Text style={styles.insightTag}>Day Insight</Text></Text>
-          <Text style={styles.sub}>about your education</Text>
-        </Animated.View>
-
-        <Animated.View style={[styles.voiceCard, fadeIn(2)]}>
-          <View style={styles.waveRow}>
-            {WAVE.map((h, i) => <View key={i} style={[styles.waveBar, { height: h }]} />)}
+          <View style={styles.topRight}>
+            <View style={styles.streakBadge}>
+              <Text style={styles.streakText}>{streakDays} DAY STREAK</Text>
+            </View>
+            <View style={styles.avatarCircle}>
+              <Text style={styles.avatarLetter}>U</Text>
+            </View>
           </View>
-          <View style={styles.mic}><Text style={styles.micTxt}>🎙️</Text></View>
         </Animated.View>
 
-        <Animated.View style={[styles.sectionHeader, fadeIn(3)]}>
-          <Text style={styles.sectionTitle}>Select Category <Text style={styles.badge}>34</Text></Text>
-          <Text style={styles.link}>View all</Text>
+        {/* Today's Drill hero card */}
+        <Animated.View style={[styles.heroCard, fadeIn(1)]}>
+          <Text style={styles.heroCaption}>TODAY'S DRILL</Text>
+          <Text style={styles.heroTitle}>Day {progress.currentDayUnlocked ?? 1}</Text>
+          <Text style={styles.heroSub}>Vocal clarity and pacing drill. 8 min.</Text>
+          <View style={styles.heroMeta}>
+            <PointsBadge gems={gam.gems} coins={gam.coins} />
+          </View>
+          <View style={styles.heroAccentBar} />
         </Animated.View>
 
-        <Animated.View style={[styles.categoryRow, fadeIn(4)]}>
-          {CATEGORIES.map((cat) => (
-            <View key={cat.label} style={[styles.catCard, { backgroundColor: cat.tint }]}>
-              <Text style={styles.catIcon}>{cat.icon}</Text>
-              <Text style={styles.catLabel}>{cat.label}</Text>
+        {/* Week bar chart */}
+        <Animated.View style={[styles.weekSection, fadeIn(2)]}>
+          <Text style={styles.sectionCaption}>THIS WEEK</Text>
+          <View style={styles.weekRow}>
+            {WEEK_DAYS.map((day, i) => (
+              <View key={i} style={styles.weekCol}>
+                <View style={styles.weekBarBg}>
+                  <View
+                    style={[
+                      styles.weekBarFill,
+                      { height: WEEK_BARS[i] },
+                      i === todayIndex && styles.weekBarActive,
+                    ]}
+                  />
+                </View>
+                <Text style={[styles.weekLabel, i === todayIndex && styles.weekLabelActive]}>
+                  {day}
+                </Text>
+              </View>
+            ))}
+          </View>
+        </Animated.View>
+
+        {/* Your Tracks */}
+        <Animated.View style={[styles.tracksSection, fadeIn(3)]}>
+          <Text style={styles.sectionCaption}>YOUR TRACKS</Text>
+          {TRACKS.map((track) => (
+            <View key={track.num} style={styles.trackCard}>
+              <Text style={styles.trackNum}>{track.num}</Text>
+              <View style={styles.trackBody}>
+                <Text style={styles.trackTitle}>{track.title}</Text>
+                <View style={styles.trackBarBg}>
+                  <View style={[styles.trackBarFill, { width: `${Math.round(track.progress * 100)}%` }]} />
+                </View>
+              </View>
+              <Text style={styles.trackPct}>{Math.round(track.progress * 100)}%</Text>
             </View>
           ))}
-        </Animated.View>
-
-        <Animated.View style={[styles.featureCard, shadows.card, fadeIn(4)]}>
-          <View style={styles.rewardRow}><Text style={styles.reward}>💎 +5</Text><Text style={styles.reward}>🪙 +145</Text><Text style={styles.fire}>🔥</Text></View>
-          <View style={styles.featureBody}>
-            <Text style={styles.featureBot}>🦾</Text>
-            <View style={styles.featureTextWrap}>
-              <Text style={styles.featureTag}>Mind Unlocked</Text>
-              <Text style={styles.featureTitle}>The Human Mind</Text>
-              <Text style={styles.featureSub}>A Deep Dive into Thoughts, Emotions, and Behavior</Text>
-            </View>
-          </View>
         </Animated.View>
       </ScrollView>
     </ScreenContainer>
@@ -95,39 +125,168 @@ export function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  content: { padding: spacing.lg, gap: spacing.md, paddingBottom: spacing.xl },
-  topBar: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  backBtn: { width: 42, height: 42, borderRadius: 21, backgroundColor: '#ffffffd9', alignItems: 'center', justifyContent: 'center' },
-  backTxt: { fontSize: 28, color: colors.textMuted, lineHeight: 30 },
-  hero: { alignItems: 'center', gap: 2 },
-  bot: { fontSize: 70 },
-  rankWrap: { flexDirection: 'row', alignItems: 'flex-end' },
-  rank: { fontSize: 54, color: '#2F7A98', fontWeight: typography.weightBold },
-  rankSuffix: { fontSize: typography.subheading, color: '#2F7A98', fontWeight: typography.weightBold, marginBottom: 8 },
-  insight: { fontSize: typography.body, fontWeight: typography.weightSemi, color: colors.text },
-  insightTag: { backgroundColor: '#BFDEEC', color: '#1f5f7a' },
-  sub: { fontSize: typography.small, color: colors.textBody },
-  voiceCard: { backgroundColor: '#CEE5EF', borderRadius: 22, padding: spacing.md, flexDirection: 'row', alignItems: 'center', gap: spacing.md },
-  waveRow: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  waveBar: { width: 2, borderRadius: 2, backgroundColor: '#3B7892' },
-  mic: { width: 52, height: 52, borderRadius: 26, backgroundColor: '#5F93A8', alignItems: 'center', justifyContent: 'center' },
-  micTxt: { fontSize: 20 },
-  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 4 },
-  sectionTitle: { fontSize: typography.subheading, fontWeight: typography.weightBold, color: colors.text },
-  badge: { color: '#2F7A98' },
-  link: { color: '#2F7A98', fontWeight: typography.weightSemi },
-  categoryRow: { flexDirection: 'row', gap: spacing.sm },
-  catCard: { flex: 1, borderRadius: 16, paddingVertical: spacing.md, alignItems: 'center', gap: 6 },
-  catIcon: { fontSize: 24 },
-  catLabel: { fontSize: typography.tiny, color: colors.textBody, fontWeight: typography.weightSemi },
-  featureCard: { backgroundColor: '#FFF6C9', borderRadius: 22, padding: spacing.md, gap: spacing.sm },
-  rewardRow: { flexDirection: 'row', gap: spacing.sm, alignItems: 'center' },
-  reward: { fontWeight: typography.weightBold, color: '#2f6d86', fontSize: typography.caption },
-  fire: { marginLeft: 'auto' },
-  featureBody: { flexDirection: 'row', gap: spacing.sm, alignItems: 'center' },
-  featureBot: { fontSize: 64 },
-  featureTextWrap: { flex: 1 },
-  featureTag: { color: '#B86B17', fontWeight: typography.weightSemi, fontSize: typography.caption },
-  featureTitle: { fontSize: 33/1.5, fontWeight: typography.weightBold, color: colors.text },
-  featureSub: { fontSize: typography.small, color: colors.textBody, marginTop: 4 },
+  content: { padding: spacing.lg, gap: spacing.lg, paddingBottom: spacing.xl },
+  topBar: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' },
+  dateCaption: {
+    fontSize: typography.caption,
+    fontFamily: typography.fontFamily.regular,
+    color: colors.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 1.5,
+    marginBottom: 4,
+  },
+  greeting: {
+    fontSize: typography.heading,
+    fontFamily: typography.fontFamily.display,
+    color: colors.text,
+  },
+  topRight: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+  streakBadge: {
+    borderWidth: 1,
+    borderColor: colors.borderAccent,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  streakText: {
+    fontSize: typography.caption,
+    fontFamily: typography.fontFamily.semiBold,
+    color: colors.primary,
+    letterSpacing: 1.5,
+  },
+  avatarCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.primary,
+  },
+  avatarLetter: {
+    fontSize: 16,
+    fontFamily: typography.fontFamily.bold,
+    color: colors.text,
+  },
+
+  // Hero card
+  heroCard: {
+    backgroundColor: colors.surfaceHighlight,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: colors.borderAccent,
+    padding: spacing.lg,
+    gap: 8,
+    overflow: 'hidden',
+    shadowColor: colors.accentGlow,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 1,
+    shadowRadius: 24,
+    elevation: 8,
+  },
+  heroCaption: {
+    fontSize: typography.caption,
+    fontFamily: typography.fontFamily.regular,
+    color: colors.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 1.5,
+  },
+  heroTitle: {
+    fontSize: typography.title,
+    fontFamily: typography.fontFamily.display,
+    color: colors.text,
+  },
+  heroSub: {
+    fontSize: typography.body,
+    fontFamily: typography.fontFamily.regular,
+    color: colors.textMuted,
+  },
+  heroMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  heroAccentBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 3,
+    backgroundColor: colors.primary,
+  },
+
+  // Week bar chart
+  weekSection: { gap: spacing.sm },
+  sectionCaption: {
+    fontSize: typography.caption,
+    fontFamily: typography.fontFamily.regular,
+    color: colors.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 1.5,
+  },
+  weekRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', gap: 6 },
+  weekCol: { flex: 1, alignItems: 'center', gap: 6 },
+  weekBarBg: {
+    width: '100%',
+    height: 70,
+    backgroundColor: colors.surfaceMuted,
+    borderRadius: 4,
+    justifyContent: 'flex-end',
+    overflow: 'hidden',
+  },
+  weekBarFill: {
+    width: '100%',
+    backgroundColor: colors.surfaceMuted,
+    borderRadius: 4,
+  },
+  weekBarActive: {
+    backgroundColor: colors.primary,
+  },
+  weekLabel: {
+    fontSize: typography.tiny,
+    fontFamily: typography.fontFamily.regular,
+    color: colors.textLight,
+  },
+  weekLabelActive: {
+    color: colors.primary,
+  },
+
+  // Tracks
+  tracksSection: { gap: spacing.sm },
+  trackCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    backgroundColor: colors.surface,
+    borderRadius: 14,
+    padding: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  trackNum: {
+    fontSize: typography.heading,
+    fontFamily: typography.fontFamily.display,
+    color: colors.textLight,
+  },
+  trackBody: { flex: 1, gap: 6 },
+  trackTitle: {
+    fontSize: typography.body,
+    fontFamily: typography.fontFamily.semiBold,
+    color: colors.text,
+  },
+  trackBarBg: {
+    height: 4,
+    backgroundColor: colors.surfaceMuted,
+    borderRadius: 2,
+    overflow: 'hidden',
+  },
+  trackBarFill: {
+    height: 4,
+    backgroundColor: colors.primary,
+    borderRadius: 2,
+  },
+  trackPct: {
+    fontSize: typography.caption,
+    fontFamily: typography.fontFamily.semiBold,
+    color: colors.textMuted,
+  },
 });

@@ -230,19 +230,23 @@ const styles = StyleSheet.create({
   // XP banner
   xpBanner: {
     alignSelf: 'center',
-    backgroundColor: colors.goldLight,
+    backgroundColor: 'rgba(255,69,0,0.12)',
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.sm,
     borderRadius: 999,
+    borderWidth: 1,
+    borderColor: 'rgba(255,69,0,0.3)',
   },
   xpText: {
     fontSize: typography.body,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
-    color: colors.gold,
+    color: colors.primary,
   },
 
   title: {
     fontSize: typography.title,
+    fontFamily: typography.fontFamily.display,
     fontWeight: typography.weightBold,
     color: colors.text,
   },
@@ -260,6 +264,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.surface,
+    shadowColor: colors.accentGlow,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 12,
   },
   scoreNumber: {
     fontSize: 48,
@@ -267,8 +275,11 @@ const styles = StyleSheet.create({
   },
   scoreLabel: {
     fontSize: typography.subheading,
+    fontFamily: typography.fontFamily.semiBold,
     fontWeight: typography.weightSemi,
     color: colors.text,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
 
   // Sub-scores
@@ -283,6 +294,8 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     alignItems: 'center',
     gap: 4,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   subScoreIcon: { fontSize: 20 },
   subScoreValue: {
@@ -291,13 +304,17 @@ const styles = StyleSheet.create({
   },
   subScoreLabel: {
     fontSize: typography.small,
+    fontFamily: typography.fontFamily.regular,
     color: colors.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
 
   // Sections
   section: { gap: spacing.sm },
   sectionTitle: {
     fontSize: typography.subheading,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
     color: colors.text,
   },
@@ -316,6 +333,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     borderRadius: 14,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   stripe: {
     width: 5,
@@ -339,11 +358,16 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     padding: spacing.lg,
     gap: spacing.sm,
+    borderWidth: 1,
+    borderColor: 'rgba(255,69,0,0.3)',
   },
   coachingLabel: {
     fontSize: typography.caption,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
-    color: colors.gold,
+    color: colors.primary,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   coachingText: {
     fontSize: typography.body,

@@ -47,12 +47,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: typography.heading,
     fontWeight: typography.weightSemi,
-    color: colors.text,
+    color: '#FFFFFF',
     textAlign: 'center',
   },
   subtitle: {
     fontSize: typography.body,
-    color: colors.muted,
+    color: '#8A8A8A',
     textAlign: 'center',
     lineHeight: 22,
   },

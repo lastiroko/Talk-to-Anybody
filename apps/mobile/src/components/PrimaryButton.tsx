@@ -16,11 +16,11 @@ interface PrimaryButtonProps {
   variant?: Variant;
 }
 
-const VARIANT_STYLES: Record<Variant, { bg: string; pressedBg: string; textColor: string; borderColor?: string }> = {
-  primary: { bg: colors.primary, pressedBg: colors.primaryDark, textColor: colors.textOnPrimary },
-  secondary: { bg: 'transparent', pressedBg: colors.primaryLight, textColor: colors.primary, borderColor: colors.primary },
-  ghost: { bg: 'transparent', pressedBg: colors.surfaceMuted, textColor: colors.textBody },
-  danger: { bg: colors.error, pressedBg: '#E05555', textColor: '#FFFFFF' },
+const VARIANT_STYLES: Record<Variant, { bg: string; pressedBg: string; textColor: string; borderColor?: string; letterSpacing?: number; textTransform?: 'uppercase' }> = {
+  primary: { bg: '#FF4500', pressedBg: '#CC3700', textColor: '#FFFFFF' },
+  secondary: { bg: '#2A2A2A', pressedBg: '#333333', textColor: '#FFFFFF', borderColor: 'rgba(255,255,255,0.18)' },
+  ghost: { bg: 'transparent', pressedBg: 'rgba(255,255,255,0.06)', textColor: '#FFFFFF', borderColor: 'rgba(255,255,255,0.2)', letterSpacing: 1.5, textTransform: 'uppercase' },
+  danger: { bg: '#E63946', pressedBg: '#CC2F3C', textColor: '#FFFFFF' },
 };
 
 export function PrimaryButton({ title, onPress, leftIcon, disabled = false, variant = 'primary' }: PrimaryButtonProps) {
@@ -67,7 +67,7 @@ export function PrimaryButton({ title, onPress, leftIcon, disabled = false, vari
         disabled={disabled}
       >
         {leftIcon ? <View style={styles.iconSlot}>{leftIcon}</View> : null}
-        <Text style={[styles.title, { color: disabled ? colors.textLight : v.textColor }]}>{title}</Text>
+        <Text style={[styles.title, { color: disabled ? '#4A4A4A' : v.textColor }, v.letterSpacing ? { letterSpacing: v.letterSpacing } : undefined, v.textTransform ? { textTransform: v.textTransform } : undefined]}>{title}</Text>
       </Pressable>
     </Animated.View>
   );
@@ -75,22 +75,23 @@ export function PrimaryButton({ title, onPress, leftIcon, disabled = false, vari
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 14,
-    paddingVertical: spacing.md,
+    borderRadius: 999,
+    height: 52,
     paddingHorizontal: spacing.lg,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
   },
   disabled: {
-    backgroundColor: '#CBD5E1',
+    backgroundColor: '#1F1F1F',
     opacity: 0.7,
   },
   iconSlot: {
     marginRight: spacing.sm,
   },
   title: {
-    fontSize: typography.body,
+    fontSize: 13,
+    fontFamily: typography.fontFamily.semiBold,
     fontWeight: typography.weightSemi,
   },
 });

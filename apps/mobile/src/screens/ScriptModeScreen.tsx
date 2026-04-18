@@ -106,11 +106,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: typography.heading,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
     color: colors.text,
   },
   subtitle: {
     fontSize: typography.body,
+    fontFamily: typography.fontFamily.regular,
     color: colors.muted,
   },
   inputArea: {
@@ -122,15 +124,19 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: spacing.md,
     fontSize: typography.body,
+    fontFamily: typography.fontFamily.regular,
     color: colors.text,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.surfaceMuted,
     minHeight: 140,
     lineHeight: 22,
   },
   wordCount: {
     fontSize: typography.small,
+    fontFamily: typography.fontFamily.regular,
     color: colors.muted,
     textAlign: 'right',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   toggleRow: {
     flexDirection: 'row',
@@ -144,10 +150,13 @@ const styles = StyleSheet.create({
   },
   toggleLabel: {
     fontSize: typography.small,
+    fontFamily: typography.fontFamily.semiBold,
     fontWeight: typography.weightSemi,
     color: colors.text,
     flex: 1,
     marginRight: spacing.sm,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   toggle: {
     width: 50,
@@ -164,20 +173,23 @@ const styles = StyleSheet.create({
     width: 22,
     height: 22,
     borderRadius: 11,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
   },
   toggleKnobOn: {
     alignSelf: 'flex-end',
   },
   teleprompter: {
-    backgroundColor: '#0f172a',
+    backgroundColor: colors.background,
     borderRadius: 12,
     padding: spacing.lg,
     maxHeight: 150,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   teleprompterText: {
     fontSize: typography.subheading,
-    color: '#fff',
+    fontFamily: typography.fontFamily.regular,
+    color: colors.text,
     lineHeight: 28,
   },
 });

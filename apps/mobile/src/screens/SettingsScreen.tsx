@@ -38,7 +38,7 @@ export function SettingsScreen() {
     <ScreenContainer padded={false} scroll={false}>
       <ScrollView contentContainerStyle={styles.content}>
         {/* Profile section */}
-        <View style={[styles.sectionCard, shadows.card]}>
+        <View style={styles.sectionCard}>
           <View style={styles.profileHeader}>
             <View style={styles.avatar}>
               <Text style={styles.avatarText}>S</Text>
@@ -54,8 +54,8 @@ export function SettingsScreen() {
         </View>
 
         {/* Plan section */}
-        <View style={[styles.sectionCard, shadows.card]}>
-          <Text style={styles.sectionTitle}>Your Plan</Text>
+        <View style={styles.sectionCard}>
+          <Text style={styles.sectionTitle}>YOUR PLAN</Text>
           <SettingsRow label="Goal" value="Public Speaking" onPress={comingSoon('Goal editing')} />
           <View style={styles.separator} />
           <SettingsRow label="Daily time" value="10 min/day" onPress={comingSoon('Daily time editing')} />
@@ -64,12 +64,12 @@ export function SettingsScreen() {
         </View>
 
         {/* Subscription section */}
-        <View style={[styles.sectionCard, shadows.card]}>
-          <Text style={styles.sectionTitle}>Subscription</Text>
+        <View style={styles.sectionCard}>
+          <Text style={styles.sectionTitle}>SUBSCRIPTION</Text>
           <View style={styles.subRow}>
             <Text style={styles.subLabel}>Status</Text>
             <View style={styles.freeBadge}>
-              <Text style={styles.freeBadgeText}>Free Trial</Text>
+              <Text style={styles.freeBadgeText}>FREE TRIAL</Text>
             </View>
           </View>
           <TouchableOpacity
@@ -82,13 +82,13 @@ export function SettingsScreen() {
             }
             activeOpacity={0.7}
           >
-            <Text style={styles.upgradeText}>{'\u2b50'} Upgrade to Premium</Text>
+            <Text style={styles.upgradeText}>Upgrade to Premium</Text>
           </TouchableOpacity>
         </View>
 
         {/* Notifications section */}
-        <View style={[styles.sectionCard, shadows.card]}>
-          <Text style={styles.sectionTitle}>Notifications</Text>
+        <View style={styles.sectionCard}>
+          <Text style={styles.sectionTitle}>NOTIFICATIONS</Text>
           <SettingsRow
             label="Daily reminder"
             rightElement={
@@ -111,8 +111,8 @@ export function SettingsScreen() {
         </View>
 
         {/* Data section */}
-        <View style={[styles.sectionCard, shadows.card]}>
-          <Text style={styles.sectionTitle}>Your Data</Text>
+        <View style={styles.sectionCard}>
+          <Text style={styles.sectionTitle}>YOUR DATA</Text>
           <SettingsRow label="Export my data" onPress={comingSoon('Data export')} />
           <View style={styles.separator} />
           <SettingsRow label="Reset progress" destructive onPress={handleResetProgress} />
@@ -127,8 +127,8 @@ export function SettingsScreen() {
         </View>
 
         {/* About section */}
-        <View style={[styles.sectionCard, shadows.card]}>
-          <Text style={styles.sectionTitle}>About</Text>
+        <View style={styles.sectionCard}>
+          <Text style={styles.sectionTitle}>ABOUT</Text>
           <SettingsRow label="Version" value="0.1.0" />
           <View style={styles.separator} />
           <SettingsRow label="Terms of Service" onPress={comingSoon('Terms of Service')} />
@@ -169,14 +169,16 @@ const styles = StyleSheet.create({
   sectionCard: {
     backgroundColor: colors.surface,
     borderRadius: 18,
+    borderWidth: 1,
+    borderColor: colors.border,
     overflow: 'hidden',
   },
   sectionTitle: {
-    fontSize: typography.small,
-    fontWeight: typography.weightBold,
+    fontSize: typography.caption,
+    fontFamily: typography.fontFamily.regular,
     color: colors.textMuted,
     textTransform: 'uppercase',
-    letterSpacing: 1,
+    letterSpacing: 1.5,
     paddingHorizontal: spacing.md,
     paddingTop: spacing.md,
     paddingBottom: spacing.xs,
@@ -204,7 +206,7 @@ const styles = StyleSheet.create({
   },
   avatarText: {
     fontSize: 24,
-    fontWeight: typography.weightBold,
+    fontFamily: typography.fontFamily.bold,
     color: '#FFFFFF',
   },
   profileInfo: {
@@ -213,17 +215,18 @@ const styles = StyleSheet.create({
   },
   profileName: {
     fontSize: typography.body,
-    fontWeight: typography.weightBold,
+    fontFamily: typography.fontFamily.semiBold,
     color: colors.text,
   },
   profileEmail: {
     fontSize: typography.caption,
+    fontFamily: typography.fontFamily.regular,
     color: colors.textMuted,
   },
   editLink: {
     fontSize: typography.caption,
+    fontFamily: typography.fontFamily.semiBold,
     color: colors.primary,
-    fontWeight: typography.weightSemi,
     marginTop: 2,
   },
 
@@ -237,18 +240,22 @@ const styles = StyleSheet.create({
   },
   subLabel: {
     fontSize: typography.body,
+    fontFamily: typography.fontFamily.regular,
     color: colors.text,
   },
   freeBadge: {
-    backgroundColor: colors.goldLight,
+    backgroundColor: colors.surfaceMuted,
+    borderWidth: 1,
+    borderColor: colors.borderAccent,
     paddingHorizontal: spacing.sm,
     paddingVertical: 2,
     borderRadius: 999,
   },
   freeBadgeText: {
-    fontSize: typography.small,
-    fontWeight: typography.weightBold,
-    color: colors.goldDark,
+    fontSize: typography.tiny,
+    fontFamily: typography.fontFamily.semiBold,
+    color: colors.primary,
+    letterSpacing: 1,
   },
   upgradeButton: {
     marginHorizontal: spacing.md,
@@ -260,23 +267,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   upgradeText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontSize: typography.body,
-    fontWeight: typography.weightSemi,
+    fontFamily: typography.fontFamily.semiBold,
   },
 
   // Sign out
   signOutButton: {
     borderWidth: 1.5,
-    borderColor: colors.error,
+    borderColor: '#E63946',
     borderRadius: 14,
     paddingVertical: spacing.md,
     alignItems: 'center',
   },
   signOutText: {
     fontSize: typography.body,
-    fontWeight: typography.weightSemi,
-    color: colors.error,
+    fontFamily: typography.fontFamily.semiBold,
+    color: '#E63946',
   },
 
   bottomSpacer: { height: spacing.xl },

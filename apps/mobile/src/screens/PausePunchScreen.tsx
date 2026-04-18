@@ -18,13 +18,13 @@ import { saveGameScore, getHighScore } from '../storage/gameScores';
 // Theme constants (inlined per spec)
 // ---------------------------------------------------------------------------
 const colors = {
-  background: '#ffffff',
-  surface: '#f5f7fb',
-  primary: '#3b82f6',
-  primaryDark: '#1d4ed8',
-  text: '#0f172a',
-  muted: '#64748b',
-  border: '#e2e8f0',
+  background: '#0A0A0A',
+  surface: '#141414',
+  primary: '#FF4500',
+  primaryDark: '#E63946',
+  text: '#FFFFFF',
+  muted: '#8A8A8A',
+  border: 'rgba(255,255,255,0.08)',
 };
 
 const spacing = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 };
@@ -37,6 +37,10 @@ const typography = {
   weightBold: '700' as const,
   weightSemi: '600' as const,
   weightRegular: '400' as const,
+  fontRegular: 'JetBrainsMono_400Regular',
+  fontSemi: 'JetBrainsMono_600SemiBold',
+  fontBold: 'JetBrainsMono_700Bold',
+  fontDisplay: 'SpaceGrotesk_700Bold',
 };
 
 // ---------------------------------------------------------------------------
@@ -325,10 +329,10 @@ function feedbackLabel(quality: string): string {
 
 function feedbackColor(quality: string): string {
   switch (quality) {
-    case 'perfect': return '#16a34a';
-    case 'good': return '#eab308';
-    case 'close': return '#fde68a';
-    default: return '#ef4444';
+    case 'perfect': return '#4ADE80';
+    case 'good': return '#FACC15';
+    case 'close': return '#FF7A1A';
+    default: return '#E63946';
   }
 }
 
@@ -350,7 +354,7 @@ export function PausePunchScreen() {
 
   // Feedback animation
   const [feedbackText, setFeedbackText] = useState('');
-  const [feedbackClr, setFeedbackClr] = useState('#16a34a');
+  const [feedbackClr, setFeedbackClr] = useState('#4ADE80');
   const feedbackOpacity = useRef(new Animated.Value(0)).current;
   const feedbackScale = useRef(new Animated.Value(0.5)).current;
 
@@ -637,9 +641,9 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#dbeafe',
+    backgroundColor: 'rgba(255,69,0,0.12)',
     borderWidth: 2,
-    borderColor: '#93c5fd',
+    borderColor: 'rgba(255,69,0,0.3)',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: spacing.md,
@@ -650,10 +654,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: typography.heading,
     fontWeight: typography.weightBold,
+    fontFamily: typography.fontDisplay,
     color: colors.text,
   },
   description: {
     fontSize: typography.body,
+    fontFamily: typography.fontRegular,
     color: colors.muted,
     textAlign: 'center',
     lineHeight: 22,
@@ -698,6 +704,7 @@ const styles = StyleSheet.create({
   playScore: {
     fontSize: typography.subheading,
     fontWeight: typography.weightBold,
+    fontFamily: typography.fontBold,
     color: colors.primary,
   },
   playProgress: {
@@ -728,14 +735,15 @@ const styles = StyleSheet.create({
   wordText: {
     fontSize: 22,
     fontWeight: typography.weightRegular,
+    fontFamily: typography.fontRegular,
     color: colors.text,
     lineHeight: 32,
   },
   wordPast: {
-    color: colors.muted,
+    color: '#4A4A4A',
   },
   wordCurrent: {
-    color: '#ffffff',
+    color: '#FFFFFF',
     fontWeight: typography.weightBold,
   },
   tapHint: {
@@ -749,7 +757,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '45%',
     alignSelf: 'center',
-    backgroundColor: 'rgba(255,255,255,0.95)',
+    backgroundColor: '#141414',
     borderRadius: 16,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
@@ -762,6 +770,7 @@ const styles = StyleSheet.create({
   feedbackText: {
     fontSize: 28,
     fontWeight: typography.weightBold,
+    fontFamily: typography.fontBold,
     textAlign: 'center',
   },
 

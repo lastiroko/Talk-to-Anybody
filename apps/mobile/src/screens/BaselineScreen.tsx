@@ -14,9 +14,9 @@ interface BaselineScreenProps {
 }
 
 const TIPS = [
-  'Speak naturally \u2014 don\u2019t try to be perfect',
-  'It\u2019s okay to pause or stumble',
-  'This is your starting point, not your final score',
+  'Speak naturally \u2014 don\u2019t perform',
+  'Pauses and stumbles are fine',
+  'This is your baseline, not your ceiling',
 ];
 
 export function BaselineScreen({ onComplete }: BaselineScreenProps) {
@@ -29,9 +29,9 @@ export function BaselineScreen({ onComplete }: BaselineScreenProps) {
 
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>Let's hear your voice</Text>
+          <Text style={styles.title}>Record your baseline</Text>
           <Text style={styles.subtitle}>
-            Record a 60-second speech so we can measure your starting point
+            60 seconds so we can measure where you start
           </Text>
         </View>
 
@@ -51,7 +51,7 @@ export function BaselineScreen({ onComplete }: BaselineScreenProps) {
 
         {/* Tips */}
         <View style={styles.tips}>
-          <Text style={styles.tipsTitle}>{'\ud83d\udca1'} Tips for your baseline:</Text>
+          <Text style={styles.tipsTitle}>TIPS</Text>
           {TIPS.map((tip) => (
             <Text key={tip} style={styles.tipItem}>
               {'\u2022'} {tip}
@@ -62,7 +62,7 @@ export function BaselineScreen({ onComplete }: BaselineScreenProps) {
         {/* Actions */}
         <View style={styles.actions}>
           {recordingDone ? (
-            <PrimaryButton title="Continue \u2192" onPress={onComplete} />
+            <PrimaryButton title="Continue" onPress={onComplete} />
           ) : (
             <TouchableOpacity onPress={onComplete} style={styles.skipLink}>
               <Text style={styles.skipText}>Skip for now</Text>
@@ -77,19 +77,21 @@ export function BaselineScreen({ onComplete }: BaselineScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.background,
   },
   header: {
     gap: spacing.xs,
     marginBottom: spacing.md,
   },
   title: {
+    fontFamily: typography.fontFamily.display,
     fontSize: typography.heading,
-    fontWeight: typography.weightBold,
     color: colors.text,
   },
   subtitle: {
+    fontFamily: typography.fontFamily.regular,
     fontSize: typography.body,
-    color: colors.muted,
+    color: colors.textMuted,
     lineHeight: 22,
   },
   recordingWrap: {
@@ -105,14 +107,16 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   tipsTitle: {
-    fontSize: typography.body,
-    fontWeight: typography.weightSemi,
-    color: colors.text,
+    fontFamily: typography.fontFamily.semiBold,
+    fontSize: typography.caption,
+    letterSpacing: 2,
+    color: colors.textMuted,
     marginBottom: 4,
   },
   tipItem: {
+    fontFamily: typography.fontFamily.regular,
     fontSize: typography.small,
-    color: colors.muted,
+    color: colors.textMuted,
     lineHeight: 20,
     paddingLeft: spacing.sm,
   },
@@ -125,8 +129,8 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   skipText: {
+    fontFamily: typography.fontFamily.regular,
     fontSize: typography.body,
-    color: colors.muted,
-    fontWeight: typography.weightSemi,
+    color: colors.textMuted,
   },
 });

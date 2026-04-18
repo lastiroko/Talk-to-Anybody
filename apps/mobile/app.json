@@ -1,19 +1,20 @@
 {
   "expo": {
-    "name": "SpeakCoach",
-    "slug": "speakcoach",
+    "name": "Talk to Anybody",
+    "slug": "talk-to-anybody",
     "version": "0.1.0",
     "orientation": "portrait",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "backgroundColor": "#0A0A0A"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#0A0A0A"
       }
     },
     "web": {

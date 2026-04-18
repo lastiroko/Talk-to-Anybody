@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: -30,
     fontSize: 10,
-    color: colors.muted,
+    color: '#8A8A8A',
     width: 26,
     textAlign: 'right',
   },
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: colors.primary,
     borderWidth: 2,
-    borderColor: '#fff',
+    borderColor: '#141414',
   },
   xLabels: {
     position: 'relative',
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   },
   xLabel: {
     fontSize: 10,
-    color: colors.muted,
+    color: '#8A8A8A',
     width: 24,
     textAlign: 'center',
   },

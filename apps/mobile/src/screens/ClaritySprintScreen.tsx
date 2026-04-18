@@ -16,13 +16,13 @@ import { saveGameScore, getHighScore } from '../storage/gameScores';
 
 // ─── Theme tokens ────────────────────────────────────────────────────────────
 const colors = {
-  background: '#ffffff',
-  surface: '#f5f7fb',
-  primary: '#3b82f6',
-  primaryDark: '#1d4ed8',
-  text: '#0f172a',
-  muted: '#64748b',
-  border: '#e2e8f0',
+  background: '#0A0A0A',
+  surface: '#141414',
+  primary: '#FF4500',
+  primaryDark: '#E63946',
+  text: '#FFFFFF',
+  muted: '#8A8A8A',
+  border: 'rgba(255,255,255,0.08)',
 };
 
 const sp = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 };
@@ -35,6 +35,10 @@ const typo = {
   weightBold: '700' as const,
   weightSemi: '600' as const,
   weightRegular: '400' as const,
+  fontRegular: 'JetBrainsMono_400Regular',
+  fontSemi: 'JetBrainsMono_600SemiBold',
+  fontBold: 'JetBrainsMono_700Bold',
+  fontDisplay: 'SpaceGrotesk_700Bold',
 };
 
 // ─── Data ────────────────────────────────────────────────────────────────────
@@ -720,9 +724,9 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#f3e8ff',
+    backgroundColor: 'rgba(255,69,0,0.12)',
     borderWidth: 2,
-    borderColor: '#c4b5fd',
+    borderColor: 'rgba(255,69,0,0.3)',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: sp.md,
@@ -733,10 +737,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: typo.heading,
     fontWeight: typo.weightBold,
+    fontFamily: typo.fontDisplay,
     color: colors.text,
   },
   description: {
     fontSize: typo.body,
+    fontFamily: typo.fontRegular,
     color: colors.muted,
     textAlign: 'center',
     lineHeight: 22,
@@ -766,7 +772,7 @@ const styles = StyleSheet.create({
     color: colors.muted,
   },
   pillTextActive: {
-    color: '#ffffff',
+    color: '#FFFFFF',
   },
 
   // High scores
@@ -834,7 +840,7 @@ const styles = StyleSheet.create({
   avoidHeading: {
     fontSize: typo.body,
     fontWeight: typo.weightSemi,
-    color: '#ef4444',
+    color: '#E63946',
   },
   jargonRow: {
     flexDirection: 'row',
@@ -842,7 +848,7 @@ const styles = StyleSheet.create({
     gap: sp.sm,
   },
   jargonPill: {
-    backgroundColor: '#fee2e2',
+    backgroundColor: 'rgba(230,57,70,0.12)',
     borderRadius: 12,
     paddingVertical: sp.xs,
     paddingHorizontal: sp.md,
@@ -850,7 +856,7 @@ const styles = StyleSheet.create({
   jargonPillText: {
     fontSize: typo.small,
     fontWeight: typo.weightSemi,
-    color: '#ef4444',
+    color: '#E63946',
   },
 
   // Countdown
@@ -868,6 +874,7 @@ const styles = StyleSheet.create({
   countdownNumber: {
     fontSize: 48,
     fontWeight: typo.weightBold,
+    fontFamily: typo.fontBold,
     color: colors.primary,
   },
   countdownHint: {
@@ -900,13 +907,14 @@ const styles = StyleSheet.create({
   avoidHintSmall: {
     fontSize: typo.small,
     fontWeight: typo.weightSemi,
-    color: '#ef4444',
+    color: '#E63946',
   },
 
   // ── Rating screen ──
   ratingTitle: {
     fontSize: typo.heading,
     fontWeight: typo.weightBold,
+    fontFamily: typo.fontDisplay,
     color: colors.text,
     textAlign: 'center',
     marginTop: sp.xl,
@@ -941,7 +949,7 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   ratingCircleTextActive: {
-    color: '#ffffff',
+    color: '#FFFFFF',
   },
   ratingLabel: {
     fontSize: typo.body,
@@ -965,18 +973,18 @@ const styles = StyleSheet.create({
   // ── Result screen ──
   simpleAltCard: {
     width: '100%',
-    backgroundColor: '#f0fdf4',
+    backgroundColor: 'rgba(74,222,128,0.12)',
     borderRadius: 14,
     padding: sp.lg,
     gap: sp.sm,
     borderWidth: 1,
-    borderColor: '#bbf7d0',
+    borderColor: 'rgba(74,222,128,0.3)',
     marginTop: sp.md,
   },
   simpleAltHeading: {
     fontSize: typo.body,
     fontWeight: typo.weightBold,
-    color: '#15803d',
+    color: '#4ADE80',
   },
   simpleAltText: {
     fontSize: typo.body,

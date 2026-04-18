@@ -48,17 +48,17 @@ interface AppNavigatorProps {
   onOnboardingComplete: () => void;
 }
 
-const TAB_ICONS: Record<string, { active: string; inactive: string }> = {
-  Home: { active: '⌂', inactive: '⌂' },
-  Plan: { active: '🏆', inactive: '🏆' },
-  Practice: { active: '✦', inactive: '✦' },
-  Progress: { active: '♛', inactive: '♛' },
-  Settings: { active: '◉', inactive: '◉' },
+const TAB_ICONS: Record<string, string> = {
+  Home: '⌂',
+  Plan: '△',
+  Practice: '◇',
+  Progress: '▩',
+  Settings: '⚙',
 };
 
 function AuthNavigator({ onAuthenticated }: { onAuthenticated: () => void }) {
   return (
-    <AuthStack.Navigator screenOptions={{ headerStyle: { backgroundColor: colors.background }, headerTintColor: colors.text }}>
+    <AuthStack.Navigator screenOptions={{ headerStyle: { backgroundColor: '#0A0A0A' }, headerTintColor: '#FFFFFF', headerTitleStyle: { fontFamily: typography.fontFamily.bold, fontSize: 16 } }}>
       <AuthStack.Screen name="Welcome" options={{ headerShown: false }}>
         {({ navigation }) => (
           <WelcomeScreen
@@ -86,7 +86,7 @@ function AuthNavigator({ onAuthenticated }: { onAuthenticated: () => void }) {
 
 function OnboardingNavigator({ onDone }: { onDone: () => void }) {
   return (
-    <OnboardingStack.Navigator screenOptions={{ headerStyle: { backgroundColor: colors.background }, headerTintColor: colors.text }}>
+    <OnboardingStack.Navigator screenOptions={{ headerStyle: { backgroundColor: '#0A0A0A' }, headerTintColor: '#FFFFFF', headerTitleStyle: { fontFamily: typography.fontFamily.bold, fontSize: 16 } }}>
       <OnboardingStack.Screen name="OnboardingGoal" options={{ title: 'Your goal' }}>
         {({ navigation }) => (
           <OnboardingGoalScreen onNext={() => navigation.navigate('OnboardingSchedule')} />
@@ -113,29 +113,35 @@ function MainTabs() {
         },
       }}
       screenOptions={({ route }) => ({
-        headerStyle: { backgroundColor: colors.background },
-        headerTintColor: colors.text,
+        headerStyle: { backgroundColor: '#0A0A0A' },
+        headerTintColor: '#FFFFFF',
+        headerTitleStyle: { fontFamily: typography.fontFamily.bold, fontSize: 16, letterSpacing: 0.5 },
         tabBarStyle: {
-          backgroundColor: '#FFFFFF',
-          borderTopWidth: 0,
+          backgroundColor: 'rgba(10,10,10,0.78)',
+          borderTopWidth: 1,
+          borderTopColor: 'rgba(255,255,255,0.08)',
           elevation: 0,
           shadowOpacity: 0,
-          height: 66,
-          paddingBottom: 10,
+          height: 72,
+          paddingBottom: 12,
           paddingTop: 8,
         },
-        tabBarActiveTintColor: colors.tabActive,
-        tabBarInactiveTintColor: colors.tabInactive,
+        tabBarActiveTintColor: '#FF7A1A',
+        tabBarInactiveTintColor: '#4A4A4A',
+        tabBarShowLabel: true,
         tabBarLabelStyle: {
-          display: 'none',
-          fontWeight: '600' as const,
+          fontFamily: typography.fontFamily.regular,
+          fontSize: 9,
+          letterSpacing: 1.5,
+          textTransform: 'uppercase' as const,
+          marginTop: 2,
         },
         tabBarIcon: ({ focused }) => {
-          const icons = TAB_ICONS[route.name];
+          const icon = TAB_ICONS[route.name];
           return (
             <View style={tabStyles.iconWrap}>
-              <Text style={{ fontSize: 20 }}>{focused ? icons.active : icons.inactive}</Text>
-              {focused ? <View style={tabStyles.activeDot} /> : null}
+              <Text style={{ fontSize: 18, color: focused ? '#FF7A1A' : '#4A4A4A' }}>{icon}</Text>
+              {focused ? <View style={tabStyles.activeBar} /> : null}
             </View>
           );
         },
@@ -153,13 +159,18 @@ function MainTabs() {
 const tabStyles = StyleSheet.create({
   iconWrap: {
     alignItems: 'center',
-    gap: 2,
+    gap: 4,
   },
-  activeDot: {
-    width: 5,
-    height: 5,
-    borderRadius: 2.5,
-    backgroundColor: colors.primary,
+  activeBar: {
+    width: 18,
+    height: 2,
+    borderRadius: 1,
+    backgroundColor: '#FF7A1A',
+    shadowColor: '#FF7A1A',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.6,
+    shadowRadius: 4,
+    elevation: 4,
   },
 });
 
@@ -169,7 +180,7 @@ export function AppNavigator({ flow, onAuthenticated, onOnboardingComplete }: Ap
       {flow === 'auth' && <AuthNavigator onAuthenticated={onAuthenticated} />}
       {flow === 'onboarding' && <OnboardingNavigator onDone={onOnboardingComplete} />}
       {flow === 'main' && (
-        <MainStack.Navigator screenOptions={{ headerStyle: { backgroundColor: colors.background }, headerTintColor: colors.text }}>
+        <MainStack.Navigator screenOptions={{ headerStyle: { backgroundColor: '#0A0A0A' }, headerTintColor: '#FFFFFF', headerTitleStyle: { fontFamily: typography.fontFamily.bold, fontSize: 16 } }}>
           <MainStack.Screen name="Tabs" component={MainTabs} options={{ headerShown: false }} />
           <MainStack.Screen
             name="DayDetail"

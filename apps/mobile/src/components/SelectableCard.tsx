@@ -28,11 +28,11 @@ const styles = StyleSheet.create({
     padding: spacing.md,
   },
   selected: {
-    borderColor: colors.primary,
-    backgroundColor: '#eff6ff',
+    borderColor: '#FF7A1A',
+    backgroundColor: 'rgba(255,69,0,0.08)',
   },
   unselected: {
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
+    borderColor: 'rgba(255,255,255,0.08)',
+    backgroundColor: '#141414',
   },
 });

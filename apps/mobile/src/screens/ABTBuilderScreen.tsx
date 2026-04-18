@@ -17,13 +17,13 @@ import { PrimaryButton } from '../components/PrimaryButton';
 // Theme (inline to keep self-contained)
 // ---------------------------------------------------------------------------
 const colors = {
-  background: '#ffffff',
-  surface: '#f5f7fb',
-  primary: '#3b82f6',
-  primaryDark: '#1d4ed8',
-  text: '#0f172a',
-  muted: '#64748b',
-  border: '#e2e8f0',
+  background: '#0A0A0A',
+  surface: '#141414',
+  primary: '#FF4500',
+  primaryDark: '#E63946',
+  text: '#FFFFFF',
+  muted: '#8A8A8A',
+  border: 'rgba(255,255,255,0.08)',
 };
 
 const spacing = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 };
@@ -36,6 +36,10 @@ const typography = {
   weightBold: '700' as '700',
   weightSemi: '600' as '600',
   weightRegular: '400' as '400',
+  fontRegular: 'JetBrainsMono_400Regular',
+  fontSemi: 'JetBrainsMono_600SemiBold',
+  fontBold: 'JetBrainsMono_700Bold',
+  fontDisplay: 'SpaceGrotesk_700Bold',
 };
 
 // ---------------------------------------------------------------------------
@@ -94,21 +98,21 @@ const PHASES: PhaseConfig[] = [
     key: 'phase1',
     label: 'AND — Set the scene',
     emoji: '🟢',
-    bgColor: '#dcfce7',
+    bgColor: 'rgba(74,222,128,0.12)',
     helperPrefix: 'I wanted to [topic] AND...',
   },
   {
     key: 'phase2',
     label: 'BUT — The twist',
     emoji: '🟡',
-    bgColor: '#fef3c7',
+    bgColor: 'rgba(250,204,21,0.12)',
     helperPrefix: 'BUT then...',
   },
   {
     key: 'phase3',
     label: 'THEREFORE — The lesson',
     emoji: '🔴',
-    bgColor: '#fee2e2',
+    bgColor: 'rgba(230,57,70,0.12)',
     helperPrefix: 'THEREFORE I learned...',
   },
 ];
@@ -517,9 +521,9 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#dcfce7',
+    backgroundColor: 'rgba(74,222,128,0.12)',
     borderWidth: 2,
-    borderColor: '#86efac',
+    borderColor: 'rgba(74,222,128,0.3)',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: spacing.md,
@@ -530,10 +534,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: typography.heading,
     fontWeight: typography.weightBold,
+    fontFamily: typography.fontDisplay,
     color: colors.text,
   },
   description: {
     fontSize: typography.body,
+    fontFamily: typography.fontRegular,
     color: colors.muted,
     textAlign: 'center',
     lineHeight: 22,
@@ -586,6 +592,7 @@ const styles = StyleSheet.create({
   countdownNumber: {
     fontSize: 72,
     fontWeight: typography.weightBold,
+    fontFamily: typography.fontBold,
     color: colors.primary,
     marginVertical: spacing.lg,
   },
@@ -636,17 +643,18 @@ const styles = StyleSheet.create({
   timerText: {
     fontSize: 36,
     fontWeight: typography.weightBold,
+    fontFamily: typography.fontBold,
     color: colors.primary,
   },
   timerWarning: {
-    color: '#ef4444',
+    color: '#E63946',
   },
 
   // Recording controls
   startRecordingBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#ef4444',
+    backgroundColor: '#E63946',
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.xl,
     borderRadius: 30,
@@ -656,12 +664,12 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 7,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#FFFFFF',
   },
   startRecordingText: {
     fontSize: typography.body,
     fontWeight: typography.weightSemi,
-    color: '#ffffff',
+    color: '#FFFFFF',
   },
   recordingActiveContainer: {
     alignItems: 'center',
@@ -671,12 +679,12 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '#ef4444',
+    backgroundColor: '#E63946',
   },
   recordingLabel: {
     fontSize: typography.body,
     fontWeight: typography.weightSemi,
-    color: '#ef4444',
+    color: '#E63946',
   },
   doneBtn: {
     backgroundColor: colors.primary,
@@ -687,7 +695,7 @@ const styles = StyleSheet.create({
   doneBtnText: {
     fontSize: typography.body,
     fontWeight: typography.weightSemi,
-    color: '#ffffff',
+    color: '#FFFFFF',
   },
 
   // Phase dots

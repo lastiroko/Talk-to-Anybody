@@ -11,19 +11,19 @@ interface DayTileProps {
 
 const STATUS_CONFIG = {
   completed: {
-    bg: colors.successBg,
+    bg: '#1F1F1F',
     icon: '\u2713',
-    iconColor: '#16a34a',
+    iconColor: '#FF4500',
   },
   current: {
-    bg: colors.primaryLight,
+    bg: '#1F1F1F',
     icon: '\u25b6',
-    iconColor: colors.primary,
+    iconColor: '#FF7A1A',
   },
   locked: {
-    bg: colors.surfaceMuted,
+    bg: '#1F1F1F',
     icon: '\ud83d\udd12',
-    iconColor: colors.textMuted,
+    iconColor: '#4A4A4A',
   },
 };
 
@@ -35,7 +35,9 @@ export function DayTile({ dayNumber, status, onPress }: DayTileProps) {
       style={[
         styles.tile,
         { backgroundColor: config.bg },
+        status === 'completed' && styles.completedTile,
         status === 'current' && styles.currentHighlight,
+        status === 'locked' && styles.lockedTile,
         shadows.soft,
       ]}
       onPress={onPress}
@@ -60,10 +62,19 @@ const styles = StyleSheet.create({
     gap: 2,
     maxWidth: 80,
   },
+  completedTile: {
+    borderWidth: 1,
+    borderColor: 'rgba(255,69,0,0.3)',
+  },
+  lockedTile: {
+    borderWidth: 1,
+    borderColor: '#4A4A4A',
+    borderStyle: 'dashed',
+  },
   currentHighlight: {
     borderWidth: 2.5,
-    borderColor: colors.primary,
-    shadowColor: colors.primary,
+    borderColor: '#FF7A1A',
+    shadowColor: '#FF7A1A',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
@@ -75,9 +86,9 @@ const styles = StyleSheet.create({
   dayNumber: {
     fontSize: typography.small,
     fontWeight: typography.weightSemi,
-    color: colors.text,
+    color: '#FFFFFF',
   },
   lockedText: {
-    color: colors.textMuted,
+    color: '#4A4A4A',
   },
 });

@@ -14,10 +14,10 @@ interface OnboardingGoalScreenProps {
 }
 
 const GOALS = [
-  { id: 'public_speaking', emoji: '\ud83c\udfa4', title: 'Public Speaking', subtitle: 'Presentations, talks, speeches' },
-  { id: 'interviews', emoji: '\ud83d\udcbc', title: 'Job Interviews', subtitle: 'Nail your next interview' },
-  { id: 'meetings', emoji: '\ud83e\udd1d', title: 'Work Meetings', subtitle: 'Speak up with confidence at work' },
-  { id: 'social', emoji: '\ud83d\udcac', title: 'Social Confidence', subtitle: 'Feel at ease in conversations' },
+  { id: 'public_speaking', label: 'PUBLIC SPEAKING', subtitle: 'Presentations, talks, speeches' },
+  { id: 'interviews', label: 'JOB INTERVIEWS', subtitle: 'Nail your next interview' },
+  { id: 'meetings', label: 'WORK MEETINGS', subtitle: 'Speak up with confidence at work' },
+  { id: 'social', label: 'SOCIAL CONFIDENCE', subtitle: 'Feel at ease in conversations' },
 ];
 
 export function OnboardingGoalScreen({ onNext }: OnboardingGoalScreenProps) {
@@ -31,8 +31,8 @@ export function OnboardingGoalScreen({ onNext }: OnboardingGoalScreenProps) {
 
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>What's your goal?</Text>
-          <Text style={styles.subtitle}>We'll customize your plan around this</Text>
+          <Text style={styles.title}>What are you training for</Text>
+          <Text style={styles.subtitle}>We will build your plan around this</Text>
         </View>
 
         {/* Goal cards */}
@@ -44,9 +44,8 @@ export function OnboardingGoalScreen({ onNext }: OnboardingGoalScreenProps) {
               onPress={() => setSelectedGoal(goal.id)}
             >
               <View style={styles.goalContent}>
-                <Text style={styles.goalEmoji}>{goal.emoji}</Text>
                 <View style={styles.goalText}>
-                  <Text style={styles.goalTitle}>{goal.title}</Text>
+                  <Text style={styles.goalTitle}>{goal.label}</Text>
                   <Text style={styles.goalSubtitle}>{goal.subtitle}</Text>
                 </View>
               </View>
@@ -70,19 +69,21 @@ export function OnboardingGoalScreen({ onNext }: OnboardingGoalScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.background,
   },
   header: {
     gap: spacing.xs,
     marginBottom: spacing.lg,
   },
   title: {
+    fontFamily: typography.fontFamily.display,
     fontSize: typography.heading,
-    fontWeight: typography.weightBold,
     color: colors.text,
   },
   subtitle: {
+    fontFamily: typography.fontFamily.regular,
     fontSize: typography.body,
-    color: colors.muted,
+    color: colors.textMuted,
   },
   goals: {
     gap: spacing.md,
@@ -93,21 +94,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.md,
   },
-  goalEmoji: {
-    fontSize: 32,
-  },
   goalText: {
     flex: 1,
     gap: 2,
   },
   goalTitle: {
+    fontFamily: typography.fontFamily.semiBold,
     fontSize: typography.body,
-    fontWeight: typography.weightBold,
     color: colors.text,
+    letterSpacing: 1,
   },
   goalSubtitle: {
+    fontFamily: typography.fontFamily.regular,
     fontSize: typography.small,
-    color: colors.muted,
+    color: colors.textMuted,
   },
   bottom: {
     paddingTop: spacing.lg,
