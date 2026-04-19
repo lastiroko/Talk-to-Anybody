@@ -69,8 +69,16 @@ describe('API service', () => {
   });
 
   it('uploadRecording resolves with success', async () => {
+    // First call: fetch(fileUri) to get the blob
+    mockFetch.mockResolvedValueOnce({
+      blob: async () => new Blob(['audio-data'], { type: 'audio/m4a' }),
+    });
+    // Second call: PUT to presigned URL
+    mockFetch.mockResolvedValueOnce({ ok: true });
+
     const result = await uploadRecording('https://s3.example.com/upload', 'file:///rec.m4a');
     expect(result).toEqual({ success: true });
+    expect(mockFetch).toHaveBeenCalledTimes(2);
   });
 
   it('throws on non-ok response', async () => {
@@ -84,6 +92,22 @@ describe('API service', () => {
   });
 
   it('submitAnxietyRating returns recorded', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ recorded: true }),
+    });
+
+    const result = await submitAnxietyRating('session_123', 'pre', 7);
+    expect(result).toEqual({ recorded: true });
+  });
+
+  it('submitAnxietyRating falls back on 501', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 501,
+      text: async () => 'Not Implemented',
+    });
+
     const result = await submitAnxietyRating('session_123', 'pre', 7);
     expect(result).toEqual({ recorded: true });
   });

@@ -124,6 +124,17 @@ export async function completeDay(dayNumber: number) {
   );
 }
 
+// ─── Progress ───
+
+export async function getProgressSummary() {
+  return request<{
+    streak: number;
+    totalSessions: number;
+    avgScore: number;
+    daysCompleted: number[];
+  }>('GET', '/progress/summary');
+}
+
 // ─── Anxiety ───
 
 export async function submitAnxietyRating(
@@ -131,6 +142,17 @@ export async function submitAnxietyRating(
   timing: 'pre' | 'post',
   rating: number,
 ) {
-  // Anxiety endpoint not yet implemented on backend
-  return { recorded: true };
+  try {
+    return await request<{ recorded: boolean }>(
+      'POST',
+      `/sessions/${sessionId}/anxiety`,
+      { timing, rating },
+    );
+  } catch (err: any) {
+    // If the backend hasn't implemented this endpoint yet (501), fall back silently
+    if (err?.status === 501) {
+      return { recorded: true };
+    }
+    throw err;
+  }
 }

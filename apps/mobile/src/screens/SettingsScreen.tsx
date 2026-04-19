@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { SettingsRow } from '../components/SettingsRow';
@@ -8,6 +8,7 @@ import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
 import { shadows } from '../theme/shadows';
 import { useProgress } from '../hooks/useProgress';
+import { getUser, AuthUser } from '../storage/auth';
 
 export function SettingsScreen() {
   const { progress, resetProgress } = useProgress();
@@ -15,6 +16,11 @@ export function SettingsScreen() {
 
   const [dailyReminder, setDailyReminder] = useState(true);
   const [streakRescue, setStreakRescue] = useState(false);
+  const [user, setUser] = useState<AuthUser | null>(null);
+
+  useEffect(() => {
+    getUser().then(setUser);
+  }, []);
 
   const handleResetProgress = () => {
     Alert.alert(
@@ -41,11 +47,11 @@ export function SettingsScreen() {
         <View style={styles.sectionCard}>
           <View style={styles.profileHeader}>
             <View style={styles.avatar}>
-              <Text style={styles.avatarText}>S</Text>
+              <Text style={styles.avatarText}>{user?.email?.[0]?.toUpperCase() ?? 'S'}</Text>
             </View>
             <View style={styles.profileInfo}>
-              <Text style={styles.profileName}>SpeakCoach User</Text>
-              <Text style={styles.profileEmail}>user@example.com</Text>
+              <Text style={styles.profileName}>{user?.email?.split('@')[0] ?? 'SpeakCoach User'}</Text>
+              <Text style={styles.profileEmail}>{user?.email ?? 'user@example.com'}</Text>
               <TouchableOpacity onPress={comingSoon('Edit profile')}>
                 <Text style={styles.editLink}>Edit Profile</Text>
               </TouchableOpacity>
