@@ -58,7 +58,7 @@ export async function submitSession(
   prisma: PrismaClient,
   sessionId: string,
   userId: string,
-  config: { deepgramApiKey: string; openaiApiKey: string; redisUrl: string },
+  config: { deepgramApiKey: string; anthropicApiKey: string; redisUrl: string },
 ) {
   // Verify session ownership and status
   const session = await prisma.session.findUnique({

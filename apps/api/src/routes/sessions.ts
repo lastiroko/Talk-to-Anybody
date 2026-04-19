@@ -39,7 +39,7 @@ const sessionRoutes: FastifyPluginAsync = async (fastify) => {
 
     const session = await submitSession(fastify.prisma, id, userId, {
       deepgramApiKey: fastify.config.DEEPGRAM_API_KEY,
-      openaiApiKey: fastify.config.OPENAI_API_KEY,
+      anthropicApiKey: fastify.config.ANTHROPIC_API_KEY,
       redisUrl: fastify.config.REDIS_URL,
     });
 

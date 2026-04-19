@@ -16,7 +16,7 @@ interface AnalysisJobData {
 export async function processAnalysisJob(
   prisma: PrismaClient,
   data: AnalysisJobData,
-  config: { deepgramApiKey: string; openaiApiKey: string },
+  config: { deepgramApiKey: string; anthropicApiKey: string },
 ): Promise<void> {
   const { sessionId } = data;
 
@@ -49,7 +49,7 @@ export async function processAnalysisJob(
       sttResult.transcript,
       audioMetrics,
       session.mode,
-      config.openaiApiKey,
+      config.anthropicApiKey,
     );
 
     // 6. Reward selection

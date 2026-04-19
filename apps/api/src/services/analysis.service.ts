@@ -5,7 +5,7 @@ import { processAnalysisJob } from '../jobs/analysis.job';
 export async function analyzeSession(
   prisma: PrismaClient,
   sessionId: string,
-  config: { deepgramApiKey: string; openaiApiKey: string; redisUrl: string },
+  config: { deepgramApiKey: string; anthropicApiKey: string; redisUrl: string },
 ) {
   // For now, run synchronously (BullMQ integration is opt-in via REDIS_URL)
   // In production with Redis, this would enqueue a job instead
@@ -19,7 +19,7 @@ export async function analyzeSession(
   // Run inline (development / no Redis)
   await processAnalysisJob(prisma, { sessionId }, {
     deepgramApiKey: config.deepgramApiKey,
-    openaiApiKey: config.openaiApiKey,
+    anthropicApiKey: config.anthropicApiKey,
   });
 }
 

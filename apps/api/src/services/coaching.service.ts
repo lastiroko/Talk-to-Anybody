@@ -1,4 +1,4 @@
-import OpenAI from 'openai';
+import Anthropic from '@anthropic-ai/sdk';
 
 interface AudioMetrics {
   wpm: number;
@@ -27,16 +27,16 @@ export async function generateCoaching(
     return generateMockCoaching(metrics);
   }
 
-  const openai = new OpenAI({ apiKey });
+  const anthropic = new Anthropic({ apiKey });
 
-  const systemPrompt = `You are an expert public speaking coach. Analyze the following speech transcript and audio metrics. Return a JSON object with:
+  const systemPrompt = `You are an expert public speaking coach. Analyze the following speech transcript and audio metrics. Return ONLY a JSON object (no markdown, no code fences) with:
 - scores: { overall: 0-100, delivery: 0-100, clarity: 0-100, story: 0-100 }
 - wins: array of 2-3 specific things the speaker did well (strings)
 - fixes: array of 2-3 improvement areas, each with { title: string, drillId: string } where drillId is one of: pause_punch_01, pace_control_01, structure_drill_01, clarity_drill_01, vocal_variety_01, filler_swap_01, storytelling_01
 - tags: array of 3-5 skill tags like "clear-opener", "good-pacing", "needs-pauses", etc.
 - coachingText: 2-3 sentence encouraging coaching message
 
-Consider the speaking mode: ${mode}. Be specific and constructive.`;
+Speaking mode: ${mode}. Be specific, constructive, and terse.`;
 
   const userPrompt = `Transcript: "${transcript}"
 
@@ -48,22 +48,18 @@ Metrics:
 - Vocal variety score: ${metrics.vocalVariety}/100
 - Total filler words: ${metrics.totalFillers}`;
 
-  const response = await openai.chat.completions.create({
-    model: 'gpt-4o-mini',
-    response_format: { type: 'json_object' },
-    messages: [
-      { role: 'system', content: systemPrompt },
-      { role: 'user', content: userPrompt },
-    ],
-    temperature: 0.7,
+  const response = await anthropic.messages.create({
+    model: 'claude-sonnet-4-20250514',
     max_tokens: 800,
+    system: systemPrompt,
+    messages: [{ role: 'user', content: userPrompt }],
   });
 
-  const content = response.choices[0]?.message?.content;
-  if (!content) return generateMockCoaching(metrics);
+  const content = response.content[0];
+  if (!content || content.type !== 'text') return generateMockCoaching(metrics);
 
   try {
-    const parsed = JSON.parse(content);
+    const parsed = JSON.parse(content.text);
     return {
       scores: {
         overall: clamp(parsed.scores?.overall ?? 65),
@@ -77,7 +73,7 @@ Metrics:
         drillId: f.drillId || 'pace_control_01',
       })),
       tags: (parsed.tags ?? []).slice(0, 5),
-      coachingText: parsed.coachingText || "Keep practicing! You're making progress.",
+      coachingText: parsed.coachingText || "Keep practicing. You're making progress.",
     };
   } catch {
     return generateMockCoaching(metrics);
@@ -116,6 +112,6 @@ function generateMockCoaching(metrics: AudioMetrics): CoachingResult {
     wins: wins.slice(0, 3),
     fixes: fixes.slice(0, 3),
     tags: ['practice-session', metrics.wpm > 150 ? 'fast-pace' : 'steady-pace'],
-    coachingText: `Nice work! Your pace was ${metrics.wpm} WPM which is ${metrics.wpm >= 120 && metrics.wpm <= 160 ? 'right in the sweet spot' : 'a bit off target'}. Focus on ${metrics.fillerPerMin >= 2 ? 'replacing fillers with confident pauses' : 'maintaining your great clarity'} — you're making real progress.`,
+    coachingText: `Nice work. Your pace was ${metrics.wpm} WPM which is ${metrics.wpm >= 120 && metrics.wpm <= 160 ? 'right in the sweet spot' : 'a bit off target'}. Focus on ${metrics.fillerPerMin >= 2 ? 'replacing fillers with confident pauses' : 'maintaining your great clarity'} — you're making real progress.`,
   };
 }

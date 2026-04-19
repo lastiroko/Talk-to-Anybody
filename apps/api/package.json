@@ -14,6 +14,7 @@
     "db:seed": "prisma db seed"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.90.0",
     "@deepgram/sdk": "^3.13.0",
     "@fastify/cors": "^9.0.0",
     "@fastify/jwt": "^8.0.0",
@@ -22,7 +23,6 @@
     "bcryptjs": "^2.4.3",
     "fastify": "^4.26.0",
     "fastify-plugin": "^4.5.0",
-    "openai": "^4.104.0",
     "zod": "^3.22.0"
   },
   "prisma": {

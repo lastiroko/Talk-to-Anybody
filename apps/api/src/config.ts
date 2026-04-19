@@ -10,7 +10,7 @@ const EnvSchema = z.object({
   AWS_ACCESS_KEY_ID: z.string().default(''),
   AWS_SECRET_ACCESS_KEY: z.string().default(''),
   DEEPGRAM_API_KEY: z.string().default(''),
-  OPENAI_API_KEY: z.string().default(''),
+  ANTHROPIC_API_KEY: z.string().default(''),
   REDIS_URL: z.string().default('redis://localhost:6379'),
 });
 
