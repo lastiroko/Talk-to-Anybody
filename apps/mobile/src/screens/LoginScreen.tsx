@@ -7,6 +7,8 @@ import { SocialButton } from '../components/SocialButton';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
+import { apiLogin } from '../services/api';
+import { setToken, setUser } from '../storage/auth';
 
 interface LoginScreenProps {
   onAuthenticated: () => void;
@@ -21,12 +23,21 @@ export function LoginScreen({ onAuthenticated, onBack }: LoginScreenProps) {
 
   const canSubmit = email.includes('@') && password.length >= 1 && !loading;
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const res = await apiLogin(email, password);
+      await setToken(res.accessToken);
+      await setUser(res.user);
       onAuthenticated();
-    }, 1000);
+    } catch (err: any) {
+      const msg = err.status === 401
+        ? 'Invalid email or password'
+        : 'Something went wrong. Try again.';
+      Alert.alert('Login failed', msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

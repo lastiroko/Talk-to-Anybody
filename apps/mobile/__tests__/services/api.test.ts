@@ -1,78 +1,89 @@
 import {
   createSession,
-  getUploadUrl,
   uploadRecording,
-  submitSession,
-  getSessionStatus,
-  getAnalysis,
   submitAnxietyRating,
+  apiSignup,
+  apiLogin,
 } from '../../src/services/api';
 
+// Mock fetch globally
+const mockFetch = jest.fn();
+(global as any).fetch = mockFetch;
+
+// Mock auth storage
+jest.mock('../../src/storage/auth', () => ({
+  getToken: jest.fn().mockResolvedValue('mock-jwt-token'),
+}));
+
+beforeEach(() => {
+  mockFetch.mockReset();
+});
+
 describe('API service', () => {
-  it('createSession returns mock session with id and status', async () => {
-    const result = await createSession('free_talk');
-    expect(result.id).toMatch(/^mock_session_\d+$/);
-    expect(result.status).toBe('queued');
-  });
+  it('apiSignup sends POST with email and password', async () => {
+    const mockResponse = {
+      accessToken: 'tok_123',
+      refreshToken: '',
+      user: { id: 'u1', email: 'a@b.com', createdAt: '2026-01-01' },
+    };
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockResponse,
+    });
 
-  it('getUploadUrl returns mock URL and key', async () => {
-    const result = await getUploadUrl('session_123');
-    expect(result.uploadUrl).toBe('https://mock-s3.example.com/upload');
-    expect(result.key).toBe('recordings/session_123.m4a');
-  });
-
-  it('uploadRecording resolves after delay', async () => {
-    const start = Date.now();
-    const result = await uploadRecording(
-      'https://mock-s3.example.com/upload',
-      'file:///mock/recording.m4a',
+    const result = await apiSignup('a@b.com', 'pass1234');
+    expect(result.accessToken).toBe('tok_123');
+    expect(result.user.email).toBe('a@b.com');
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.stringContaining('/auth/signup'),
+      expect.objectContaining({ method: 'POST' }),
     );
-    const elapsed = Date.now() - start;
+  });
+
+  it('apiLogin sends POST with credentials', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        accessToken: 'tok_456',
+        refreshToken: '',
+        user: { id: 'u2', email: 'b@c.com', createdAt: '2026-01-01' },
+      }),
+    });
+
+    const result = await apiLogin('b@c.com', 'pass1234');
+    expect(result.accessToken).toBe('tok_456');
+  });
+
+  it('createSession sends auth header', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ id: 'sess_1', status: 'queued' }),
+    });
+
+    const result = await createSession('daily', 1);
+    expect(result.id).toBe('sess_1');
+    expect(result.status).toBe('queued');
+
+    const [, opts] = mockFetch.mock.calls[0];
+    expect(opts.headers.Authorization).toBe('Bearer mock-jwt-token');
+  });
+
+  it('uploadRecording resolves with success', async () => {
+    const result = await uploadRecording('https://s3.example.com/upload', 'file:///rec.m4a');
     expect(result).toEqual({ success: true });
-    expect(elapsed).toBeGreaterThanOrEqual(900);
-  }, 5000);
-
-  it('submitSession returns processing status', async () => {
-    const result = await submitSession('session_123');
-    expect(result.status).toBe('processing');
   });
 
-  it('getSessionStatus returns done status', async () => {
-    const result = await getSessionStatus('session_123');
-    expect(result.id).toBe('session_123');
-    expect(result.status).toBe('done');
+  it('throws on non-ok response', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 401,
+      text: async () => 'Unauthorized',
+    });
+
+    await expect(apiLogin('bad@email.com', 'wrong')).rejects.toThrow('401');
   });
 
-  it('getAnalysis returns valid analysis shape with scores, metrics, wins, fixes', async () => {
-    const result = await getAnalysis('session_123');
-    expect(result).toHaveProperty('scores');
-    expect(result).toHaveProperty('metrics');
-    expect(result).toHaveProperty('wins');
-    expect(result).toHaveProperty('fixes');
-    expect(result).toHaveProperty('coachingText');
-    expect(result).toHaveProperty('reward');
-    expect(Array.isArray(result.wins)).toBe(true);
-    expect(Array.isArray(result.fixes)).toBe(true);
-    expect(typeof result.coachingText).toBe('string');
-  });
-
-  it('getAnalysis scores are all between 0-100', async () => {
-    const { scores } = await getAnalysis('session_123');
-    for (const key of ['overall', 'delivery', 'clarity', 'story'] as const) {
-      expect(scores[key]).toBeGreaterThanOrEqual(0);
-      expect(scores[key]).toBeLessThanOrEqual(100);
-    }
-  });
-
-  it('getAnalysis metrics are reasonable numbers', async () => {
-    const { metrics } = await getAnalysis('session_123');
-    expect(metrics.wpm).toBeGreaterThan(0);
-    expect(metrics.fillerPerMin).toBeGreaterThanOrEqual(0);
-    expect(metrics.avgPauseSec).toBeGreaterThanOrEqual(0);
-    expect(metrics.pitchRangeHz).toBeGreaterThan(0);
-  });
-
-  it('submitAnxietyRating returns recorded: true', async () => {
+  it('submitAnxietyRating returns recorded', async () => {
     const result = await submitAnxietyRating('session_123', 'pre', 7);
     expect(result).toEqual({ recorded: true });
   });

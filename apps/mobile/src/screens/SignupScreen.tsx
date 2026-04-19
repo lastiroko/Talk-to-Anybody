@@ -7,6 +7,8 @@ import { SocialButton } from '../components/SocialButton';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
+import { apiSignup } from '../services/api';
+import { setToken, setUser } from '../storage/auth';
 
 interface SignupScreenProps {
   onCreated: () => void;
@@ -25,7 +27,7 @@ export function SignupScreen({ onCreated, onBack }: SignupScreenProps) {
   const isPasswordValid = password.length >= 8;
   const canSubmit = isEmailValid && isPasswordValid && !loading;
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     setEmailError('');
     setPasswordError('');
 
@@ -39,10 +41,19 @@ export function SignupScreen({ onCreated, onBack }: SignupScreenProps) {
     }
 
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const res = await apiSignup(email, password);
+      await setToken(res.accessToken);
+      await setUser(res.user);
       onCreated();
-    }, 1000);
+    } catch (err: any) {
+      const msg = err.status === 409
+        ? 'An account with this email already exists'
+        : 'Something went wrong. Try again.';
+      Alert.alert('Signup failed', msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
