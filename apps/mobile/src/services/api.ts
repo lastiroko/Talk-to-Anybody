@@ -57,9 +57,19 @@ export async function getUploadUrl(sessionId: string) {
 }
 
 export async function uploadRecording(uploadUrl: string, fileUri: string) {
-  // For now, skip actual S3 upload — backend doesn't have real S3 yet
-  // When S3 is configured, this will PUT the file to the presigned URL
-  await new Promise<void>((resolve) => setTimeout(resolve, 500));
+  const response = await fetch(fileUri);
+  const blob = await response.blob();
+
+  const uploadRes = await fetch(uploadUrl, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'audio/m4a' },
+    body: blob,
+  });
+
+  if (!uploadRes.ok) {
+    throw new Error(`Upload failed: ${uploadRes.status}`);
+  }
+
   return { success: true };
 }
 

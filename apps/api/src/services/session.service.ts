@@ -1,6 +1,8 @@
 import type { PrismaClient } from '@prisma/client';
 import type { SessionMode } from '@speakcoach/shared';
+import type { Env } from '../config';
 import { analyzeSession } from './analysis.service';
+import { generatePresignedUploadUrl } from '../utils/presign';
 
 /** Create a new session for the user */
 export async function createSession(
@@ -33,8 +35,7 @@ export async function getSession(prisma: PrismaClient, sessionId: string, userId
 }
 
 /** Generate a presigned S3 upload URL for a session's audio */
-export async function getUploadUrl(prisma: PrismaClient, sessionId: string, userId: string) {
-  // Verify session ownership
+export async function getUploadUrl(prisma: PrismaClient, sessionId: string, userId: string, config: Env) {
   const session = await prisma.session.findUnique({
     where: { id: sessionId },
   });
@@ -43,14 +44,19 @@ export async function getUploadUrl(prisma: PrismaClient, sessionId: string, user
     return null;
   }
 
-  // Generate S3 key for the audio file
   const audioKey = `${userId}/${sessionId}/audio.m4a`;
 
-  // TODO: Generate actual presigned S3 upload URL using AWS SDK
-  // For now, return the key structure that will be used
-  const uploadUrl = `https://s3.amazonaws.com/speakcoach-recordings/${audioKey}?presigned=placeholder`;
+  if (config.AWS_ACCESS_KEY_ID) {
+    const uploadUrl = await generatePresignedUploadUrl(
+      config.BUCKET_NAME,
+      audioKey,
+      config,
+    );
+    return { uploadUrl, audioKey };
+  }
 
-  return { uploadUrl, audioKey };
+  // Fallback for local dev without S3
+  return { uploadUrl: `https://placeholder.storage/${audioKey}`, audioKey };
 }
 
 /** Submit session for analysis after audio upload */
@@ -60,7 +66,6 @@ export async function submitSession(
   userId: string,
   config: { deepgramApiKey: string; anthropicApiKey: string; redisUrl: string },
 ) {
-  // Verify session ownership and status
   const session = await prisma.session.findUnique({
     where: { id: sessionId },
   });
@@ -68,10 +73,8 @@ export async function submitSession(
   if (!session || session.userId !== userId) return null;
   if (session.status !== 'queued') return null;
 
-  // Trigger analysis pipeline (runs inline or enqueues depending on config)
   await analyzeSession(prisma, sessionId, config);
 
-  // Fetch updated session
   const updatedSession = await prisma.session.findUnique({
     where: { id: sessionId },
   });

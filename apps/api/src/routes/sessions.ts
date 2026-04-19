@@ -22,7 +22,7 @@ const sessionRoutes: FastifyPluginAsync = async (fastify) => {
     const { id } = request.params;
     const userId = request.user.userId;
 
-    const result = await getUploadUrl(fastify.prisma, id, userId);
+    const result = await getUploadUrl(fastify.prisma, id, userId, fastify.config);
     if (!result) {
       return reply.status(404).send({ message: 'Session not found' });
     }
