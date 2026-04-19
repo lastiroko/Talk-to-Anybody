@@ -18,7 +18,7 @@ export async function selectRewardFormat(
   }
 
   // Filter to only eligible formats
-  const eligible = weights.filter((w) =>
+  const eligible = weights.filter((w: any) =>
     eligibleFormats.includes(w.formatType as RewardFormat),
   );
 
@@ -27,7 +27,7 @@ export async function selectRewardFormat(
   }
 
   // Apply weighted random selection (higher weight = higher probability)
-  const totalWeight = eligible.reduce((sum, w) => sum + w.weight, 0);
+  const totalWeight = eligible.reduce((sum: number, w: any) => sum + w.weight, 0);
   let random = Math.random() * totalWeight;
 
   for (const w of eligible) {

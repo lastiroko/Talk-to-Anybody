@@ -10,7 +10,8 @@
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:seed": "prisma db seed"
   },
   "dependencies": {
     "@deepgram/sdk": "^3.13.0",
@@ -23,6 +24,9 @@
     "fastify-plugin": "^4.5.0",
     "openai": "^4.104.0",
     "zod": "^3.22.0"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

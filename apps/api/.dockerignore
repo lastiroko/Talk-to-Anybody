@@ -1,0 +1,16 @@
+node_modules
+dist
+.env
+.env.*
+.git
+.gitignore
+*.md
+tests
+__tests__
+*.test.ts
+*.spec.ts
+.expo
+.vscode
+.idea
+coverage
+.nyc_output
