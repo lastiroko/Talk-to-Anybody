@@ -21,6 +21,7 @@ import rewardRoutes from './routes/rewards';
 import imitationRoutes from './routes/imitation';
 import purchaseRoutes from './routes/purchase';
 import feedbackRoutes from './routes/feedback';
+import gameScoreRoutes from './routes/game-scores';
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -54,6 +55,7 @@ export async function buildApp(config: Env) {
     await v1.register(imitationRoutes);
     await v1.register(purchaseRoutes);
     await v1.register(feedbackRoutes);
+    await v1.register(gameScoreRoutes);
   }, { prefix: '/api/v1' });
 
   // Health check (outside versioned prefix)

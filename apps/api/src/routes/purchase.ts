@@ -1,22 +1,41 @@
 import type { FastifyPluginAsync } from 'fastify';
-import { PurchaseVerifyRequestSchema, PurchaseStatusSchema } from '@speakcoach/shared';
+import { PurchaseVerifyRequestSchema } from '@speakcoach/shared';
 import { validateBody } from '../middleware/validate';
+import { getPurchaseStatus, recordPurchase } from '../services/purchase.service';
+import { z } from 'zod';
+
+const PurchaseVerifyBodySchema = z.object({
+  platform: z.enum(['ios', 'android']),
+  planType: z.enum(['monthly', 'lifetime']),
+  receiptToken: z.string(),
+});
 
 const purchaseRoutes: FastifyPluginAsync = async (fastify) => {
-  // POST /purchase/verify — verify receipt/token for iOS/Android
-  // preHandler: [fastify.authenticate]
-  fastify.post('/purchase/verify', {
-    preHandler: [validateBody(PurchaseVerifyRequestSchema)],
+  // GET /purchase/status — current entitlement (free/active, expiry)
+  fastify.get('/purchase/status', {
+    preHandler: [fastify.authenticate],
   }, async (request, reply) => {
-    // TODO: verify receipt with Apple/Google, create or update purchase record, return entitlement
-    return reply.status(501).send({ message: 'not implemented' });
+    const userId = request.user.userId;
+    const status = await getPurchaseStatus(fastify.prisma, userId);
+    return reply.send(status);
   });
 
-  // GET /purchase/status — current entitlement (free/paid, expiry)
-  // preHandler: [fastify.authenticate]
-  fastify.get('/purchase/status', async (request, reply) => {
-    // TODO: query user's active purchase, return PurchaseStatus
-    return reply.status(501).send({ message: 'not implemented' });
+  // POST /purchase/verify — verify receipt/token for iOS/Android
+  // For now, just records the purchase (real receipt verification comes later with RevenueCat)
+  fastify.post('/purchase/verify', {
+    preHandler: [fastify.authenticate, validateBody(PurchaseVerifyBodySchema)],
+  }, async (request, reply) => {
+    const userId = request.user.userId;
+    const { platform, planType, receiptToken } = request.body as z.infer<typeof PurchaseVerifyBodySchema>;
+
+    // TODO: verify receipt with Apple/Google via RevenueCat before recording
+    const purchase = await recordPurchase(fastify.prisma, userId, planType, platform);
+
+    return reply.send({
+      status: 'active',
+      planType: purchase.type,
+      expiresAt: purchase.expiresAt ? purchase.expiresAt.toISOString() : null,
+    });
   });
 };
 

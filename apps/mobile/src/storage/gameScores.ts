@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { syncGameScore } from '../services/api';
 
 interface GameScore {
   game: string;
@@ -26,6 +27,12 @@ export async function saveGameScore(game: string, score: number, details?: any):
   const scores = await loadScores();
   scores.push({ game, score, date: new Date().toISOString(), details });
   await persistScores(scores);
+}
+
+export async function saveAndSyncScore(gameName: string, score: number, maxScore: number): Promise<void> {
+  await saveGameScore(gameName, score, { maxScore });
+  // Fire-and-forget: sync to backend without blocking the game flow
+  syncGameScore(gameName, score, maxScore);
 }
 
 export async function getHighScore(game: string): Promise<number> {

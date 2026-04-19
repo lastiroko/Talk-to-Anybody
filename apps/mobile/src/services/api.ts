@@ -135,6 +135,21 @@ export async function getProgressSummary() {
   }>('GET', '/progress/summary');
 }
 
+// ─── Game Scores ───
+
+export async function syncGameScore(gameName: string, score: number, maxScore: number) {
+  try {
+    return await request<{ recorded: boolean }>(
+      'POST',
+      '/game-scores',
+      { gameName, score, maxScore },
+    );
+  } catch (err: any) {
+    console.warn('[syncGameScore] Failed to sync score to backend:', err?.message);
+    return null;
+  }
+}
+
 // ─── Anxiety ───
 
 export async function submitAnxietyRating(

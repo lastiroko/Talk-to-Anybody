@@ -20,21 +20,54 @@ export async function verifyGoogleToken(receiptToken: string, productId: string)
 export async function recordPurchase(
   prisma: PrismaClient,
   userId: string,
-  platform: 'ios' | 'android',
   planType: 'monthly' | 'lifetime',
-  transactionId: string,
-  expiresAt: Date | null
+  platform: 'ios' | 'android',
 ) {
-  // TODO: upsert purchase record, set status to 'active'
-  // For lifetime: expiresAt is null
-  // For monthly: expiresAt is the subscription expiry date
-  return null;
+  const expiresAt =
+    planType === 'lifetime'
+      ? null
+      : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days for monthly
+
+  const purchase = await prisma.purchase.create({
+    data: {
+      userId,
+      platform,
+      type: planType,
+      status: 'active',
+      expiresAt,
+    },
+  });
+
+  return purchase;
 }
 
 /** Get user's current purchase/entitlement status */
 export async function getPurchaseStatus(prisma: PrismaClient, userId: string) {
-  // TODO: query purchases table for active purchase
-  // Check if subscription has expired
-  // Return PurchaseStatus shape: { status: 'free'|'paid', planType?, expiresAt? }
-  return { status: 'free' as const };
+  const purchase = await prisma.purchase.findFirst({
+    where: {
+      userId,
+      status: 'active',
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+
+  if (!purchase) {
+    return { status: 'free' as const, planType: null, expiresAt: null };
+  }
+
+  // Check if a monthly subscription has expired
+  if (purchase.type === 'monthly' && purchase.expiresAt && purchase.expiresAt < new Date()) {
+    // Mark as expired
+    await prisma.purchase.update({
+      where: { id: purchase.id },
+      data: { status: 'expired' },
+    });
+    return { status: 'free' as const, planType: null, expiresAt: null };
+  }
+
+  return {
+    status: 'active' as const,
+    planType: purchase.type as 'monthly' | 'lifetime',
+    expiresAt: purchase.expiresAt ? purchase.expiresAt.toISOString() : null,
+  };
 }

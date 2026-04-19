@@ -1,34 +1,54 @@
 import type { FastifyPluginAsync } from 'fastify';
 import {
-  SrsDueResponseSchema,
   SrsReviewRequestSchema,
-  SrsReviewResponseSchema,
-  SrsStatsSchema,
 } from '@speakcoach/shared';
 import { validateBody } from '../middleware/validate';
+import {
+  getSrsDueCards,
+  processReview,
+  getSrsStats,
+} from '../services/srs.service';
 
 const srsRoutes: FastifyPluginAsync = async (fastify) => {
   // GET /srs/due — returns drills due for review today
-  // preHandler: [fastify.authenticate]
-  fastify.get('/srs/due', async (request, reply) => {
-    // TODO: query SRS cards where nextReviewDate <= today, order by priority, return SrsDueResponse
-    return reply.status(501).send({ message: 'not implemented' });
+  fastify.get('/srs/due', {
+    preHandler: [fastify.authenticate],
+  }, async (request, reply) => {
+    const userId = request.user.userId;
+    const result = await getSrsDueCards(fastify.prisma, userId);
+    return reply.send(result);
   });
 
   // POST /srs/review — submit review result, update scheduling
-  // preHandler: [fastify.authenticate]
   fastify.post('/srs/review', {
-    preHandler: [validateBody(SrsReviewRequestSchema)],
+    preHandler: [fastify.authenticate, validateBody(SrsReviewRequestSchema)],
   }, async (request, reply) => {
-    // TODO: update card interval based on score vs previous, apply snooze/skip rules, return SrsReviewResponse
-    return reply.status(501).send({ message: 'not implemented' });
+    const userId = request.user.userId;
+    const { cardId, sessionId, score, action } = request.body as {
+      cardId: string;
+      sessionId: string;
+      score: number;
+      action: 'completed' | 'snoozed' | 'skipped';
+    };
+
+    try {
+      const result = await processReview(fastify.prisma, userId, cardId, sessionId, score, action);
+      return reply.send(result);
+    } catch (err: any) {
+      if (err.message === 'Card not found') {
+        return reply.status(404).send({ message: 'Card not found' });
+      }
+      throw err;
+    }
   });
 
   // GET /srs/stats — user's SRS overview for progress dashboard
-  // preHandler: [fastify.authenticate]
-  fastify.get('/srs/stats', async (request, reply) => {
-    // TODO: aggregate SRS card counts by dimension, reviews this week, return SrsStats
-    return reply.status(501).send({ message: 'not implemented' });
+  fastify.get('/srs/stats', {
+    preHandler: [fastify.authenticate],
+  }, async (request, reply) => {
+    const userId = request.user.userId;
+    const stats = await getSrsStats(fastify.prisma, userId);
+    return reply.send(stats);
   });
 };
 
