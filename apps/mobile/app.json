@@ -1,24 +1,83 @@
 {
   "expo": {
-    "name": "Talk to Anybody",
-    "slug": "talk-to-anybody",
-    "version": "0.1.0",
+    "name": "SpeakCoach",
+    "slug": "speakcoach",
+    "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
+    "scheme": "speakcoach",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0A0A0A"
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "backgroundColor": "#0A0A0A"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#0A0A0A"
+      "bundleIdentifier": "com.speakcoach.app",
+      "buildNumber": "1",
+      "supportsTablet": false,
+      "backgroundColor": "#0A0A0A",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "SpeakCoach needs microphone access to record your speech so we can analyze your delivery, pace, and clarity.",
+        "NSCameraUsageDescription": "SpeakCoach uses the camera for optional video practice exercises and the desensitization ladder.",
+        "NSUserNotificationsUsageDescription": "SpeakCoach uses notifications to send daily practice reminders and streak rescue alerts.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
+    "android": {
+      "package": "com.speakcoach.app",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0A0A0A"
+      },
+      "permissions": [
+        "RECORD_AUDIO",
+        "POST_NOTIFICATIONS",
+        "VIBRATE"
+      ]
+    },
     "web": {
-      "bundler": "metro"
+      "bundler": "metro",
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Allow SpeakCoach to access your microphone for speech practice."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#FF4500",
+          "sounds": []
+        }
+      ],
+      "expo-font"
+    ],
+    "notification": {
+      "icon": "./assets/notification-icon.png",
+      "color": "#FF4500",
+      "androidMode": "default",
+      "androidCollapsedTitle": "SpeakCoach"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "REPLACE_WITH_EAS_PROJECT_ID"
+      }
+    },
+    "owner": "speakcoach",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/REPLACE_WITH_EAS_PROJECT_ID"
     }
   }
 }
