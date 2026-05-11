@@ -1,6 +1,8 @@
 import { getToken } from '../storage/auth';
 
-const API_BASE = 'https://talk-to-anybody-api.fly.dev/api/v1';
+const API_BASE =
+  (process.env.EXPO_PUBLIC_API_BASE as string | undefined) ??
+  'https://talk-to-anybody-api.fly.dev/api/v1';
 
 async function headers(): Promise<Record<string, string>> {
   const token = await getToken();

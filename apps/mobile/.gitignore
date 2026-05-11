@@ -1,0 +1,20 @@
+# Expo
+.expo/
+.expo-shared/
+web-build/
+dist/
+
+# Native
+ios/
+android/
+
+# Local
+.env
+google-service-account.json
+
+# EAS
+*.tgz
+*.ipa
+*.apk
+*.aab
+.eas/
