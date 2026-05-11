@@ -9,18 +9,87 @@ import { colors } from '../theme/colors';
 import { shadows } from '../theme/shadows';
 import { useProgress } from '../hooks/useProgress';
 import { getUser, AuthUser } from '../storage/auth';
+import {
+  loadReminderPrefs,
+  formatReminderTime,
+  type ReminderPrefs,
+} from '../storage/notifications';
+import {
+  setDailyReminder,
+  setStreakRescue,
+  setReminderTime,
+} from '../services/notifications';
 
 export function SettingsScreen() {
   const { progress, resetProgress } = useProgress();
   const currentDay = progress?.currentDayUnlocked ?? 1;
 
-  const [dailyReminder, setDailyReminder] = useState(true);
-  const [streakRescue, setStreakRescue] = useState(false);
+  const [reminderPrefs, setReminderPrefs] = useState<ReminderPrefs | null>(null);
   const [user, setUser] = useState<AuthUser | null>(null);
 
   useEffect(() => {
     getUser().then(setUser);
+    loadReminderPrefs().then(setReminderPrefs);
   }, []);
+
+  const handleToggleDailyReminder = async () => {
+    if (!reminderPrefs) return;
+    const enabled = !reminderPrefs.dailyReminderEnabled;
+    const next = await setDailyReminder(enabled, reminderPrefs.reminderHour, reminderPrefs.reminderMinute);
+    setReminderPrefs(next);
+    if (enabled && !next.dailyReminderEnabled) {
+      Alert.alert(
+        'Permission needed',
+        'Enable notifications in your phone’s Settings to receive daily reminders.',
+      );
+    }
+  };
+
+  const handleToggleStreakRescue = async () => {
+    if (!reminderPrefs) return;
+    const enabled = !reminderPrefs.streakRescueEnabled;
+    const next = await setStreakRescue(enabled);
+    setReminderPrefs(next);
+    if (enabled && !next.streakRescueEnabled) {
+      Alert.alert(
+        'Permission needed',
+        'Enable notifications in your phone’s Settings to receive streak rescue alerts.',
+      );
+    }
+  };
+
+  const handleChangeReminderTime = () => {
+    if (!reminderPrefs) return;
+    // Simple time picker via Alert action sheet — full picker requires a native module
+    const options: Array<{ label: string; hour: number; minute: number }> = [
+      { label: '7:00 AM', hour: 7, minute: 0 },
+      { label: '8:00 AM', hour: 8, minute: 0 },
+      { label: '9:00 AM', hour: 9, minute: 0 },
+      { label: '12:00 PM', hour: 12, minute: 0 },
+      { label: '6:00 PM', hour: 18, minute: 0 },
+      { label: '8:00 PM', hour: 20, minute: 0 },
+    ];
+    Alert.alert(
+      'Reminder time',
+      'Pick when you want to be reminded each day.',
+      [
+        ...options.map((opt) => ({
+          text: opt.label,
+          onPress: async () => {
+            const next = await setReminderTime(opt.hour, opt.minute);
+            setReminderPrefs(next);
+          },
+        })),
+        { text: 'Cancel', style: 'cancel' as const },
+      ],
+    );
+  };
+
+  const dailyReminder = reminderPrefs?.dailyReminderEnabled ?? false;
+  const streakRescue = reminderPrefs?.streakRescueEnabled ?? false;
+  const reminderTimeLabel = reminderPrefs
+    ? formatReminderTime(reminderPrefs.reminderHour, reminderPrefs.reminderMinute)
+    : '9:00 AM';
 
   const handleResetProgress = () => {
     Alert.alert(
@@ -98,20 +167,20 @@ export function SettingsScreen() {
           <SettingsRow
             label="Daily reminder"
             rightElement={
-              <SettingsToggle value={dailyReminder} onToggle={() => setDailyReminder(!dailyReminder)} />
+              <SettingsToggle value={dailyReminder} onToggle={handleToggleDailyReminder} />
             }
           />
           <View style={styles.separator} />
           <SettingsRow
             label="Reminder time"
-            value="9:00 AM"
-            onPress={comingSoon('Time picker')}
+            value={reminderTimeLabel}
+            onPress={handleChangeReminderTime}
           />
           <View style={styles.separator} />
           <SettingsRow
             label="Streak rescue"
             rightElement={
-              <SettingsToggle value={streakRescue} onToggle={() => setStreakRescue(!streakRescue)} />
+              <SettingsToggle value={streakRescue} onToggle={handleToggleStreakRescue} />
             }
           />
         </View>

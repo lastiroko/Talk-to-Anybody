@@ -1,8 +1,9 @@
 import 'react-native-gesture-handler';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
+import { initNotifications } from './src/services/notifications';
 import {
   JetBrainsMono_400Regular,
   JetBrainsMono_500Medium,
@@ -20,6 +21,10 @@ import { PurchaseProvider } from './src/hooks/usePurchase';
 
 export default function App() {
   const [flow, setFlow] = useState<'auth' | 'onboarding' | 'main'>('auth');
+
+  useEffect(() => {
+    initNotifications().catch(() => undefined);
+  }, []);
 
   const [fontsLoaded] = useFonts({
     JetBrainsMono_400Regular,

@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { loadProgress, markDayCompleted, markDayStarted, saveProgress } from '../storage/progress';
 import { getProgressSummary, completeDay as apiCompleteDay, getPlan } from '../services/api';
+import { onPracticeCompleted } from '../services/notifications';
 import { ProgressState } from '../types/progress';
 
 interface ProgressContextValue {
@@ -92,6 +93,9 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       apiCompleteDay(dayNumber).catch((error) => {
         console.warn('Failed to sync day completion with backend:', error);
       });
+
+      // 3. Bump streak rescue notification (no-op if not enabled)
+      onPracticeCompleted().catch(() => undefined);
     },
     []
   );

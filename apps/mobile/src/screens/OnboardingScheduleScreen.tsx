@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { StepIndicator } from '../components/StepIndicator';
@@ -7,6 +7,8 @@ import { SelectableCard } from '../components/SelectableCard';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
+import { setDailyReminder } from '../services/notifications';
+import { formatReminderTime } from '../storage/notifications';
 
 interface OnboardingScheduleScreenProps {
   onNext: () => void;
@@ -18,9 +20,39 @@ const TIME_OPTIONS = [
   { id: '15', minutes: '15 MIN', subtitle: 'Maximum growth', badge: null },
 ];
 
+const DEFAULT_REMINDER_HOUR = 9;
+const DEFAULT_REMINDER_MINUTE = 0;
+
 export function OnboardingScheduleScreen({ onNext }: OnboardingScheduleScreenProps) {
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [reminderOn, setReminderOn] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  const handleToggleReminder = () => {
+    // Optimistic UI — actual permission ask happens at "Continue"
+    setReminderOn((prev) => !prev);
+  };
+
+  const handleContinue = async () => {
+    if (!selectedTime) return;
+    setSaving(true);
+    try {
+      if (reminderOn) {
+        const prefs = await setDailyReminder(true, DEFAULT_REMINDER_HOUR, DEFAULT_REMINDER_MINUTE);
+        if (!prefs.dailyReminderEnabled) {
+          Alert.alert(
+            'Reminder not set',
+            'We couldn’t schedule a reminder. You can enable it later from Settings.',
+          );
+        }
+      }
+    } catch {
+      // Continue regardless — reminder is optional
+    } finally {
+      setSaving(false);
+      onNext();
+    }
+  };
 
   return (
     <ScreenContainer>
@@ -64,7 +96,7 @@ export function OnboardingScheduleScreen({ onNext }: OnboardingScheduleScreenPro
         <View style={styles.reminderSection}>
           <TouchableOpacity
             style={styles.reminderRow}
-            onPress={() => setReminderOn(!reminderOn)}
+            onPress={handleToggleReminder}
             activeOpacity={0.7}
           >
             <Text style={styles.reminderLabel}>Daily reminder</Text>
@@ -74,7 +106,9 @@ export function OnboardingScheduleScreen({ onNext }: OnboardingScheduleScreenPro
           </TouchableOpacity>
           {reminderOn ? (
             <View style={styles.reminderInfo}>
-              <Text style={styles.reminderTime}>9:00 AM</Text>
+              <Text style={styles.reminderTime}>
+                {formatReminderTime(DEFAULT_REMINDER_HOUR, DEFAULT_REMINDER_MINUTE)}
+              </Text>
               <Text style={styles.reminderNote}>(Change in Settings)</Text>
             </View>
           ) : null}
@@ -83,9 +117,9 @@ export function OnboardingScheduleScreen({ onNext }: OnboardingScheduleScreenPro
         {/* Continue */}
         <View style={styles.bottom}>
           <PrimaryButton
-            title="Continue"
-            onPress={onNext}
-            disabled={!selectedTime}
+            title={saving ? 'Saving…' : 'Continue'}
+            onPress={handleContinue}
+            disabled={!selectedTime || saving}
           />
         </View>
       </View>

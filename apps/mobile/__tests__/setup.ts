@@ -68,6 +68,29 @@ jest.mock('expo-file-system', () => ({
   documentDirectory: 'file:///mock/documents/',
 }));
 
+// Mock expo-notifications
+jest.mock('expo-notifications', () => ({
+  __esModule: true,
+  getPermissionsAsync: jest.fn(() => Promise.resolve({ granted: true, canAskAgain: true })),
+  requestPermissionsAsync: jest.fn(() => Promise.resolve({ granted: true })),
+  scheduleNotificationAsync: jest.fn(() => Promise.resolve('mock-id')),
+  cancelScheduledNotificationAsync: jest.fn(() => Promise.resolve()),
+  cancelAllScheduledNotificationsAsync: jest.fn(() => Promise.resolve()),
+  setNotificationHandler: jest.fn(),
+  setNotificationChannelAsync: jest.fn(() => Promise.resolve()),
+  AndroidImportance: { DEFAULT: 3, HIGH: 4 },
+  AndroidNotificationVisibility: { PUBLIC: 1 },
+  SchedulableTriggerInputTypes: { DAILY: 'daily', TIME_INTERVAL: 'timeInterval' },
+}));
+
+// Mock expo-device
+jest.mock('expo-device', () => ({
+  __esModule: true,
+  isDevice: true,
+  brand: 'Test',
+  modelName: 'TestPhone',
+}));
+
 // Mock react-native-reanimated
 jest.mock('react-native-reanimated', () => {
   const Reanimated = require('react-native-reanimated/mock');
