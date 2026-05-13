@@ -28,35 +28,42 @@ const FEATURES = [
 
 export function PaywallScreen() {
   const navigation = useNavigation<PaywallNavigation>();
-  const { setPaid, restore } = usePurchase();
+  const { prices, realPurchases, purchaseMonthly, purchaseLifetime, restore, status } = usePurchase();
   const [selectedPlan, setSelectedPlan] = useState<PlanOption>('lifetime');
   const [restoring, setRestoring] = useState(false);
+  const [purchasing, setPurchasing] = useState(false);
 
-  const handlePurchase = () => {
-    const planLabel =
-      selectedPlan === 'monthly' ? 'Monthly (\u20ac5/month)' : 'Lifetime (\u20ac30 one-time)';
-
-    Alert.alert(
-      'Confirm Purchase',
-      `You selected the ${planLabel} plan. This is a simulated purchase.`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Purchase',
-          onPress: () => {
-            setPaid();
-            navigation.goBack();
-          },
-        },
-      ],
-    );
+  const handlePurchase = async () => {
+    if (purchasing) return;
+    setPurchasing(true);
+    try {
+      const ok = selectedPlan === 'monthly' ? await purchaseMonthly() : await purchaseLifetime();
+      if (ok) {
+        navigation.goBack();
+      } else if (!realPurchases) {
+        Alert.alert('Purchase unavailable', 'RevenueCat is not configured for this build.');
+      }
+    } catch (err: any) {
+      Alert.alert('Purchase failed', err?.message ?? 'Something went wrong. Please try again.');
+    } finally {
+      setPurchasing(false);
+    }
   };
 
   const handleRestore = async () => {
+    if (restoring) return;
     setRestoring(true);
-    await restore();
-    setRestoring(false);
-    Alert.alert('Restore', 'No previous purchases found.');
+    try {
+      await restore();
+      Alert.alert(
+        'Restore Purchases',
+        status === 'paid' ? 'Your purchase has been restored.' : 'No previous purchases found.',
+      );
+    } catch (err: any) {
+      Alert.alert('Restore failed', err?.message ?? 'Something went wrong. Please try again.');
+    } finally {
+      setRestoring(false);
+    }
   };
 
   return (
@@ -117,7 +124,7 @@ export function PaywallScreen() {
               </View>
               <View style={styles.planCardInfo}>
                 <Text style={styles.planTitle}>Monthly</Text>
-                <Text style={styles.planPrice}>{'\u20ac'}5/month</Text>
+                <Text style={styles.planPrice}>{prices.monthly}</Text>
               </View>
             </View>
             <View style={styles.planTag}>
@@ -145,7 +152,7 @@ export function PaywallScreen() {
               </View>
               <View style={styles.planCardInfo}>
                 <Text style={styles.planTitle}>Lifetime</Text>
-                <Text style={styles.planPrice}>{'\u20ac'}30 one-time</Text>
+                <Text style={styles.planPrice}>{prices.lifetime}</Text>
               </View>
             </View>
             <View style={[styles.planTag, styles.planTagBest]}>
@@ -155,8 +162,13 @@ export function PaywallScreen() {
         </View>
 
         {/* CTA */}
-        <TouchableOpacity style={styles.ctaButton} onPress={handlePurchase} activeOpacity={0.8}>
-          <Text style={styles.ctaText}>Start Your Journey</Text>
+        <TouchableOpacity
+          style={[styles.ctaButton, purchasing && styles.ctaButtonDisabled]}
+          onPress={handlePurchase}
+          activeOpacity={0.8}
+          disabled={purchasing}
+        >
+          <Text style={styles.ctaText}>{purchasing ? 'Processing…' : 'Start Your Journey'}</Text>
         </TouchableOpacity>
 
         {/* Restore */}
@@ -344,6 +356,9 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
     alignItems: 'center',
     marginBottom: spacing.md,
+  },
+  ctaButtonDisabled: {
+    opacity: 0.6,
   },
   ctaText: {
     color: '#FFFFFF',
