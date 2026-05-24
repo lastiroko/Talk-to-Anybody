@@ -1178,8 +1178,7 @@
       <a href="#">Privacy</a>
       <a href="#">Terms</a>
       <a href="#">Contact</a>
-      <a href="#">App Store</a>
-      <a href="#">Google Play</a>
+      <a href="https://speakcoach-app.vercel.app" target="_blank" rel="noopener">Open web app</a>
     </div>
     <div class="foot-sig">// Made with <span style="color:var(--accent)">●</span> by the SpeakCoach team · v1.0</div>
   </div>
@@ -1215,8 +1214,10 @@
 
 <script>
 /* ────────── CTA handler ────────── */
+const APP_URL = 'https://speakcoach-app.vercel.app';
 function cta(where){
   console.log('[cta]', where);
+  window.open(APP_URL, '_blank', 'noopener');
 }
 
 /* ────────── Mobile menu ────────── */
