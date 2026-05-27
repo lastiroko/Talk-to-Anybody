@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { typography } from '../theme/typography';
 import { spacing } from '../theme/spacing';
@@ -13,11 +14,11 @@ export function PointsBadge({ gems, coins, style }: PointsBadgeProps) {
   return (
     <View style={[styles.row, style]}>
       <View style={styles.pill}>
-        <Text style={styles.icon}>{'\ud83d\udc8e'}</Text>
+        <Ionicons name="diamond" size={12} color={colors.gem} />
         <Text style={styles.gemText}>{gems.toLocaleString()}</Text>
       </View>
       <View style={styles.pill}>
-        <Text style={styles.icon}>{'\ud83e\ude99'}</Text>
+        <Ionicons name="ellipse" size={12} color={colors.coin} />
         <Text style={styles.coinText}>{coins.toLocaleString()}</Text>
       </View>
     </View>
@@ -37,9 +38,6 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 999,
     gap: 4,
-  },
-  icon: {
-    fontSize: 14,
   },
   gemText: {
     fontSize: typography.caption,

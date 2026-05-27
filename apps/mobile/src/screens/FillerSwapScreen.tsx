@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import GameResultCard from '../components/GameResultCard';
 import { saveGameScore, getHighScore } from '../storage/gameScores';
@@ -658,21 +659,18 @@ export function FillerSwapScreen() {
             const isActive = activeFiller === seg.fillerIdx;
             const isFlashing = flashIdx === seg.fillerIdx;
             return (
-              <TouchableOpacity
+              <Text
                 key={i}
-                activeOpacity={0.7}
                 onPress={() => handleFillerTap(seg.fillerIdx!)}
+                suppressHighlighting
+                style={[
+                  styles.fillerWord,
+                  isActive && styles.fillerWordActive,
+                  isFlashing && styles.fillerWordFlash,
+                ]}
               >
-                <Text
-                  style={[
-                    styles.fillerWord,
-                    isActive && styles.fillerWordActive,
-                    isFlashing && styles.fillerWordFlash,
-                  ]}
-                >
-                  {seg.text}
-                </Text>
-              </TouchableOpacity>
+                {seg.text}
+              </Text>
             );
           }
           return <Text key={i}>{seg.text}</Text>;
@@ -689,7 +687,7 @@ export function FillerSwapScreen() {
       <ScreenContainer>
         <View style={styles.container}>
           <View style={styles.iconCircle}>
-            <Text style={styles.iconEmoji}>{'\ud83d\udd04'}</Text>
+            <Ionicons name="swap-horizontal-outline" size={40} color="#FF7A1A" />
           </View>
           <Text style={styles.title}>Filler Swap</Text>
           <Text style={styles.description}>
@@ -913,25 +911,19 @@ const styles = StyleSheet.create({
     fontFamily: typography.fontRegular,
     lineHeight: 28,
     color: colors.text,
-    flexWrap: 'wrap',
   },
   fillerWord: {
     backgroundColor: 'rgba(255,122,26,0.12)',
-    borderWidth: 1,
-    borderColor: '#FF7A1A',
-    borderRadius: 4,
+    color: '#FF7A1A',
     fontWeight: typography.weightBold,
-    color: colors.text,
-    paddingHorizontal: 2,
-    overflow: 'hidden',
   },
   fillerWordActive: {
-    backgroundColor: 'rgba(255,122,26,0.2)',
-    borderColor: '#FF4500',
+    backgroundColor: 'rgba(255,122,26,0.3)',
+    color: '#FF4500',
   },
   fillerWordFlash: {
-    backgroundColor: 'rgba(74,222,128,0.2)',
-    borderColor: '#4ADE80',
+    backgroundColor: 'rgba(74,222,128,0.25)',
+    color: '#4ADE80',
   },
   cleanBanner: {
     textAlign: 'center',

@@ -15,21 +15,20 @@ import { MainStackParamList } from '../navigation/types';
 type PracticeNavigation = NativeStackNavigationProp<MainStackParamList>;
 
 const GAME_UNLOCK_DAYS: Record<string, number> = {
-  filler_swap: 15,
-  pause_punch: 23,
-  abt_builder: 13,
-  clarity_sprint: 39,
+  abt_builder: 1,
+  filler_swap: 3,
+  pause_punch: 5,
+  clarity_sprint: 7,
 };
 
 export function PracticeScreen() {
   const navigation = useNavigation<PracticeNavigation>();
   const { progress } = useProgress();
   const { isGated } = usePaywallGate();
-  const completedDays = progress?.completedDays ?? [];
   const { fadeIn } = useEntryAnimation(4);
 
-  const isGameUnlocked = (gameId: string) =>
-    completedDays.some((d) => d >= GAME_UNLOCK_DAYS[gameId]);
+  const currentDay = progress?.currentDayUnlocked ?? 1;
+  const isGameUnlocked = (gameId: string) => currentDay >= GAME_UNLOCK_DAYS[gameId];
 
   return (
     <ScreenContainer padded={false} scroll={false}>
@@ -47,13 +46,15 @@ export function PracticeScreen() {
 
         <Animated.View style={[styles.modes, fadeIn(2)]}>
           <ModeCard
-            icon={'\ud83c\udfa4'}
+            icon="mic-outline"
+            iconColor={colors.primary}
             title="Freestyle"
             description="Talk about anything. No prompt, no rules. Just practice."
             onPress={() => navigation.navigate('Freestyle')}
           />
           <ModeCard
-            icon={'\ud83d\udcdd'}
+            icon="document-text-outline"
+            iconColor={colors.categoryPurple}
             title="Script Mode"
             description="Paste your script and practice delivering it."
             onPress={() =>
@@ -61,7 +62,8 @@ export function PracticeScreen() {
             }
           />
           <ModeCard
-            icon={'\u26a1'}
+            icon="flash-outline"
+            iconColor={colors.categoryOrange}
             title="Impromptu"
             description="Random prompt. Zero prep. Think on your feet."
             onPress={() =>
@@ -69,7 +71,8 @@ export function PracticeScreen() {
             }
           />
           <ModeCard
-            icon={'\ud83c\udfad'}
+            icon="people-outline"
+            iconColor={colors.teal}
             title="Roleplay"
             description="Practice real scenarios: interviews, toasts, pitches."
             onPress={() =>
@@ -84,7 +87,8 @@ export function PracticeScreen() {
           <View style={styles.gameGrid}>
             <View style={styles.gameRow}>
               <GameCard
-                icon={'\ud83d\udd04'}
+                icon="swap-horizontal-outline"
+                iconColor={colors.categoryOrange}
                 title="Filler Swap"
                 description="Replace fillers with power words"
                 locked={!isGameUnlocked('filler_swap')}
@@ -94,7 +98,8 @@ export function PracticeScreen() {
                 }
               />
               <GameCard
-                icon={'\u23f8\ufe0f'}
+                icon="pause-circle-outline"
+                iconColor={colors.teal}
                 title="Pause Punch"
                 description="Hit the perfect pause timing"
                 locked={!isGameUnlocked('pause_punch')}
@@ -106,7 +111,8 @@ export function PracticeScreen() {
             </View>
             <View style={styles.gameRow}>
               <GameCard
-                icon={'\ud83d\udcd6'}
+                icon="book-outline"
+                iconColor={colors.gold}
                 title="ABT Builder"
                 description="Construct compelling story structures"
                 locked={!isGameUnlocked('abt_builder')}
@@ -116,7 +122,8 @@ export function PracticeScreen() {
                 }
               />
               <GameCard
-                icon={'\ud83d\udc8e'}
+                icon="diamond-outline"
+                iconColor={colors.categoryPurple}
                 title="Clarity Sprint"
                 description="Simplify complex ideas fast"
                 locked={!isGameUnlocked('clarity_sprint')}

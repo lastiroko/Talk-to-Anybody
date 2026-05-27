@@ -1,27 +1,24 @@
 import { useRef } from 'react';
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
 
-const MODE_COLORS: Record<string, string> = {
-  '\ud83c\udfa4': colors.primary,        // Freestyle - blue
-  '\ud83d\udcdd': colors.categoryPurple,  // Script - purple
-  '\u26a1': colors.categoryOrange,        // Impromptu - orange
-  '\ud83c\udfad': colors.teal,            // Roleplay - teal
-};
+type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
 interface ModeCardProps {
-  icon: string;
+  icon: IoniconName;
+  iconColor?: string;
   title: string;
   description: string;
   onPress: () => void;
 }
 
-export function ModeCard({ icon, title, description, onPress }: ModeCardProps) {
+export function ModeCard({ icon, iconColor, title, description, onPress }: ModeCardProps) {
   const scale = useRef(new Animated.Value(1)).current;
-  const circleColor = MODE_COLORS[icon] ?? colors.primary;
+  const circleColor = iconColor ?? colors.primary;
 
   const handlePressIn = () => {
     Animated.timing(scale, { toValue: 0.97, duration: 100, useNativeDriver: true }).start();
@@ -40,13 +37,13 @@ export function ModeCard({ icon, title, description, onPress }: ModeCardProps) {
         onPressOut={handlePressOut}
       >
         <View style={[styles.iconCircle, { backgroundColor: circleColor }]}>
-          <Text style={styles.icon}>{icon}</Text>
+          <Ionicons name={icon} size={22} color="#FFFFFF" />
         </View>
         <View style={styles.textArea}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.description}>{description}</Text>
         </View>
-        <Text style={styles.arrow}>{'\u203a'}</Text>
+        <Text style={styles.arrow}>{'›'}</Text>
       </Pressable>
     </Animated.View>
   );
@@ -69,10 +66,6 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  icon: {
-    fontSize: 22,
-    color: '#FFFFFF',
   },
   textArea: {
     flex: 1,
