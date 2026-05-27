@@ -1,10 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [vector]
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -154,6 +156,10 @@ model Session {
   createdAt   DateTime      @default(now())
   durationSec Int?
   promptId    String?
+
+  // RAG goal context — set on session create, used by retrievePlaybook
+  goalContext String?       // tag like "wedding_speech" — exact-filter on PlaybookChunk
+  goalDetail  String?       // free text from user, embedded for semantic match
 
   user           User            @relation(fields: [userId], references: [id])
   planDay        PlanDay?        @relation(fields: [planDayId], references: [id])
@@ -358,4 +364,25 @@ model ImitationResult {
   @@index([userId])
   @@index([sessionId])
   @@index([expertClipId])
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// RAG — Playbook Knowledge Base
+// ═══════════════════════════════════════════════════════════════════════════════
+//
+// Chunks of expert speaking-coach content, embedded as 1024-dim vectors via Voyage.
+// Retrieved at coaching time by retrievePlaybook() and injected into the system prompt.
+// Vector column uses Unsupported() because Prisma 5.x has no native vector type;
+// we query it with $queryRawUnsafe and pgvector's `<=>` cosine-distance operator.
+
+model PlaybookChunk {
+  id        String                       @id @default(cuid())
+  context   String                       // e.g. "wedding_speech", "manager_1on1"
+  title     String
+  content   String                       @db.Text
+  embedding Unsupported("vector(1024)")?
+  metadata  Json?
+  createdAt DateTime                     @default(now())
+
+  @@index([context])
 }
