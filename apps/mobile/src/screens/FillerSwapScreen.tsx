@@ -761,7 +761,10 @@ export function FillerSwapScreen() {
 
           {/* Clean banner */}
           {cleanBanner && (
-            <Text style={styles.cleanBanner}>{'\u2728'} Clean! +5 bonus</Text>
+            <View style={styles.cleanBannerRow}>
+              <Ionicons name="sparkles" size={18} color="#4ADE80" />
+              <Text style={styles.cleanBanner}>Clean! +5 bonus</Text>
+            </View>
           )}
 
           {/* Floating points */}
@@ -784,9 +787,14 @@ export function FillerSwapScreen() {
                 activeOpacity={0.7}
                 onPress={() => handleReplacementPick(opt)}
               >
-                <Text style={styles.optionText}>
-                  {opt === '[Remove]' ? '\ud83d\uddd1 Remove' : opt}
-                </Text>
+                {opt === '[Remove]' ? (
+                  <View style={styles.optionInner}>
+                    <Ionicons name="trash-outline" size={14} color="#FFFFFF" />
+                    <Text style={styles.optionText}>Remove</Text>
+                  </View>
+                ) : (
+                  <Text style={styles.optionText}>{opt}</Text>
+                )}
               </TouchableOpacity>
             ))}
           </View>
@@ -925,12 +933,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(74,222,128,0.25)',
     color: '#4ADE80',
   },
+  cleanBannerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    marginTop: spacing.md,
+  },
   cleanBanner: {
-    textAlign: 'center',
     fontSize: typography.subheading,
     fontWeight: typography.weightBold,
     color: '#4ADE80',
-    marginTop: spacing.md,
   },
   floatingPoints: {
     position: 'absolute',
@@ -956,6 +969,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     minWidth: 90,
     alignItems: 'center',
+  },
+  optionInner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
   },
   optionText: {
     color: '#FFFFFF',

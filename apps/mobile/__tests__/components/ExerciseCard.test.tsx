@@ -46,7 +46,7 @@ describe('ExerciseCard', () => {
     render(
       <ExerciseCard exercise={mockExercise} isCompleted={true} onStart={jest.fn()} />,
     );
-    expect(screen.getByText('\u2713')).toBeTruthy();
+    expect(screen.getByText('checkmark')).toBeTruthy();
   });
 
   it('hides start button when completed', () => {

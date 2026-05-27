@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScreenContainer } from '../components/ScreenContainer';
@@ -67,7 +68,15 @@ export function AnalysisResultScreen() {
       <ScrollView contentContainerStyle={styles.content}>
         {/* XP earned */}
         <View style={styles.xpBanner}>
-          <Text style={styles.xpText}>+50 XP  {'\ud83d\udc8e'}+5  {'\ud83e\ude99'}+100</Text>
+          <Text style={styles.xpText}>+50 XP</Text>
+          <View style={styles.xpRewardChip}>
+            <Ionicons name="diamond" size={14} color={colors.gem} />
+            <Text style={styles.xpText}>+5</Text>
+          </View>
+          <View style={styles.xpRewardChip}>
+            <Ionicons name="ellipse" size={14} color={colors.coin} />
+            <Text style={styles.xpText}>+100</Text>
+          </View>
         </View>
 
         {/* Header */}
@@ -88,7 +97,7 @@ export function AnalysisResultScreen() {
         {/* Sub-scores row */}
         <View style={styles.subScoresRow}>
           <View style={[styles.subScoreCard, shadows.card]}>
-            <Text style={styles.subScoreIcon}>{'\ud83c\udfa4'}</Text>
+            <Ionicons name="mic-outline" size={22} color={colors.textMuted} style={styles.subScoreIcon} />
             <AnimatedNumber
               value={analysis.scores.delivery}
               style={[styles.subScoreValue, { color: scoreColor(analysis.scores.delivery) }]}
@@ -96,7 +105,7 @@ export function AnalysisResultScreen() {
             <Text style={styles.subScoreLabel}>Delivery</Text>
           </View>
           <View style={[styles.subScoreCard, shadows.card]}>
-            <Text style={styles.subScoreIcon}>{'\ud83d\udc8e'}</Text>
+            <Ionicons name="diamond-outline" size={22} color={colors.textMuted} style={styles.subScoreIcon} />
             <AnimatedNumber
               value={analysis.scores.clarity}
               style={[styles.subScoreValue, { color: scoreColor(analysis.scores.clarity) }]}
@@ -104,7 +113,7 @@ export function AnalysisResultScreen() {
             <Text style={styles.subScoreLabel}>Clarity</Text>
           </View>
           <View style={[styles.subScoreCard, shadows.card]}>
-            <Text style={styles.subScoreIcon}>{'\ud83d\udcd6'}</Text>
+            <Ionicons name="book-outline" size={22} color={colors.textMuted} style={styles.subScoreIcon} />
             <AnimatedNumber
               value={analysis.scores.story}
               style={[styles.subScoreValue, { color: scoreColor(analysis.scores.story) }]}
@@ -115,7 +124,10 @@ export function AnalysisResultScreen() {
 
         {/* Metrics section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{'\ud83d\udcca'} Metrics</Text>
+          <View style={styles.sectionTitleRow}>
+            <Ionicons name="stats-chart-outline" size={18} color={colors.text} />
+            <Text style={styles.sectionTitle}>Metrics</Text>
+          </View>
           <View style={styles.metricsGrid}>
             <View style={styles.metricsRow}>
               <MetricCard
@@ -150,18 +162,25 @@ export function AnalysisResultScreen() {
 
         {/* Wins - green left stripe */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{'\ud83c\udf1f'} What went well</Text>
+          <View style={styles.sectionTitleRow}>
+            <Ionicons name="star-outline" size={18} color={colors.text} />
+            <Text style={styles.sectionTitle}>What went well</Text>
+          </View>
           {analysis.wins.map((win, i) => (
             <View key={i} style={[styles.stripeCard, shadows.soft]}>
               <View style={[styles.stripe, { backgroundColor: colors.success }]} />
-              <Text style={styles.stripeCardText}>{'\u2705'} {win}</Text>
+              <Ionicons name="checkmark-circle" size={18} color={colors.success} style={styles.stripeIcon} />
+              <Text style={styles.stripeCardText}>{win}</Text>
             </View>
           ))}
         </View>
 
         {/* Fixes - orange left stripe */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{'\ud83c\udfaf'} Focus areas</Text>
+          <View style={styles.sectionTitleRow}>
+            <Ionicons name="locate-outline" size={18} color={colors.text} />
+            <Text style={styles.sectionTitle}>Focus areas</Text>
+          </View>
           {analysis.fixes.map((fix, i) => (
             <TouchableOpacity
               key={i}
@@ -170,7 +189,8 @@ export function AnalysisResultScreen() {
               activeOpacity={0.7}
             >
               <View style={[styles.stripe, { backgroundColor: colors.categoryOrange }]} />
-              <Text style={styles.stripeCardText}>{'\ud83d\udd27'} {fix.title}</Text>
+              <Ionicons name="build-outline" size={18} color={colors.categoryOrange} style={styles.stripeIcon} />
+              <Text style={styles.stripeCardText}>{fix.title}</Text>
               <Text style={styles.fixArrow}>{'\u203a'}</Text>
             </TouchableOpacity>
           ))}
@@ -178,7 +198,10 @@ export function AnalysisResultScreen() {
 
         {/* Coaching message - gold tint */}
         <View style={[styles.coachingCard, shadows.card]}>
-          <Text style={styles.coachingLabel}>{'\ud83e\uddd1\u200d\ud83c\udfeb'} Coach says:</Text>
+          <View style={styles.sectionTitleRow}>
+            <Ionicons name="school-outline" size={18} color={colors.primary} />
+            <Text style={styles.coachingLabel}>Coach says:</Text>
+          </View>
           <Text style={styles.coachingText}>{analysis.coachingText}</Text>
         </View>
 
@@ -230,12 +253,20 @@ const styles = StyleSheet.create({
   // XP banner
   xpBanner: {
     alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
     backgroundColor: 'rgba(255,69,0,0.12)',
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.sm,
     borderRadius: 999,
     borderWidth: 1,
     borderColor: 'rgba(255,69,0,0.3)',
+  },
+  xpRewardChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
   },
   xpText: {
     fontSize: typography.body,
@@ -312,6 +343,11 @@ const styles = StyleSheet.create({
 
   // Sections
   section: { gap: spacing.sm },
+  sectionTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
   sectionTitle: {
     fontSize: typography.subheading,
     fontFamily: typography.fontFamily.bold,
@@ -339,6 +375,9 @@ const styles = StyleSheet.create({
   stripe: {
     width: 5,
     alignSelf: 'stretch',
+  },
+  stripeIcon: {
+    paddingLeft: spacing.md,
   },
   stripeCardText: {
     flex: 1,

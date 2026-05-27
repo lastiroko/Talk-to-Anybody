@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScreenContainer } from '../components/ScreenContainer';
@@ -11,9 +12,12 @@ import { colors } from '../theme/colors';
 import { MainStackParamList } from '../navigation/types';
 import { createSession, getUploadUrl, uploadRecording, submitSession } from '../services/api';
 
+type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
+
 interface Scenario {
   id: string;
-  icon: string;
+  icon: IoniconName;
+  iconColor: string;
   title: string;
   tagline: string;
   situation: string;
@@ -26,7 +30,8 @@ interface Scenario {
 const SCENARIOS: Scenario[] = [
   {
     id: 'interview',
-    icon: '\ud83d\udcbc',
+    icon: 'briefcase-outline',
+    iconColor: colors.primary,
     title: 'Job Interview',
     tagline: 'Answer common interview questions confidently',
     situation: 'You\'re in a final-round interview for your dream job. The interviewer has asked you to walk them through your biggest professional achievement.',
@@ -37,7 +42,8 @@ const SCENARIOS: Scenario[] = [
   },
   {
     id: 'toast',
-    icon: '\ud83e\udd42',
+    icon: 'wine-outline',
+    iconColor: colors.gold,
     title: 'Wedding Toast',
     tagline: 'Give a heartfelt toast for a friend\'s wedding',
     situation: 'Your best friend just got married and it\'s your turn to give the toast. The room is full of family and friends waiting to hear your words.',
@@ -48,7 +54,8 @@ const SCENARIOS: Scenario[] = [
   },
   {
     id: 'presentation',
-    icon: '\ud83d\udcca',
+    icon: 'bar-chart-outline',
+    iconColor: colors.categoryPurple,
     title: 'Team Presentation',
     tagline: 'Present project updates to your team',
     situation: 'It\'s the weekly team sync and you need to update everyone on your project\'s progress, including a problem you\'ve hit and your proposed solution.',
@@ -59,7 +66,8 @@ const SCENARIOS: Scenario[] = [
   },
   {
     id: 'difficult',
-    icon: '\ud83e\udd1d',
+    icon: 'people-outline',
+    iconColor: colors.teal,
     title: 'Difficult Conversation',
     tagline: 'Have a tough but respectful conversation',
     situation: 'A colleague has been consistently taking credit for your ideas in meetings. You need to address this directly but professionally.',
@@ -70,7 +78,8 @@ const SCENARIOS: Scenario[] = [
   },
   {
     id: 'award',
-    icon: '\ud83c\udfa4',
+    icon: 'trophy-outline',
+    iconColor: colors.warning,
     title: 'Award Acceptance',
     tagline: 'Accept an award gracefully',
     situation: 'You\'ve just been called to the stage to receive an award for your work. You have about 90 seconds before the music plays you off.',
@@ -81,7 +90,8 @@ const SCENARIOS: Scenario[] = [
   },
   {
     id: 'cold_call',
-    icon: '\ud83d\udcde',
+    icon: 'call-outline',
+    iconColor: colors.categoryOrange,
     title: 'Cold Call',
     tagline: 'Pitch a product or idea to a stranger',
     situation: 'You\'re calling a potential client who has never heard of you or your company. You have 60 seconds to hook their interest.',
@@ -139,7 +149,9 @@ export function RoleplayScreen() {
                 activeOpacity={0.7}
               >
                 <View style={styles.scenarioHeader}>
-                  <Text style={styles.scenarioIcon}>{scenario.icon}</Text>
+                  <View style={[styles.scenarioIconCircle, { backgroundColor: `${scenario.iconColor}22`, borderColor: scenario.iconColor }]}>
+                    <Ionicons name={scenario.icon} size={22} color={scenario.iconColor} />
+                  </View>
                   <View style={styles.scenarioText}>
                     <Text style={styles.scenarioTitle}>{scenario.title}</Text>
                     <Text style={styles.scenarioTagline}>{scenario.tagline}</Text>
@@ -227,8 +239,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.md,
   },
-  scenarioIcon: {
-    fontSize: 28,
+  scenarioIconCircle: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   scenarioText: {
     flex: 1,

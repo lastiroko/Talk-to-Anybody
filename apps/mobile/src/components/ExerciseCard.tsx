@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { PlanExercise } from '../types/progress';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
+
+type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
 interface ExerciseCardProps {
   exercise: PlanExercise;
@@ -12,13 +15,13 @@ interface ExerciseCardProps {
   onStart: () => void;
 }
 
-const TYPE_CONFIG: Record<string, { bg: string; circleColor: string; label: string; icon: string }> = {
-  record: { bg: 'rgba(255,69,0,0.12)', circleColor: '#FF4500', label: 'Record', icon: '\ud83c\udfa4' },
-  drill: { bg: 'rgba(250,204,21,0.12)', circleColor: '#FACC15', label: 'Drill', icon: '\ud83c\udfaf' },
-  reflection: { bg: 'rgba(168,85,247,0.12)', circleColor: '#A855F7', label: 'Reflection', icon: '\ud83e\udde0' },
-  game: { bg: 'rgba(74,222,128,0.12)', circleColor: '#4ADE80', label: 'Game', icon: '\ud83c\udfae' },
-  unlearning_drill: { bg: 'rgba(230,57,70,0.12)', circleColor: '#E63946', label: 'Unlearning', icon: '\ud83d\udd04' },
-  imitation_drill: { bg: 'rgba(45,212,191,0.12)', circleColor: '#2DD4BF', label: 'Imitation', icon: '\ud83d\udc42' },
+const TYPE_CONFIG: Record<string, { bg: string; circleColor: string; label: string; icon: IoniconName }> = {
+  record: { bg: 'rgba(255,69,0,0.12)', circleColor: '#FF4500', label: 'Record', icon: 'mic-outline' },
+  drill: { bg: 'rgba(250,204,21,0.12)', circleColor: '#FACC15', label: 'Drill', icon: 'locate-outline' },
+  reflection: { bg: 'rgba(168,85,247,0.12)', circleColor: '#A855F7', label: 'Reflection', icon: 'bulb-outline' },
+  game: { bg: 'rgba(74,222,128,0.12)', circleColor: '#4ADE80', label: 'Game', icon: 'game-controller-outline' },
+  unlearning_drill: { bg: 'rgba(230,57,70,0.12)', circleColor: '#E63946', label: 'Unlearning', icon: 'refresh-outline' },
+  imitation_drill: { bg: 'rgba(45,212,191,0.12)', circleColor: '#2DD4BF', label: 'Imitation', icon: 'ear-outline' },
 };
 
 export function ExerciseCard({ exercise, isCompleted, onStart }: ExerciseCardProps) {
@@ -27,20 +30,20 @@ export function ExerciseCard({ exercise, isCompleted, onStart }: ExerciseCardPro
     bg: colors.surfaceMuted,
     circleColor: colors.primary,
     label: exercise.type,
-    icon: '\u2022',
+    icon: 'ellipse-outline' as IoniconName,
   };
 
   return (
     <View style={[styles.card, shadows.card, isCompleted && styles.completedCard]}>
       {isCompleted && (
         <View style={styles.checkOverlay}>
-          <Text style={styles.checkText}>{'\u2713'}</Text>
+          <Ionicons name="checkmark" size={16} color="#FFFFFF" />
         </View>
       )}
 
       <View style={styles.row}>
         <View style={[styles.iconCircle, { backgroundColor: config.circleColor }]}>
-          <Text style={styles.iconText}>{config.icon}</Text>
+          <Ionicons name={config.icon} size={20} color="#FFFFFF" />
         </View>
         <View style={styles.content}>
           <View style={styles.header}>
@@ -100,11 +103,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 1,
   },
-  checkText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: typography.weightBold,
-  },
   row: {
     flexDirection: 'row',
     gap: spacing.md,
@@ -116,10 +114,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 2,
-  },
-  iconText: {
-    fontSize: 18,
-    color: '#FFFFFF',
   },
   content: {
     flex: 1,

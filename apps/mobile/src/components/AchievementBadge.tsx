@@ -1,11 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
 
+type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
+
 interface AchievementBadgeProps {
-  icon: string;
+  icon: IoniconName;
   label: string;
   unlocked: boolean;
 }
@@ -14,7 +17,11 @@ export function AchievementBadge({ icon, label, unlocked }: AchievementBadgeProp
   return (
     <View style={[styles.badge, unlocked ? styles.unlocked : styles.locked, shadows.soft]}>
       <View style={[styles.circle, unlocked ? styles.circleUnlocked : styles.circleLocked]}>
-        <Text style={styles.icon}>{unlocked ? icon : '\ud83d\udd12'}</Text>
+        <Ionicons
+          name={unlocked ? icon : 'lock-closed'}
+          size={24}
+          color={unlocked ? colors.primary : colors.textMuted}
+        />
       </View>
       <Text style={[styles.label, !unlocked && styles.lockedLabel]} numberOfLines={2}>
         {label}
@@ -54,9 +61,6 @@ const styles = StyleSheet.create({
   },
   circleLocked: {
     backgroundColor: 'rgba(255,255,255,0.08)',
-  },
-  icon: {
-    fontSize: 24,
   },
   label: {
     fontSize: typography.tiny,
