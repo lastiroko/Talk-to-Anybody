@@ -1,10 +1,13 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
 import { haptic } from '../utils/haptics';
 import { colors } from '../theme/colors';
 import { typography } from '../theme/typography';
+
+type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 import { WelcomeScreen } from '../screens/WelcomeScreen';
 import { LoginScreen } from '../screens/LoginScreen';
 import { SignupScreen } from '../screens/SignupScreen';
@@ -48,12 +51,12 @@ interface AppNavigatorProps {
   onOnboardingComplete: () => void;
 }
 
-const TAB_ICONS: Record<string, string> = {
-  Home: '⌂',
-  Plan: '△',
-  Practice: '◇',
-  Progress: '▩',
-  Settings: '⚙',
+const TAB_ICONS: Record<string, IoniconName> = {
+  Home: 'home-outline',
+  Plan: 'calendar-outline',
+  Practice: 'mic-outline',
+  Progress: 'stats-chart-outline',
+  Settings: 'settings-outline',
 };
 
 function AuthNavigator({ onAuthenticated }: { onAuthenticated: () => void }) {
@@ -140,7 +143,7 @@ function MainTabs() {
           const icon = TAB_ICONS[route.name];
           return (
             <View style={tabStyles.iconWrap}>
-              <Text style={{ fontSize: 18, color: focused ? '#FF7A1A' : '#4A4A4A' }}>{icon}</Text>
+              <Ionicons name={icon} size={20} color={focused ? '#FF7A1A' : '#4A4A4A'} />
               {focused ? <View style={tabStyles.activeBar} /> : null}
             </View>
           );

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { PrimaryButton } from '../components/PrimaryButton';
@@ -529,7 +530,7 @@ export function ClaritySprintScreen() {
       <ScreenContainer>
         <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
           <View style={styles.iconCircle}>
-            <Text style={styles.iconEmoji}>{'\ud83d\udc8e'}</Text>
+            <Ionicons name="diamond-outline" size={40} color="#FF7A1A" />
           </View>
 
           <Text style={styles.title}>Clarity Sprint</Text>

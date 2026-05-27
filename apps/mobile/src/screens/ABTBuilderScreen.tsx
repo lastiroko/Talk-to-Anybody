@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import GameResultCard from '../components/GameResultCard';
 import { saveGameScore, getHighScore } from '../storage/gameScores';
@@ -88,7 +89,7 @@ type GameState =
 interface PhaseConfig {
   key: 'phase1' | 'phase2' | 'phase3';
   label: string;
-  emoji: string;
+  dotColor: string;
   bgColor: string;
   helperPrefix: string;
 }
@@ -97,21 +98,21 @@ const PHASES: PhaseConfig[] = [
   {
     key: 'phase1',
     label: 'AND — Set the scene',
-    emoji: '🟢',
+    dotColor: '#4ADE80',
     bgColor: 'rgba(74,222,128,0.12)',
     helperPrefix: 'I wanted to [topic] AND...',
   },
   {
     key: 'phase2',
     label: 'BUT — The twist',
-    emoji: '🟡',
+    dotColor: '#FACC15',
     bgColor: 'rgba(250,204,21,0.12)',
     helperPrefix: 'BUT then...',
   },
   {
     key: 'phase3',
     label: 'THEREFORE — The lesson',
-    emoji: '🔴',
+    dotColor: '#E63946',
     bgColor: 'rgba(230,57,70,0.12)',
     helperPrefix: 'THEREFORE I learned...',
   },
@@ -313,7 +314,7 @@ export function ABTBuilderScreen() {
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.iconCircle}>
-        <Text style={styles.iconEmoji}>📖</Text>
+        <Ionicons name="book-outline" size={40} color="#FF7A1A" />
       </View>
 
       <Text style={styles.title}>ABT Builder</Text>
@@ -379,9 +380,8 @@ export function ABTBuilderScreen() {
       <View style={styles.centeredContainer}>
         {/* Phase header */}
         <View style={[styles.phaseHeader, { backgroundColor: phase.bgColor }]}>
-          <Text style={styles.phaseHeaderText}>
-            {phase.emoji} {phase.label}
-          </Text>
+          <Ionicons name="ellipse" size={12} color={phase.dotColor} />
+          <Text style={styles.phaseHeaderText}>{phase.label}</Text>
         </View>
 
         {/* Topic reminder */}
@@ -604,6 +604,9 @@ const styles = StyleSheet.create({
 
   // Phase screen
   phaseHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.lg,
     borderRadius: 12,

@@ -1,19 +1,16 @@
 import { useRef } from 'react';
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
 
-const GAME_COLORS: Record<string, string> = {
-  '\ud83d\udd04': colors.categoryOrange,
-  '\u23f8\ufe0f': colors.teal,
-  '\ud83d\udcd6': colors.gold,
-  '\ud83d\udc8e': colors.categoryPurple,
-};
+type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
 interface GameCardProps {
-  icon: string;
+  icon: IoniconName;
+  iconColor?: string;
   title: string;
   description: string;
   locked: boolean;
@@ -21,9 +18,9 @@ interface GameCardProps {
   onPress: () => void;
 }
 
-export function GameCard({ icon, title, description, locked, unlockDay, onPress }: GameCardProps) {
+export function GameCard({ icon, iconColor, title, description, locked, unlockDay, onPress }: GameCardProps) {
   const scale = useRef(new Animated.Value(1)).current;
-  const circleColor = GAME_COLORS[icon] ?? colors.primary;
+  const circleColor = iconColor ?? colors.primary;
 
   const handlePressIn = () => {
     if (locked) return;
@@ -45,7 +42,7 @@ export function GameCard({ icon, title, description, locked, unlockDay, onPress 
         disabled={locked}
       >
         <View style={[styles.iconCircle, { backgroundColor: locked ? '#4A4A4A' : circleColor }]}>
-          <Text style={styles.icon}>{locked ? '\ud83d\udd12' : icon}</Text>
+          <Ionicons name={locked ? 'lock-closed-outline' : icon} size={20} color="#FFFFFF" />
         </View>
         <Text style={[styles.title, locked && styles.lockedText]}>{title}</Text>
         <Text style={styles.description} numberOfLines={2}>
@@ -81,10 +78,6 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  icon: {
-    fontSize: 20,
-    color: '#FFFFFF',
   },
   title: {
     fontSize: typography.caption,

@@ -91,6 +91,24 @@ jest.mock('expo-device', () => ({
   modelName: 'TestPhone',
 }));
 
+// Mock @expo/vector-icons — render a stub Text node for any icon family
+jest.mock('@expo/vector-icons', () => {
+  const React = require('react');
+  const { Text } = require('react-native');
+  const makeIcon = (family: string) => (props: any) =>
+    React.createElement(
+      Text,
+      { ...props, testID: props.testID ?? `${family}-${props.name ?? 'icon'}` },
+      props.name ?? '',
+    );
+  return new Proxy(
+    {},
+    {
+      get: (_t, prop: string) => makeIcon(prop),
+    },
+  );
+});
+
 // Mock react-native-reanimated
 jest.mock('react-native-reanimated', () => {
   const Reanimated = require('react-native-reanimated/mock');

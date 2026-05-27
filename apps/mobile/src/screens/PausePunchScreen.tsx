@@ -8,6 +8,7 @@ import {
   View,
   Dimensions,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { PrimaryButton } from '../components/PrimaryButton';
@@ -510,7 +511,7 @@ export function PausePunchScreen() {
       <ScreenContainer>
         <View style={styles.container}>
           <View style={styles.iconCircle}>
-            <Text style={styles.iconEmoji}>{'\u23f8\ufe0f'}</Text>
+            <Ionicons name="pause-circle-outline" size={44} color="#FF7A1A" />
           </View>
           <Text style={styles.title}>Pause Punch</Text>
           <Text style={styles.description}>

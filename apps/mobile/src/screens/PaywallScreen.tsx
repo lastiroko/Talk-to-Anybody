@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../navigation/types';
@@ -84,7 +85,7 @@ export function PaywallScreen() {
         {/* Hero */}
         <View style={styles.hero}>
           <View style={styles.iconCircle}>
-            <Text style={styles.iconEmoji}>{'\ud83c\udf99\ufe0f'}</Text>
+            <Ionicons name="mic-outline" size={44} color="#FF7A1A" />
           </View>
           <Text style={styles.heading}>Unlock Your Full Potential</Text>
           <Text style={styles.subheading}>
