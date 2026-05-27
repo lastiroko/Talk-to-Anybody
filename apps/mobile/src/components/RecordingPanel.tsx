@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useRecording } from '../hooks/useRecording';
 import { ProgressBar } from './ProgressBar';
 import { colors } from '../theme/colors';
@@ -279,15 +280,20 @@ export function RecordingPanel({
             disabled={!canUse}
             activeOpacity={0.7}
           >
-            <Text style={styles.useButtonText}>{'\u2705'} Use this recording</Text>
+            <View style={styles.useButtonInner}>
+              <Ionicons name="checkmark-circle" size={18} color="#FFFFFF" />
+              <Text style={styles.useButtonText}>Use this recording</Text>
+            </View>
           </TouchableOpacity>
 
           <View style={styles.secondaryActions}>
             <TouchableOpacity onPress={handleReRecord} style={styles.secondaryLink}>
-              <Text style={styles.secondaryText}>{'\ud83d\udd04'} Re-record</Text>
+              <Ionicons name="refresh-outline" size={16} color={colors.textMuted} />
+              <Text style={styles.secondaryText}>Re-record</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={handleDiscard} style={styles.secondaryLink}>
-              <Text style={styles.discardText}>{'\ud83d\uddd1\ufe0f'} Discard</Text>
+              <Ionicons name="trash-outline" size={16} color={colors.error} />
+              <Text style={styles.discardText}>Discard</Text>
             </TouchableOpacity>
           </View>
 
@@ -482,6 +488,12 @@ const styles = StyleSheet.create({
   useButtonDisabled: {
     backgroundColor: '#1F1F1F',
   },
+  useButtonInner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.xs,
+  },
   useButtonText: {
     color: '#FFFFFF',
     fontSize: typography.body,
@@ -494,6 +506,9 @@ const styles = StyleSheet.create({
     gap: spacing.xl,
   },
   secondaryLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
     paddingVertical: spacing.xs,
   },
   secondaryText: {

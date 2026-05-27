@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScreenContainer } from '../components/ScreenContainer';
@@ -80,7 +81,8 @@ export function ImpromptuScreen() {
 
         {/* New prompt button */}
         <TouchableOpacity onPress={shufflePrompt} style={styles.shuffleButton}>
-          <Text style={styles.shuffleText}>{'\ud83d\udd04'} New Prompt</Text>
+          <Ionicons name="refresh-outline" size={16} color={colors.primary} />
+          <Text style={styles.shuffleText}>New Prompt</Text>
         </TouchableOpacity>
 
         <Text style={styles.timerNote}>60 seconds \u2014 3-second countdown, then go!</Text>
@@ -124,6 +126,9 @@ const styles = StyleSheet.create({
   },
   shuffleButton: {
     alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.lg,
     backgroundColor: 'rgba(255,69,0,0.1)',

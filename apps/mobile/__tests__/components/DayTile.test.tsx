@@ -10,17 +10,17 @@ describe('DayTile', () => {
 
   it('shows checkmark for completed status', () => {
     render(<DayTile dayNumber={1} status="completed" onPress={jest.fn()} />);
-    expect(screen.getByText('\u2713')).toBeTruthy();
+    expect(screen.getByText('checkmark')).toBeTruthy();
   });
 
   it('shows play icon for current status', () => {
     render(<DayTile dayNumber={2} status="current" onPress={jest.fn()} />);
-    expect(screen.getByText('\u25b6')).toBeTruthy();
+    expect(screen.getByText('play')).toBeTruthy();
   });
 
   it('shows lock icon for locked status', () => {
     render(<DayTile dayNumber={3} status="locked" onPress={jest.fn()} />);
-    expect(screen.getByText('\ud83d\udd12')).toBeTruthy();
+    expect(screen.getByText('lock-closed')).toBeTruthy();
   });
 
   it('calls onPress on tap', () => {

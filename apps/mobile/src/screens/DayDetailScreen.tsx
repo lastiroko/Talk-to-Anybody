@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScreenContainer } from '../components/ScreenContainer';
@@ -120,7 +121,7 @@ export function DayDetailScreen() {
     return (
       <ScreenContainer>
         <View style={styles.center}>
-          <Text style={styles.gatedIcon}>{'\ud83d\udd12'}</Text>
+          <Ionicons name="lock-closed" size={48} color={colors.textMuted} style={styles.gatedIcon} />
           <Text style={styles.gatedTitle}>This day requires a subscription</Text>
           <Text style={styles.gatedSubtitle}>
             Unlock the full 60-day plan to access Day {route.params.dayNumber} and beyond.
@@ -183,7 +184,10 @@ export function DayDetailScreen() {
         <Animated.View style={[styles.lessonCard, shadows.card, fadeIn(1)]}>
           <View style={styles.lessonStripe} />
           <View style={styles.lessonContent}>
-            <Text style={styles.lessonLabel}>{'\ud83d\udcd6'} Lesson</Text>
+            <View style={styles.lessonLabelRow}>
+              <Ionicons name="book-outline" size={14} color={colors.primary} />
+              <Text style={styles.lessonLabel}>Lesson</Text>
+            </View>
             <Text style={styles.lessonText}>{day.lessonText}</Text>
           </View>
         </Animated.View>
@@ -207,7 +211,10 @@ export function DayDetailScreen() {
         {/* Games section */}
         {day.games && day.games.length > 0 ? (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>{'\ud83c\udfae'} Mini-Games Unlocked</Text>
+            <View style={styles.sectionTitleRow}>
+              <Ionicons name="game-controller-outline" size={18} color={colors.text} />
+              <Text style={styles.sectionTitle}>Mini-Games Unlocked</Text>
+            </View>
             <View style={styles.gamesRow}>
               {day.games.map((game) => (
                 <View key={game} style={styles.gamePill}>
@@ -241,12 +248,20 @@ export function DayDetailScreen() {
         {/* Just completed celebration */}
         {justCompleted ? (
           <View style={[styles.celebration, shadows.card]}>
-            <Text style={styles.celebrationEmoji}>{'\ud83c\udf89'}</Text>
+            <Ionicons name="trophy" size={36} color={colors.primary} style={styles.celebrationEmoji} />
             <Text style={styles.celebrationTitle}>
               Day {day.dayNumber} complete!
             </Text>
             <View style={styles.rewardRow}>
-              <Text style={styles.rewardText}>{'\ud83d\udc8e'}+5  {'\ud83e\ude99'}+100  +50 XP</Text>
+              <View style={styles.rewardChip}>
+                <Ionicons name="diamond" size={14} color={colors.gem} />
+                <Text style={styles.rewardText}>+5</Text>
+              </View>
+              <View style={styles.rewardChip}>
+                <Ionicons name="ellipse" size={14} color={colors.coin} />
+                <Text style={styles.rewardText}>+100</Text>
+              </View>
+              <Text style={styles.rewardText}>+50 XP</Text>
             </View>
             <Text style={styles.celebrationSub}>Great work! Keep the momentum going.</Text>
             {nextDay ? (
@@ -361,6 +376,11 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     gap: spacing.sm,
   },
+  lessonLabelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
   lessonLabel: {
     fontSize: typography.caption,
     fontFamily: typography.fontFamily.bold,
@@ -384,6 +404,11 @@ const styles = StyleSheet.create({
 
   // Section
   section: { gap: spacing.md },
+  sectionTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
   sectionTitle: {
     fontSize: typography.subheading,
     fontFamily: typography.fontFamily.bold,
@@ -426,10 +451,18 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   rewardRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
     backgroundColor: 'rgba(255,69,0,0.12)',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
     borderRadius: 999,
+  },
+  rewardChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
   },
   rewardText: {
     fontSize: typography.body,

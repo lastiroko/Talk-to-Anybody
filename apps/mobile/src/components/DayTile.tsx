@@ -1,7 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
+
+type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
 interface DayTileProps {
   dayNumber: number;
@@ -9,20 +12,20 @@ interface DayTileProps {
   onPress: () => void;
 }
 
-const STATUS_CONFIG = {
+const STATUS_CONFIG: Record<DayTileProps['status'], { bg: string; icon: IoniconName; iconColor: string }> = {
   completed: {
     bg: '#1F1F1F',
-    icon: '\u2713',
+    icon: 'checkmark',
     iconColor: '#FF4500',
   },
   current: {
     bg: '#1F1F1F',
-    icon: '\u25b6',
+    icon: 'play',
     iconColor: '#FF7A1A',
   },
   locked: {
     bg: '#1F1F1F',
-    icon: '\ud83d\udd12',
+    icon: 'lock-closed',
     iconColor: '#4A4A4A',
   },
 };
@@ -43,7 +46,7 @@ export function DayTile({ dayNumber, status, onPress }: DayTileProps) {
       onPress={onPress}
       activeOpacity={status === 'locked' ? 1 : 0.7}
     >
-      <Text style={[styles.icon, { color: config.iconColor }]}>{config.icon}</Text>
+      <Ionicons name={config.icon} size={14} color={config.iconColor} />
       <Text style={[styles.dayNumber, status === 'locked' && styles.lockedText]}>
         {dayNumber}
       </Text>
@@ -79,9 +82,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 6,
     elevation: 4,
-  },
-  icon: {
-    fontSize: 14,
   },
   dayNumber: {
     fontSize: typography.small,

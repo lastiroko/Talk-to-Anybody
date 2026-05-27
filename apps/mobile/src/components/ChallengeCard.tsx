@@ -1,9 +1,12 @@
 import { useRef } from 'react';
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { typography } from '../theme/typography';
 import { spacing } from '../theme/spacing';
 import { shadows } from '../theme/shadows';
+
+type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
 interface ChallengeCardProps {
   title: string;
@@ -11,7 +14,7 @@ interface ChallengeCardProps {
   progress: string;
   gems?: number;
   coins?: number;
-  icon: string;
+  icon: IoniconName;
   onPress: () => void;
 }
 
@@ -35,7 +38,7 @@ export function ChallengeCard({ title, subtitle, progress, gems, coins, icon, on
         onPressOut={handlePressOut}
       >
         <View style={styles.iconCircle}>
-          <Text style={styles.icon}>{icon}</Text>
+          <Ionicons name={icon} size={22} color={colors.primary} />
         </View>
         <View style={styles.center}>
           <Text style={styles.title}>{title}</Text>
@@ -44,10 +47,16 @@ export function ChallengeCard({ title, subtitle, progress, gems, coins, icon, on
         </View>
         <View style={styles.rewards}>
           {gems ? (
-            <Text style={styles.reward}>{'\ud83d\udc8e'}+{gems}</Text>
+            <View style={styles.rewardChip}>
+              <Ionicons name="diamond" size={12} color={colors.gem} />
+              <Text style={styles.reward}>+{gems}</Text>
+            </View>
           ) : null}
           {coins ? (
-            <Text style={styles.reward}>{'\ud83e\ude99'}+{coins}</Text>
+            <View style={styles.rewardChip}>
+              <Ionicons name="ellipse" size={12} color={colors.coin} />
+              <Text style={styles.reward}>+{coins}</Text>
+            </View>
           ) : null}
         </View>
       </Pressable>
@@ -74,9 +83,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  icon: {
-    fontSize: 22,
-  },
   center: {
     flex: 1,
     gap: 2,
@@ -98,7 +104,12 @@ const styles = StyleSheet.create({
   },
   rewards: {
     alignItems: 'flex-end',
-    gap: 2,
+    gap: 4,
+  },
+  rewardChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
   },
   reward: {
     fontSize: typography.small,

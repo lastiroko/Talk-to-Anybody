@@ -571,7 +571,10 @@ export function ClaritySprintScreen() {
           </View>
 
           <View style={styles.avoidSection}>
-            <Text style={styles.avoidHeading}>{'\ud83d\udeab'} Avoid these words:</Text>
+            <View style={styles.avoidHeadingRow}>
+              <Ionicons name="close-circle-outline" size={16} color="#E63946" />
+              <Text style={styles.avoidHeading}>Avoid these words:</Text>
+            </View>
             {renderJargonPills()}
           </View>
 
@@ -600,7 +603,10 @@ export function ClaritySprintScreen() {
 
           {/* Jargon reminder */}
           <View style={styles.avoidSectionSmall}>
-            <Text style={styles.avoidHintSmall}>{'\ud83d\udeab'} Avoid:</Text>
+            <View style={styles.avoidHeadingRow}>
+              <Ionicons name="close-circle-outline" size={14} color="#E63946" />
+              <Text style={styles.avoidHintSmall}>Avoid:</Text>
+            </View>
             {renderJargonPills()}
           </View>
 
@@ -680,9 +686,10 @@ export function ClaritySprintScreen() {
         <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
           {/* Simple alternative learning moment */}
           <View style={styles.simpleAltCard}>
-            <Text style={styles.simpleAltHeading}>
-              {'\ud83d\udca1'} Here's one way to explain it simply:
-            </Text>
+            <View style={styles.simpleAltHeadingRow}>
+              <Ionicons name="bulb-outline" size={18} color="#FACC15" />
+              <Text style={styles.simpleAltHeading}>Here's one way to explain it simply:</Text>
+            </View>
             <Text style={styles.simpleAltText}>
               {currentConcept?.simpleAlternatives[0]}
             </Text>
@@ -838,6 +845,11 @@ const styles = StyleSheet.create({
     width: '100%',
     gap: sp.sm,
   },
+  avoidHeadingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
   avoidHeading: {
     fontSize: typo.body,
     fontWeight: typo.weightSemi,
@@ -981,6 +993,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(74,222,128,0.3)',
     marginTop: sp.md,
+  },
+  simpleAltHeadingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
   },
   simpleAltHeading: {
     fontSize: typo.body,
