@@ -14,7 +14,7 @@ interface BaselineScreenProps {
 }
 
 const TIPS = [
-  'Speak naturally \u2014 don\u2019t perform',
+  'Speak naturally — don\u2019t perform',
   'Pauses and stumbles are fine',
   'This is your baseline, not your ceiling',
 ];
@@ -43,7 +43,7 @@ export function BaselineScreen({ onComplete }: BaselineScreenProps) {
             minDurationSec={10}
             showPlayback
             showPauseResume
-            promptText="Tell us about something you're passionate about \u2014 a hobby, a cause, a topic you could talk about for hours. There are no wrong answers."
+            promptText="Tell us about something you're passionate about — a hobby, a cause, a topic you could talk about for hours. There are no wrong answers."
             onRecordingComplete={() => setRecordingDone(true)}
             onDiscard={() => setRecordingDone(false)}
           />

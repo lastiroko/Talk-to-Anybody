@@ -85,7 +85,7 @@ export function ImpromptuScreen() {
           <Text style={styles.shuffleText}>New Prompt</Text>
         </TouchableOpacity>
 
-        <Text style={styles.timerNote}>60 seconds \u2014 3-second countdown, then go!</Text>
+        <Text style={styles.timerNote}>60 seconds — 3-second countdown, then go!</Text>
 
         {/* Recording panel with countdown and prompt */}
         <RecordingPanel
