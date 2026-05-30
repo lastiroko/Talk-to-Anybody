@@ -1,8 +1,10 @@
 import { Animated, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { PointsBadge } from '../components/PointsBadge';
+import { StreakBadge } from '../components/StreakBadge';
 import { SkeletonCard, SkeletonLine } from '../components/Skeleton';
 import { useEntryAnimation } from '../hooks/useEntryAnimation';
 import { useGamification } from '../hooks/useGamification';
@@ -16,7 +18,6 @@ import { MainStackParamList } from '../navigation/types';
 type HomeNavigation = NativeStackNavigationProp<MainStackParamList>;
 
 const WEEK_DAYS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-const WEEK_BARS = [40, 25, 55, 70, 35, 20, 60];
 
 const TRACKS: Array<{
   num: string;
@@ -24,10 +25,11 @@ const TRACKS: Array<{
   startDay: number;
   endDay: number;
   dest: keyof MainStackParamList;
+  accent: string;
 }> = [
-  { num: '01', title: 'Vocal Presence', startDay: 1, endDay: 20, dest: 'Freestyle' },
-  { num: '02', title: 'Story Structure', startDay: 21, endDay: 40, dest: 'ScriptMode' },
-  { num: '03', title: 'Impromptu Flow', startDay: 41, endDay: 60, dest: 'Impromptu' },
+  { num: '01', title: 'Vocal Presence', startDay: 1, endDay: 20, dest: 'Freestyle', accent: colors.primary },
+  { num: '02', title: 'Story Structure', startDay: 21, endDay: 40, dest: 'ScriptMode', accent: colors.lavender },
+  { num: '03', title: 'Impromptu Flow', startDay: 41, endDay: 60, dest: 'Impromptu', accent: colors.butter },
 ];
 
 export function HomeScreen() {
@@ -52,10 +54,6 @@ export function HomeScreen() {
   };
 
   const now = new Date();
-  const dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-  const dayLabel = dayNames[now.getDay()];
-  const monthNum = String(now.getMonth() + 1).padStart(2, '0');
-  const dayNum = String(now.getDate()).padStart(2, '0');
   const hour = now.getHours();
   const greeting = hour < 12 ? 'Morning' : hour < 18 ? 'Afternoon' : 'Evening';
   const todayIndex = (now.getDay() + 6) % 7; // Mon=0
@@ -76,20 +74,16 @@ export function HomeScreen() {
   return (
     <ScreenContainer padded={false} scroll={false}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        {/* Soft pastel blob behind everything */}
+        <View style={styles.bgBlob} pointerEvents="none" />
+
         {/* Header */}
         <Animated.View style={[styles.topBar, fadeIn(0)]}>
-          <View>
-            <Text style={styles.dateCaption}>{dayLabel} / {monthNum}.{dayNum}</Text>
-            <Text style={styles.greeting}>{greeting}, User.</Text>
+          <View style={styles.greetingBlock}>
+            <Text style={styles.greeting}>{greeting}, Phil ☀️</Text>
+            <Text style={styles.greetingSub}>Day {currentDay} of 60 — keep it going.</Text>
           </View>
-          <View style={styles.topRight}>
-            <View style={styles.streakBadge}>
-              <Text style={styles.streakText}>{streakDays} DAY STREAK</Text>
-            </View>
-            <View style={styles.avatarCircle}>
-              <Text style={styles.avatarLetter}>U</Text>
-            </View>
-          </View>
+          <StreakBadge count={streakDays} />
         </Animated.View>
 
         {/* Today's Drill hero card */}
@@ -98,59 +92,87 @@ export function HomeScreen() {
             style={({ pressed }) => [styles.heroCard, pressed && styles.heroCardPressed]}
             onPress={() => navigation.navigate('DayDetail', { dayNumber: currentDay })}
           >
-            <Text style={styles.heroCaption}>TODAY'S DRILL</Text>
-            <Text style={styles.heroTitle}>Day {currentDay}</Text>
-            <Text style={styles.heroSub}>Vocal clarity and pacing drill. 8 min.</Text>
+            <Text style={styles.heroEyebrow}>Today's drill</Text>
+            <Text style={styles.heroDay}>Day {currentDay}</Text>
+            <Text style={styles.heroSub}>
+              Pace control through long-form storytelling — 12 min.
+            </Text>
             <View style={styles.heroMeta}>
               <PointsBadge gems={gam.gems} coins={gam.coins} />
-              <Text style={styles.heroCta}>Start {'›'}</Text>
+              <View style={styles.heroCtaPill}>
+                <Text style={styles.heroCtaText}>Start</Text>
+                <Ionicons name="chevron-forward" size={14} color={colors.textOnPrimary} />
+              </View>
             </View>
-            <View style={styles.heroAccentBar} />
           </Pressable>
         </Animated.View>
 
-        {/* Week bar chart */}
+        {/* This week — 7 circles */}
         <Animated.View style={[styles.weekSection, fadeIn(2)]}>
-          <Text style={styles.sectionCaption}>THIS WEEK</Text>
+          <Text style={styles.sectionLabel}>This week</Text>
           <View style={styles.weekRow}>
-            {WEEK_DAYS.map((day, i) => (
-              <View key={i} style={styles.weekCol}>
-                <View style={styles.weekBarBg}>
+            {WEEK_DAYS.map((day, i) => {
+              const isToday = i === todayIndex;
+              const isCompleted = i < todayIndex;
+              const isFuture = i > todayIndex;
+              return (
+                <View key={i} style={styles.weekCol}>
                   <View
                     style={[
-                      styles.weekBarFill,
-                      { height: WEEK_BARS[i] },
-                      i === todayIndex && styles.weekBarActive,
+                      styles.weekCircle,
+                      isCompleted && styles.weekCircleDone,
+                      isToday && styles.weekCircleToday,
+                      isFuture && styles.weekCircleFuture,
                     ]}
-                  />
+                  >
+                    {isCompleted ? (
+                      <Ionicons name="checkmark" size={18} color={colors.textOnPrimary} />
+                    ) : isToday ? (
+                      <View style={styles.weekInnerDot} />
+                    ) : null}
+                  </View>
+                  <Text style={[styles.weekLabel, isToday && styles.weekLabelActive]}>
+                    {day}
+                  </Text>
                 </View>
-                <Text style={[styles.weekLabel, i === todayIndex && styles.weekLabelActive]}>
-                  {day}
-                </Text>
-              </View>
-            ))}
+              );
+            })}
           </View>
         </Animated.View>
 
         {/* Your Tracks */}
         <Animated.View style={[styles.tracksSection, fadeIn(3)]}>
-          <Text style={styles.sectionCaption}>YOUR TRACKS</Text>
+          <Text style={styles.sectionLabel}>Your tracks</Text>
           {TRACKS.map((track) => {
             const pct = trackProgress(track.startDay, track.endDay);
             return (
               <Pressable
                 key={track.num}
-                style={({ pressed }) => [styles.trackCard, pressed && styles.trackCardPressed]}
+                style={({ pressed }) => [
+                  styles.trackCard,
+                  shadows.soft,
+                  pressed && styles.trackCardPressed,
+                ]}
                 onPress={() => handleTrackPress(track.dest)}
               >
-                <Text style={styles.trackNum}>{track.num}</Text>
-                <View style={styles.trackBody}>
+                <View style={styles.trackHeader}>
                   <Text style={styles.trackTitle}>{track.title}</Text>
-                  <View style={styles.trackBarBg}>
-                    <View style={[styles.trackBarFill, { width: `${Math.round(pct * 100)}%` }]} />
-                  </View>
+                  <Text style={[styles.trackPct, { color: track.accent }]}>
+                    {Math.round(pct * 100)}%
+                  </Text>
                 </View>
-                <Text style={styles.trackPct}>{Math.round(pct * 100)}%</Text>
+                <Text style={styles.trackSub}>
+                  {completedDays.filter(d => d >= track.startDay && d <= track.endDay).length} of{' '}
+                  {track.endDay - track.startDay + 1} lessons
+                </Text>
+                <View style={styles.trackBarBg}>
+                  <View
+                    style={[
+                      styles.trackBarFill,
+                      { width: `${Math.round(pct * 100)}%`, backgroundColor: track.accent },
+                    ]}
+                  />
+                </View>
               </Pressable>
             );
           })}
@@ -161,177 +183,199 @@ export function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  content: { padding: spacing.lg, gap: spacing.lg, paddingBottom: spacing.xl },
-  topBar: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' },
-  dateCaption: {
-    fontSize: typography.caption,
-    fontFamily: typography.fontFamily.regular,
-    color: colors.textMuted,
-    textTransform: 'uppercase',
-    letterSpacing: 1.5,
-    marginBottom: 4,
-  },
-  greeting: {
-    fontSize: typography.heading,
-    fontFamily: typography.fontFamily.display,
-    color: colors.text,
-  },
-  topRight: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  streakBadge: {
-    borderWidth: 1,
-    borderColor: colors.borderAccent,
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-  },
-  streakText: {
-    fontSize: typography.caption,
-    fontFamily: typography.fontFamily.semiBold,
-    color: colors.primary,
-    letterSpacing: 1.5,
-  },
-  avatarCircle: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.primary,
-  },
-  avatarLetter: {
-    fontSize: 16,
-    fontFamily: typography.fontFamily.bold,
-    color: colors.text,
+  content: {
+    padding: spacing.lg,
+    gap: spacing.lg,
+    paddingBottom: spacing.xxxl,
   },
 
-  // Hero card
-  heroCard: {
-    backgroundColor: colors.surfaceHighlight,
-    borderRadius: 18,
-    borderWidth: 1,
-    borderColor: colors.borderAccent,
-    padding: spacing.lg,
-    gap: 8,
-    overflow: 'hidden',
-    shadowColor: colors.accentGlow,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 1,
-    shadowRadius: 24,
-    elevation: 8,
+  // Background blob
+  bgBlob: {
+    position: 'absolute',
+    top: -120,
+    right: -100,
+    width: 320,
+    height: 320,
+    borderRadius: 999,
+    backgroundColor: colors.peach,
+    opacity: 0.35,
   },
-  heroCardPressed: { opacity: 0.85 },
-  heroCaption: {
-    fontSize: typography.caption,
-    fontFamily: typography.fontFamily.regular,
-    color: colors.textMuted,
-    textTransform: 'uppercase',
-    letterSpacing: 1.5,
+
+  // Header
+  topBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: spacing.md,
   },
-  heroTitle: {
-    fontSize: typography.title,
+  greetingBlock: {
+    flex: 1,
+    gap: 2,
+  },
+  greeting: {
+    fontSize: 28,
     fontFamily: typography.fontFamily.display,
+    fontWeight: typography.weightSemi,
     color: colors.text,
   },
-  heroSub: {
-    fontSize: typography.body,
+  greetingSub: {
+    fontSize: 14,
     fontFamily: typography.fontFamily.regular,
-    color: colors.textMuted,
+    color: colors.textSecondary,
+  },
+
+  // Hero card — warm peach with Fraunces day number
+  heroCard: {
+    backgroundColor: colors.surfaceHighlight,
+    borderRadius: 28,
+    padding: spacing.lg,
+    gap: spacing.sm,
+    overflow: 'hidden',
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.18,
+    shadowRadius: 24,
+    elevation: 4,
+  },
+  heroCardPressed: { opacity: 0.92 },
+  heroEyebrow: {
+    fontSize: 12,
+    fontFamily: typography.fontFamily.bold,
+    color: colors.primary,
+    letterSpacing: 0.3,
+  },
+  heroDay: {
+    fontSize: 48,
+    fontFamily: typography.fontFamily.display,
+    fontWeight: typography.weightSemi,
+    color: colors.text,
+    lineHeight: 50,
+  },
+  heroSub: {
+    fontSize: 15,
+    fontFamily: typography.fontFamily.regular,
+    color: colors.textSecondary,
+    lineHeight: 22,
   },
   heroMeta: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 4,
+    marginTop: spacing.sm,
   },
-  heroCta: {
-    fontSize: typography.body,
-    fontFamily: typography.fontFamily.semiBold,
-    color: colors.primary,
-    letterSpacing: 1,
-  },
-  heroAccentBar: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 3,
+  heroCtaPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: colors.primary,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 999,
+    gap: 4,
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  heroCtaText: {
+    fontSize: 14,
+    fontFamily: typography.fontFamily.bold,
+    color: colors.textOnPrimary,
   },
 
-  // Week bar chart
-  weekSection: { gap: spacing.sm },
-  sectionCaption: {
-    fontSize: typography.caption,
-    fontFamily: typography.fontFamily.regular,
-    color: colors.textMuted,
-    textTransform: 'uppercase',
-    letterSpacing: 1.5,
+  // Week strip
+  weekSection: { gap: spacing.md },
+  sectionLabel: {
+    fontSize: 13,
+    fontFamily: typography.fontFamily.bold,
+    color: colors.text,
   },
-  weekRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', gap: 6 },
+  weekRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    gap: 4,
+  },
   weekCol: { flex: 1, alignItems: 'center', gap: 6 },
-  weekBarBg: {
-    width: '100%',
-    height: 70,
-    backgroundColor: colors.surfaceMuted,
-    borderRadius: 4,
-    justifyContent: 'flex-end',
-    overflow: 'hidden',
+  weekCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  weekBarFill: {
-    width: '100%',
-    backgroundColor: colors.surfaceMuted,
-    borderRadius: 4,
+  weekCircleDone: {
+    backgroundColor: colors.mint,
   },
-  weekBarActive: {
+  weekCircleToday: {
     backgroundColor: colors.primary,
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  weekCircleFuture: {
+    backgroundColor: colors.surface,
+    borderWidth: 1.5,
+    borderColor: colors.borderHi,
+  },
+  weekInnerDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: colors.textOnPrimary,
   },
   weekLabel: {
-    fontSize: typography.tiny,
-    fontFamily: typography.fontFamily.regular,
-    color: colors.textLight,
+    fontSize: 11,
+    fontFamily: typography.fontFamily.medium,
+    color: colors.textMuted,
   },
   weekLabelActive: {
     color: colors.primary,
+    fontFamily: typography.fontFamily.bold,
   },
 
   // Tracks
-  tracksSection: { gap: spacing.sm },
+  tracksSection: { gap: spacing.md },
   trackCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.md,
     backgroundColor: colors.surface,
-    borderRadius: 14,
+    borderRadius: 20,
     padding: spacing.md,
+    gap: 8,
     borderWidth: 1,
     borderColor: colors.border,
   },
-  trackCardPressed: { opacity: 0.85, borderColor: colors.borderAccent },
-  trackNum: {
-    fontSize: typography.heading,
-    fontFamily: typography.fontFamily.display,
-    color: colors.textLight,
+  trackCardPressed: { opacity: 0.92 },
+  trackHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
-  trackBody: { flex: 1, gap: 6 },
   trackTitle: {
-    fontSize: typography.body,
-    fontFamily: typography.fontFamily.semiBold,
+    fontSize: 17,
+    fontFamily: typography.fontFamily.bold,
     color: colors.text,
   },
-  trackBarBg: {
-    height: 4,
-    backgroundColor: colors.surfaceMuted,
-    borderRadius: 2,
-    overflow: 'hidden',
-  },
-  trackBarFill: {
-    height: 4,
-    backgroundColor: colors.primary,
-    borderRadius: 2,
+  trackSub: {
+    fontSize: 13,
+    fontFamily: typography.fontFamily.regular,
+    color: colors.textMuted,
   },
   trackPct: {
-    fontSize: typography.caption,
-    fontFamily: typography.fontFamily.semiBold,
-    color: colors.textMuted,
+    fontSize: 22,
+    fontFamily: typography.fontFamily.display,
+    fontWeight: typography.weightSemi,
+  },
+  trackBarBg: {
+    height: 6,
+    backgroundColor: colors.track,
+    borderRadius: 999,
+    overflow: 'hidden',
+    marginTop: 4,
+  },
+  trackBarFill: {
+    height: 6,
+    borderRadius: 999,
   },
 });

@@ -17,45 +17,45 @@ export function WelcomeScreen({ onLogin, onSignup }: WelcomeScreenProps) {
   return (
     <ScreenContainer>
       <View style={styles.container}>
-        {/* Radial glow at bottom */}
-        <View style={styles.glowWrap}>
-          <View style={styles.glow} />
-        </View>
+        {/* Soft peach blob upper-left */}
+        <View style={[styles.blob, styles.blobPeach]} />
+        {/* Soft butter blob upper-right */}
+        <View style={[styles.blob, styles.blobButter]} />
 
         {/* Hero section */}
         <View style={styles.hero}>
           <Animated.View style={fadeIn(0)}>
-            <Text style={styles.caption}>TALK / TO / ANYBODY</Text>
+            <Text style={styles.eyebrow}>Talk to anybody</Text>
           </Animated.View>
 
           <Animated.View style={fadeIn(1)}>
             <Text style={styles.displayText}>
-              FIND{' '}
-              <Text style={styles.displayHighlight}>YOUR</Text>
-              {'\n'}VOICE.
+              Find your voice.
             </Text>
+            {/* Hand-drawn underline */}
+            <View style={styles.squiggleUnderline} />
           </Animated.View>
 
           <Animated.View style={fadeIn(2)}>
             <Text style={styles.subtitle}>
-              Practice talking to anybody — tough bosses, crushes, strangers, crowds.
+              Practice talking to anybody — bosses, crushes, strangers, crowds. 5 minutes a day.
             </Text>
           </Animated.View>
         </View>
 
         {/* Action section */}
         <Animated.View style={[styles.actions, fadeIn(3)]}>
-          <PrimaryButton title="START TRAINING" onPress={onSignup} />
+          <PrimaryButton title="Start training" onPress={onSignup} />
 
           <TouchableOpacity onPress={onLogin} style={styles.loginLink}>
             <Text style={styles.loginLinkText}>
-              ALREADY A MEMBER?{' '}
-              <Text style={styles.loginLinkAccent}>LOG IN</Text>
+              Already have an account?{' '}
+              <Text style={styles.loginLinkAccent}>Log in</Text>
             </Text>
           </TouchableOpacity>
 
           <Text style={styles.legal}>
-            By continuing, you agree to our Terms & Privacy Policy
+            By continuing, you agree to our Terms & Privacy Policy.
           </Text>
         </Animated.View>
       </View>
@@ -69,18 +69,25 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: colors.background,
   },
-  glowWrap: {
+  blob: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 320,
-    overflow: 'hidden',
+    borderRadius: 999,
+    opacity: 0.55,
   },
-  glow: {
-    flex: 1,
-    borderRadius: 160,
-    backgroundColor: 'rgba(255,91,10,0.25)',
+  blobPeach: {
+    top: -80,
+    left: -100,
+    width: 320,
+    height: 320,
+    backgroundColor: colors.peach,
+  },
+  blobButter: {
+    top: -40,
+    right: -80,
+    width: 240,
+    height: 240,
+    backgroundColor: colors.butter,
+    opacity: 0.30,
   },
   hero: {
     flex: 1,
@@ -88,31 +95,35 @@ const styles = StyleSheet.create({
     gap: spacing.lg,
     paddingTop: spacing.xxxl,
   },
-  caption: {
-    fontFamily: typography.fontFamily.semiBold,
-    fontSize: typography.caption,
-    letterSpacing: 4,
+  eyebrow: {
+    fontFamily: typography.fontFamily.bold,
+    fontSize: 13,
+    letterSpacing: 0.6,
     color: colors.primary,
-    textTransform: 'uppercase',
   },
   displayText: {
     fontFamily: typography.fontFamily.display,
     fontSize: typography.hero,
-    lineHeight: 68,
+    lineHeight: 60,
     color: colors.text,
-    letterSpacing: -1,
+    letterSpacing: -0.5,
+    fontWeight: typography.weightSemi,
   },
-  displayHighlight: {
-    fontFamily: typography.fontFamily.display,
-    color: colors.primaryLight,
-    fontStyle: 'italic',
+  squiggleUnderline: {
+    width: 100,
+    height: 3,
+    borderRadius: 2,
+    backgroundColor: colors.primary,
+    marginTop: 8,
+    marginLeft: 4,
+    transform: [{ rotate: '-0.5deg' }],
   },
   subtitle: {
     fontFamily: typography.fontFamily.regular,
-    fontSize: typography.body,
-    color: colors.textMuted,
-    lineHeight: 22,
-    maxWidth: 320,
+    fontSize: 16,
+    color: colors.textSecondary,
+    lineHeight: 24,
+    maxWidth: 340,
   },
   actions: {
     gap: spacing.md,
@@ -124,20 +135,18 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   loginLinkText: {
-    fontFamily: typography.fontFamily.regular,
-    fontSize: typography.small,
-    letterSpacing: 2,
-    color: colors.textMuted,
-    textTransform: 'uppercase',
+    fontFamily: typography.fontFamily.medium,
+    fontSize: 15,
+    color: colors.textSecondary,
   },
   loginLinkAccent: {
     color: colors.primary,
-    fontFamily: typography.fontFamily.semiBold,
+    fontFamily: typography.fontFamily.bold,
   },
   legal: {
     fontFamily: typography.fontFamily.regular,
-    fontSize: typography.tiny,
-    color: colors.textLight,
+    fontSize: 11,
+    color: colors.textMuted,
     textAlign: 'center',
     lineHeight: 16,
   },

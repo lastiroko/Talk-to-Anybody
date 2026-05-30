@@ -13,35 +13,9 @@ import GameResultCard from '../components/GameResultCard';
 import { saveGameScore, getHighScore } from '../storage/gameScores';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { PrimaryButton } from '../components/PrimaryButton';
-
-// ---------------------------------------------------------------------------
-// Theme (inline to keep self-contained)
-// ---------------------------------------------------------------------------
-const colors = {
-  background: '#0A0A0A',
-  surface: '#141414',
-  primary: '#FF4500',
-  primaryDark: '#E63946',
-  text: '#FFFFFF',
-  muted: '#8A8A8A',
-  border: 'rgba(255,255,255,0.08)',
-};
-
-const spacing = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 };
-
-const typography = {
-  heading: 24,
-  subheading: 18,
-  body: 16,
-  small: 14,
-  weightBold: '700' as '700',
-  weightSemi: '600' as '600',
-  weightRegular: '400' as '400',
-  fontRegular: 'JetBrainsMono_400Regular',
-  fontSemi: 'JetBrainsMono_600SemiBold',
-  fontBold: 'JetBrainsMono_700Bold',
-  fontDisplay: 'SpaceGrotesk_700Bold',
-};
+import { colors } from '../theme/colors';
+import { spacing } from '../theme/spacing';
+import { typography } from '../theme/typography';
 
 // ---------------------------------------------------------------------------
 // Data
@@ -98,22 +72,22 @@ const PHASES: PhaseConfig[] = [
   {
     key: 'phase1',
     label: 'AND — Set the scene',
-    dotColor: '#4ADE80',
-    bgColor: 'rgba(74,222,128,0.12)',
+    dotColor: colors.mint,
+    bgColor: colors.successBg,
     helperPrefix: 'I wanted to [topic] AND...',
   },
   {
     key: 'phase2',
     label: 'BUT — The twist',
-    dotColor: '#FACC15',
-    bgColor: 'rgba(250,204,21,0.12)',
+    dotColor: colors.butter,
+    bgColor: 'rgba(255,208,92,0.16)',
     helperPrefix: 'BUT then...',
   },
   {
     key: 'phase3',
     label: 'THEREFORE — The lesson',
-    dotColor: '#E63946',
-    bgColor: 'rgba(230,57,70,0.12)',
+    dotColor: colors.error,
+    bgColor: 'rgba(229,86,75,0.12)',
     helperPrefix: 'THEREFORE I learned...',
   },
 ];
@@ -521,9 +495,9 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: 'rgba(74,222,128,0.12)',
+    backgroundColor: colors.successBg,
     borderWidth: 2,
-    borderColor: 'rgba(74,222,128,0.3)',
+    borderColor: colors.success,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: spacing.md,
@@ -534,13 +508,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: typography.heading,
     fontWeight: typography.weightBold,
-    fontFamily: typography.fontDisplay,
+    fontFamily: typography.fontFamily.display,
     color: colors.text,
   },
   description: {
     fontSize: typography.body,
-    fontFamily: typography.fontRegular,
-    color: colors.muted,
+    fontFamily: typography.fontFamily.regular,
+    color: colors.textMuted,
     textAlign: 'center',
     lineHeight: 22,
     paddingHorizontal: spacing.sm,
@@ -558,7 +532,7 @@ const styles = StyleSheet.create({
   },
   scoreLabel: {
     fontSize: typography.body,
-    color: colors.muted,
+    color: colors.textMuted,
   },
   scoreValue: {
     fontSize: typography.subheading,
@@ -578,7 +552,7 @@ const styles = StyleSheet.create({
   },
   topicLabel: {
     fontSize: typography.body,
-    color: colors.muted,
+    color: colors.textMuted,
     marginBottom: spacing.sm,
   },
   topicText: {
@@ -592,13 +566,13 @@ const styles = StyleSheet.create({
   countdownNumber: {
     fontSize: 72,
     fontWeight: typography.weightBold,
-    fontFamily: typography.fontBold,
+    fontFamily: typography.fontFamily.bold,
     color: colors.primary,
     marginVertical: spacing.lg,
   },
   countdownSubtext: {
     fontSize: typography.subheading,
-    color: colors.muted,
+    color: colors.textMuted,
     textAlign: 'center',
   },
 
@@ -619,7 +593,7 @@ const styles = StyleSheet.create({
   },
   topicReminder: {
     fontSize: typography.small,
-    color: colors.muted,
+    color: colors.textMuted,
     marginBottom: spacing.sm,
   },
   helperText: {
@@ -646,18 +620,18 @@ const styles = StyleSheet.create({
   timerText: {
     fontSize: 36,
     fontWeight: typography.weightBold,
-    fontFamily: typography.fontBold,
+    fontFamily: typography.fontFamily.bold,
     color: colors.primary,
   },
   timerWarning: {
-    color: '#E63946',
+    color: colors.error,
   },
 
   // Recording controls
   startRecordingBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#E63946',
+    backgroundColor: colors.error,
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.xl,
     borderRadius: 30,
@@ -667,12 +641,12 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 7,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.textOnPrimary,
   },
   startRecordingText: {
     fontSize: typography.body,
     fontWeight: typography.weightSemi,
-    color: '#FFFFFF',
+    color: colors.textOnPrimary,
   },
   recordingActiveContainer: {
     alignItems: 'center',
@@ -682,12 +656,12 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '#E63946',
+    backgroundColor: colors.error,
   },
   recordingLabel: {
     fontSize: typography.body,
     fontWeight: typography.weightSemi,
-    color: '#E63946',
+    color: colors.error,
   },
   doneBtn: {
     backgroundColor: colors.primary,
@@ -698,7 +672,7 @@ const styles = StyleSheet.create({
   doneBtnText: {
     fontSize: typography.body,
     fontWeight: typography.weightSemi,
-    color: '#FFFFFF',
+    color: colors.textOnPrimary,
   },
 
   // Phase dots
