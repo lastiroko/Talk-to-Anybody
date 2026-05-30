@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
   avatarText: {
     fontSize: 24,
     fontFamily: typography.fontFamily.bold,
-    color: '#FFFFFF',
+    color: colors.textOnPrimary,
   },
   profileInfo: {
     flex: 1,
@@ -356,23 +356,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   upgradeText: {
-    color: '#FFFFFF',
+    color: colors.textOnPrimary,
     fontSize: typography.body,
-    fontFamily: typography.fontFamily.semiBold,
+    fontFamily: typography.fontFamily.bold,
   },
 
   // Sign out
   signOutButton: {
     borderWidth: 1.5,
-    borderColor: '#E63946',
-    borderRadius: 14,
-    paddingVertical: spacing.md,
+    borderColor: colors.error,
+    borderRadius: 999,
+    paddingVertical: 16,
     alignItems: 'center',
+    backgroundColor: colors.surface,
   },
   signOutText: {
     fontSize: typography.body,
-    fontFamily: typography.fontFamily.semiBold,
-    color: '#E63946',
+    fontFamily: typography.fontFamily.bold,
+    color: colors.error,
   },
 
   bottomSpacer: { height: spacing.xl },

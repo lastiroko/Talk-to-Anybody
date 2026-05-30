@@ -124,7 +124,7 @@ export function ProgressScreen() {
                   </View>
                   <Text style={styles.score}>{item.score}</Text>
                 </View>
-                <Text style={[styles.delta, { color: item.up ? '#4ADE80' : '#E63946' }]}>
+                <Text style={[styles.delta, { color: item.up ? colors.success : colors.error }]}>
                   {item.up ? '\u25B2' : '\u25BC'} {Math.abs(item.delta)}
                 </Text>
               </View>
@@ -156,16 +156,16 @@ const styles = StyleSheet.create({
 
   topBar: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' },
   arenaCaption: {
-    fontSize: typography.caption,
-    fontFamily: typography.fontFamily.regular,
+    fontSize: 12,
+    fontFamily: typography.fontFamily.bold,
     color: colors.primary,
-    textTransform: 'uppercase',
-    letterSpacing: 1.5,
+    letterSpacing: 0.4,
     marginBottom: 4,
   },
   title: {
-    fontSize: typography.heading,
+    fontSize: 32,
     fontFamily: typography.fontFamily.display,
+    fontWeight: typography.weightSemi,
     color: colors.text,
   },
 

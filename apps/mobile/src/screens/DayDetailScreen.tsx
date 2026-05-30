@@ -329,7 +329,7 @@ const styles = StyleSheet.create({
     borderRadius: 999,
   },
   dayBadgeText: {
-    color: '#FFFFFF',
+    color: colors.textOnPrimary,
     fontSize: typography.small,
     fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
