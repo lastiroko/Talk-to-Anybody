@@ -716,7 +716,7 @@ const styles = StyleSheet.create({
     lineHeight: 32,
   },
   wordPast: {
-    color: '#4A4A4A',
+    color: colors.textMuted,
   },
   wordCurrent: {
     color: colors.textOnPrimary,
@@ -733,7 +733,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '45%',
     alignSelf: 'center',
-    backgroundColor: '#141414',
+    backgroundColor: colors.surface,
     borderRadius: 16,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,

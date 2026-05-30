@@ -43,7 +43,7 @@ export function AnxietyRater({ label, value, onChange }: AnxietyRaterProps) {
               <Text
                 style={[
                   styles.circleText,
-                  { color: isSelected ? '#fff' : colors.textMuted },
+                  { color: isSelected ? colors.textOnPrimary : colors.textMuted },
                 ]}
               >
                 {rating}

@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   primaryButtonText: {
     fontSize: typography.body,
     fontWeight: typography.weightSemi as '600',
-    color: '#ffffff',
+    color: colors.surface,
   },
   secondaryButton: {
     borderRadius: 12,

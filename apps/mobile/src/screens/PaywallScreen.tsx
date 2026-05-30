@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   ctaText: {
-    color: '#FFFFFF',
+    color: colors.textOnPrimary,
     fontSize: typography.body,
     fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,

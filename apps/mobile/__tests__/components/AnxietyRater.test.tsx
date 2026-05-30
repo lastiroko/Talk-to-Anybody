@@ -16,7 +16,7 @@ describe('AnxietyRater', () => {
     // When selected, the text color is white
     expect(selectedCircle.props.style).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ color: '#fff' }),
+        expect.objectContaining({ color: '#FFFFFF' }),
       ]),
     );
   });

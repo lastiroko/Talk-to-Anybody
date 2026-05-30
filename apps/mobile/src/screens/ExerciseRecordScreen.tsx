@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     fontSize: typography.small,
     fontFamily: typography.fontFamily.semiBold,
     fontWeight: typography.weightSemi,
-    color: '#FFFFFF',
+    color: colors.textOnPrimary,
   },
   prompt: {
     fontSize: typography.body,
