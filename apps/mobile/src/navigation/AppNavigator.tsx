@@ -61,7 +61,7 @@ const TAB_ICONS: Record<string, IoniconName> = {
 
 function AuthNavigator({ onAuthenticated }: { onAuthenticated: () => void }) {
   return (
-    <AuthStack.Navigator screenOptions={{ headerStyle: { backgroundColor: '#0A0A0A' }, headerTintColor: '#FFFFFF', headerTitleStyle: { fontFamily: typography.fontFamily.bold, fontSize: 16 } }}>
+    <AuthStack.Navigator screenOptions={{ headerStyle: { backgroundColor: colors.background }, headerTintColor: colors.text, headerTitleStyle: { fontFamily: typography.fontFamily.bold, fontSize: 16 } }}>
       <AuthStack.Screen name="Welcome" options={{ headerShown: false }}>
         {({ navigation }) => (
           <WelcomeScreen
@@ -89,7 +89,7 @@ function AuthNavigator({ onAuthenticated }: { onAuthenticated: () => void }) {
 
 function OnboardingNavigator({ onDone }: { onDone: () => void }) {
   return (
-    <OnboardingStack.Navigator screenOptions={{ headerStyle: { backgroundColor: '#0A0A0A' }, headerTintColor: '#FFFFFF', headerTitleStyle: { fontFamily: typography.fontFamily.bold, fontSize: 16 } }}>
+    <OnboardingStack.Navigator screenOptions={{ headerStyle: { backgroundColor: colors.background }, headerTintColor: colors.text, headerTitleStyle: { fontFamily: typography.fontFamily.bold, fontSize: 16 } }}>
       <OnboardingStack.Screen name="OnboardingGoal" options={{ title: 'Your goal' }}>
         {({ navigation }) => (
           <OnboardingGoalScreen onNext={() => navigation.navigate('OnboardingSchedule')} />
@@ -116,34 +116,33 @@ function MainTabs() {
         },
       }}
       screenOptions={({ route }) => ({
-        headerStyle: { backgroundColor: '#0A0A0A' },
-        headerTintColor: '#FFFFFF',
+        headerStyle: { backgroundColor: colors.background },
+        headerTintColor: colors.text,
         headerTitleStyle: { fontFamily: typography.fontFamily.bold, fontSize: 16, letterSpacing: 0.5 },
         tabBarStyle: {
-          backgroundColor: 'rgba(10,10,10,0.78)',
+          backgroundColor: 'rgba(255,255,255,0.94)',
           borderTopWidth: 1,
-          borderTopColor: 'rgba(255,255,255,0.08)',
+          borderTopColor: colors.border,
           elevation: 0,
           shadowOpacity: 0,
           height: 72,
           paddingBottom: 12,
           paddingTop: 8,
         },
-        tabBarActiveTintColor: '#FF7A1A',
-        tabBarInactiveTintColor: '#4A4A4A',
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textMuted,
         tabBarShowLabel: true,
         tabBarLabelStyle: {
           fontFamily: typography.fontFamily.regular,
           fontSize: 9,
           letterSpacing: 1.5,
-          textTransform: 'uppercase' as const,
           marginTop: 2,
         },
         tabBarIcon: ({ focused }) => {
           const icon = TAB_ICONS[route.name];
           return (
             <View style={tabStyles.iconWrap}>
-              <Ionicons name={icon} size={20} color={focused ? '#FF7A1A' : '#4A4A4A'} />
+              <Ionicons name={icon} size={20} color={focused ? colors.primary : colors.textMuted} />
               {focused ? <View style={tabStyles.activeBar} /> : null}
             </View>
           );
@@ -168,8 +167,8 @@ const tabStyles = StyleSheet.create({
     width: 18,
     height: 2,
     borderRadius: 1,
-    backgroundColor: '#FF7A1A',
-    shadowColor: '#FF7A1A',
+    backgroundColor: colors.primary,
+    shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.6,
     shadowRadius: 4,
@@ -183,7 +182,7 @@ export function AppNavigator({ flow, onAuthenticated, onOnboardingComplete }: Ap
       {flow === 'auth' && <AuthNavigator onAuthenticated={onAuthenticated} />}
       {flow === 'onboarding' && <OnboardingNavigator onDone={onOnboardingComplete} />}
       {flow === 'main' && (
-        <MainStack.Navigator screenOptions={{ headerStyle: { backgroundColor: '#0A0A0A' }, headerTintColor: '#FFFFFF', headerTitleStyle: { fontFamily: typography.fontFamily.bold, fontSize: 16 } }}>
+        <MainStack.Navigator screenOptions={{ headerStyle: { backgroundColor: colors.background }, headerTintColor: colors.text, headerTitleStyle: { fontFamily: typography.fontFamily.bold, fontSize: 16 } }}>
           <MainStack.Screen name="Tabs" component={MainTabs} options={{ headerShown: false }} />
           <MainStack.Screen
             name="DayDetail"
