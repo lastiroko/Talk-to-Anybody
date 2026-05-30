@@ -259,11 +259,11 @@ const styles = StyleSheet.create({
   },
   scenarioTagline: {
     fontSize: typography.small,
-    color: colors.muted,
+    color: colors.textMuted,
   },
   chevron: {
     fontSize: 12,
-    color: '#8A8A8A',
+    color: colors.textMuted,
   },
   scenarioDetails: {
     borderTopWidth: 1,

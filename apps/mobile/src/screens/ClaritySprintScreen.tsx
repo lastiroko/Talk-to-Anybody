@@ -15,32 +15,9 @@ import { RecordingPanel } from '../components/RecordingPanel';
 import GameResultCard from '../components/GameResultCard';
 import { saveGameScore, getHighScore } from '../storage/gameScores';
 
-// ─── Theme tokens ────────────────────────────────────────────────────────────
-const colors = {
-  background: '#0A0A0A',
-  surface: '#141414',
-  primary: '#FF4500',
-  primaryDark: '#E63946',
-  text: '#FFFFFF',
-  muted: '#8A8A8A',
-  border: 'rgba(255,255,255,0.08)',
-};
-
-const sp = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 };
-
-const typo = {
-  heading: 24,
-  subheading: 18,
-  body: 16,
-  small: 14,
-  weightBold: '700' as const,
-  weightSemi: '600' as const,
-  weightRegular: '400' as const,
-  fontRegular: 'JetBrainsMono_400Regular',
-  fontSemi: 'JetBrainsMono_600SemiBold',
-  fontBold: 'JetBrainsMono_700Bold',
-  fontDisplay: 'SpaceGrotesk_700Bold',
-};
+import { colors } from '../theme/colors';
+import { spacing } from '../theme/spacing';
+import { typography } from '../theme/typography';
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -723,7 +700,7 @@ export function ClaritySprintScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    gap: sp.lg,
+    gap: spacing.lg,
     alignItems: 'center',
   },
 
@@ -737,34 +714,34 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,69,0,0.3)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: sp.md,
+    marginTop: spacing.md,
   },
   iconEmoji: {
     fontSize: 36,
   },
   title: {
-    fontSize: typo.heading,
-    fontWeight: typo.weightBold,
-    fontFamily: typo.fontDisplay,
+    fontSize: typography.heading,
+    fontWeight: typography.weightBold,
+    fontFamily: typography.fontFamily.display,
     color: colors.text,
   },
   description: {
-    fontSize: typo.body,
-    fontFamily: typo.fontRegular,
-    color: colors.muted,
+    fontSize: typography.body,
+    fontFamily: typography.fontFamily.regular,
+    color: colors.textMuted,
     textAlign: 'center',
     lineHeight: 22,
-    paddingHorizontal: sp.sm,
+    paddingHorizontal: spacing.sm,
   },
 
   // Difficulty pills
   pillRow: {
     flexDirection: 'row',
-    gap: sp.sm,
+    gap: spacing.sm,
   },
   pill: {
-    paddingVertical: sp.sm,
-    paddingHorizontal: sp.lg,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.lg,
     borderRadius: 20,
     backgroundColor: colors.surface,
     borderWidth: 1,
@@ -775,12 +752,12 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
   },
   pillText: {
-    fontSize: typo.small,
-    fontWeight: typo.weightSemi,
-    color: colors.muted,
+    fontSize: typography.small,
+    fontWeight: typography.weightSemi,
+    color: colors.textMuted,
   },
   pillTextActive: {
-    color: '#FFFFFF',
+    color: colors.textOnPrimary,
   },
 
   // High scores
@@ -788,16 +765,16 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: colors.surface,
     borderRadius: 14,
-    padding: sp.lg,
-    gap: sp.sm,
+    padding: spacing.lg,
+    gap: spacing.sm,
     borderWidth: 1,
     borderColor: colors.border,
   },
   highScoreHeading: {
-    fontSize: typo.subheading,
-    fontWeight: typo.weightBold,
+    fontSize: typography.subheading,
+    fontWeight: typography.weightBold,
     color: colors.text,
-    marginBottom: sp.xs,
+    marginBottom: spacing.xs,
   },
   highScoreRow: {
     flexDirection: 'row',
@@ -805,12 +782,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   highScoreLabel: {
-    fontSize: typo.body,
-    color: colors.muted,
+    fontSize: typography.body,
+    color: colors.textMuted,
   },
   highScoreValue: {
-    fontSize: typo.body,
-    fontWeight: typo.weightBold,
+    fontSize: typography.body,
+    fontWeight: typography.weightBold,
     color: colors.text,
   },
 
@@ -819,23 +796,23 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: colors.surface,
     borderRadius: 16,
-    padding: sp.xl,
+    padding: spacing.xl,
     alignItems: 'center',
-    gap: sp.sm,
+    gap: spacing.sm,
     borderWidth: 1,
     borderColor: colors.border,
-    marginTop: sp.lg,
+    marginTop: spacing.lg,
   },
   conceptLabel: {
-    fontSize: typo.small,
-    fontWeight: typo.weightSemi,
-    color: colors.muted,
+    fontSize: typography.small,
+    fontWeight: typography.weightSemi,
+    color: colors.textMuted,
     textTransform: 'uppercase',
     letterSpacing: 1,
   },
   conceptTitle: {
-    fontSize: typo.heading,
-    fontWeight: typo.weightBold,
+    fontSize: typography.heading,
+    fontWeight: typography.weightBold,
     color: colors.text,
     textAlign: 'center',
   },
@@ -843,7 +820,7 @@ const styles = StyleSheet.create({
   // Avoid / jargon
   avoidSection: {
     width: '100%',
-    gap: sp.sm,
+    gap: spacing.sm,
   },
   avoidHeadingRow: {
     flexDirection: 'row',
@@ -851,25 +828,25 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   avoidHeading: {
-    fontSize: typo.body,
-    fontWeight: typo.weightSemi,
-    color: '#E63946',
+    fontSize: typography.body,
+    fontWeight: typography.weightSemi,
+    color: colors.error,
   },
   jargonRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: sp.sm,
+    gap: spacing.sm,
   },
   jargonPill: {
     backgroundColor: 'rgba(230,57,70,0.12)',
     borderRadius: 12,
-    paddingVertical: sp.xs,
-    paddingHorizontal: sp.md,
+    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.md,
   },
   jargonPillText: {
-    fontSize: typo.small,
-    fontWeight: typo.weightSemi,
-    color: '#E63946',
+    fontSize: typography.small,
+    fontWeight: typography.weightSemi,
+    color: colors.error,
   },
 
   // Countdown
@@ -882,17 +859,17 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: sp.md,
+    marginTop: spacing.md,
   },
   countdownNumber: {
     fontSize: 48,
-    fontWeight: typo.weightBold,
-    fontFamily: typo.fontBold,
+    fontWeight: typography.weightBold,
+    fontFamily: typography.fontFamily.bold,
     color: colors.primary,
   },
   countdownHint: {
-    fontSize: typo.body,
-    color: colors.muted,
+    fontSize: typography.body,
+    color: colors.textMuted,
     fontStyle: 'italic',
   },
 
@@ -901,46 +878,46 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: colors.surface,
     borderRadius: 12,
-    padding: sp.md,
+    padding: spacing.md,
     borderWidth: 1,
     borderColor: colors.border,
     alignItems: 'center',
-    marginTop: sp.sm,
+    marginTop: spacing.sm,
   },
   conceptReminderText: {
-    fontSize: typo.subheading,
-    fontWeight: typo.weightBold,
+    fontSize: typography.subheading,
+    fontWeight: typography.weightBold,
     color: colors.text,
     textAlign: 'center',
   },
   avoidSectionSmall: {
     width: '100%',
-    gap: sp.xs,
+    gap: spacing.xs,
   },
   avoidHintSmall: {
-    fontSize: typo.small,
-    fontWeight: typo.weightSemi,
-    color: '#E63946',
+    fontSize: typography.small,
+    fontWeight: typography.weightSemi,
+    color: colors.error,
   },
 
   // ── Rating screen ──
   ratingTitle: {
-    fontSize: typo.heading,
-    fontWeight: typo.weightBold,
-    fontFamily: typo.fontDisplay,
+    fontSize: typography.heading,
+    fontWeight: typography.weightBold,
+    fontFamily: typography.fontFamily.display,
     color: colors.text,
     textAlign: 'center',
-    marginTop: sp.xl,
+    marginTop: spacing.xl,
   },
   ratingSubtitle: {
-    fontSize: typo.body,
-    color: colors.muted,
+    fontSize: typography.body,
+    color: colors.textMuted,
     textAlign: 'center',
   },
   ratingRow: {
     flexDirection: 'row',
-    gap: sp.md,
-    marginTop: sp.md,
+    gap: spacing.md,
+    marginTop: spacing.md,
   },
   ratingCircle: {
     width: 52,
@@ -957,30 +934,30 @@ const styles = StyleSheet.create({
     borderColor: colors.primaryDark,
   },
   ratingCircleText: {
-    fontSize: typo.subheading,
-    fontWeight: typo.weightBold,
+    fontSize: typography.subheading,
+    fontWeight: typography.weightBold,
     color: colors.text,
   },
   ratingCircleTextActive: {
-    color: '#FFFFFF',
+    color: colors.textOnPrimary,
   },
   ratingLabel: {
-    fontSize: typo.body,
-    fontWeight: typo.weightSemi,
+    fontSize: typography.body,
+    fontWeight: typography.weightSemi,
     color: colors.primary,
   },
   ratingMeta: {
     width: '100%',
     backgroundColor: colors.surface,
     borderRadius: 12,
-    padding: sp.md,
-    gap: sp.xs,
+    padding: spacing.md,
+    gap: spacing.xs,
     borderWidth: 1,
     borderColor: colors.border,
   },
   ratingMetaText: {
-    fontSize: typo.small,
-    color: colors.muted,
+    fontSize: typography.small,
+    color: colors.textMuted,
   },
 
   // ── Result screen ──
@@ -988,11 +965,11 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'rgba(74,222,128,0.12)',
     borderRadius: 14,
-    padding: sp.lg,
-    gap: sp.sm,
+    padding: spacing.lg,
+    gap: spacing.sm,
     borderWidth: 1,
     borderColor: 'rgba(74,222,128,0.3)',
-    marginTop: sp.md,
+    marginTop: spacing.md,
   },
   simpleAltHeadingRow: {
     flexDirection: 'row',
@@ -1000,12 +977,12 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   simpleAltHeading: {
-    fontSize: typo.body,
-    fontWeight: typo.weightBold,
-    color: '#4ADE80',
+    fontSize: typography.body,
+    fontWeight: typography.weightBold,
+    color: colors.success,
   },
   simpleAltText: {
-    fontSize: typo.body,
+    fontSize: typography.body,
     color: colors.text,
     lineHeight: 24,
   },

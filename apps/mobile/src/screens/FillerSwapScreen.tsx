@@ -14,34 +14,9 @@ import { saveGameScore, getHighScore } from '../storage/gameScores';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { PrimaryButton } from '../components/PrimaryButton';
 
-// ---------------------------------------------------------------------------
-// Theme tokens (inlined so we don't depend on external theme files at runtime)
-// ---------------------------------------------------------------------------
-const colors = {
-  background: '#0A0A0A',
-  surface: '#141414',
-  primary: '#FF4500',
-  primaryDark: '#E63946',
-  text: '#FFFFFF',
-  muted: '#8A8A8A',
-  border: 'rgba(255,255,255,0.08)',
-};
-
-const spacing = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 };
-
-const typography = {
-  heading: 24,
-  subheading: 18,
-  body: 16,
-  small: 14,
-  weightBold: '700' as const,
-  weightSemi: '600' as const,
-  weightRegular: '400' as const,
-  fontRegular: 'JetBrainsMono_400Regular',
-  fontSemi: 'JetBrainsMono_600SemiBold',
-  fontBold: 'JetBrainsMono_700Bold',
-  fontDisplay: 'SpaceGrotesk_700Bold',
-};
+import { colors } from '../theme/colors';
+import { spacing } from '../theme/spacing';
+import { typography } from '../theme/typography';
 
 // ---------------------------------------------------------------------------
 // Data
@@ -839,13 +814,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: typography.heading,
     fontWeight: typography.weightBold,
-    fontFamily: typography.fontDisplay,
+    fontFamily: typography.fontFamily.display,
     color: colors.text,
   },
   description: {
     fontSize: typography.body,
-    fontFamily: typography.fontRegular,
-    color: colors.muted,
+    fontFamily: typography.fontFamily.regular,
+    color: colors.textMuted,
     textAlign: 'center',
     lineHeight: 22,
     paddingHorizontal: spacing.sm,
@@ -863,7 +838,7 @@ const styles = StyleSheet.create({
   },
   scoreLabel: {
     fontSize: typography.body,
-    color: colors.muted,
+    color: colors.textMuted,
   },
   scoreValue: {
     fontSize: typography.subheading,
@@ -886,21 +861,21 @@ const styles = StyleSheet.create({
   timer: {
     fontSize: 32,
     fontWeight: typography.weightBold,
-    fontFamily: typography.fontBold,
+    fontFamily: typography.fontFamily.bold,
     color: colors.text,
   },
   timerDanger: {
-    color: '#E63946',
+    color: colors.error,
   },
   scoreDisplay: {
     fontSize: typography.subheading,
     fontWeight: typography.weightSemi,
-    fontFamily: typography.fontSemi,
+    fontFamily: typography.fontFamily.semiBold,
     color: colors.primary,
   },
   progressText: {
     fontSize: typography.small,
-    color: colors.muted,
+    color: colors.textMuted,
     textAlign: 'center',
     marginBottom: spacing.md,
   },
@@ -916,22 +891,22 @@ const styles = StyleSheet.create({
   },
   sentenceText: {
     fontSize: typography.body,
-    fontFamily: typography.fontRegular,
+    fontFamily: typography.fontFamily.regular,
     lineHeight: 28,
     color: colors.text,
   },
   fillerWord: {
     backgroundColor: 'rgba(255,122,26,0.12)',
-    color: '#FF7A1A',
+    color: colors.primary,
     fontWeight: typography.weightBold,
   },
   fillerWordActive: {
     backgroundColor: 'rgba(255,122,26,0.3)',
-    color: '#FF4500',
+    color: colors.primary,
   },
   fillerWordFlash: {
     backgroundColor: 'rgba(74,222,128,0.25)',
-    color: '#4ADE80',
+    color: colors.success,
   },
   cleanBannerRow: {
     flexDirection: 'row',
@@ -943,7 +918,7 @@ const styles = StyleSheet.create({
   cleanBanner: {
     fontSize: typography.subheading,
     fontWeight: typography.weightBold,
-    color: '#4ADE80',
+    color: colors.success,
   },
   floatingPoints: {
     position: 'absolute',
@@ -951,7 +926,7 @@ const styles = StyleSheet.create({
     top: spacing.sm,
     fontSize: 22,
     fontWeight: typography.weightBold,
-    color: '#4ADE80',
+    color: colors.success,
   },
 
   // Options
@@ -976,7 +951,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   optionText: {
-    color: '#FFFFFF',
+    color: colors.textOnPrimary,
     fontSize: typography.small,
     fontWeight: typography.weightSemi,
   },
@@ -995,6 +970,6 @@ const styles = StyleSheet.create({
   skipButtonText: {
     fontSize: typography.body,
     fontWeight: typography.weightSemi,
-    color: colors.muted,
+    color: colors.textMuted,
   },
 });

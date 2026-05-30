@@ -15,34 +15,9 @@ import { PrimaryButton } from '../components/PrimaryButton';
 import GameResultCard from '../components/GameResultCard';
 import { saveGameScore, getHighScore } from '../storage/gameScores';
 
-// ---------------------------------------------------------------------------
-// Theme constants (inlined per spec)
-// ---------------------------------------------------------------------------
-const colors = {
-  background: '#0A0A0A',
-  surface: '#141414',
-  primary: '#FF4500',
-  primaryDark: '#E63946',
-  text: '#FFFFFF',
-  muted: '#8A8A8A',
-  border: 'rgba(255,255,255,0.08)',
-};
-
-const spacing = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 };
-
-const typography = {
-  heading: 24,
-  subheading: 18,
-  body: 16,
-  small: 14,
-  weightBold: '700' as const,
-  weightSemi: '600' as const,
-  weightRegular: '400' as const,
-  fontRegular: 'JetBrainsMono_400Regular',
-  fontSemi: 'JetBrainsMono_600SemiBold',
-  fontBold: 'JetBrainsMono_700Bold',
-  fontDisplay: 'SpaceGrotesk_700Bold',
-};
+import { colors } from '../theme/colors';
+import { spacing } from '../theme/spacing';
+import { typography } from '../theme/typography';
 
 // ---------------------------------------------------------------------------
 // Data types
@@ -330,10 +305,10 @@ function feedbackLabel(quality: string): string {
 
 function feedbackColor(quality: string): string {
   switch (quality) {
-    case 'perfect': return '#4ADE80';
-    case 'good': return '#FACC15';
-    case 'close': return '#FF7A1A';
-    default: return '#E63946';
+    case 'perfect': return colors.success;
+    case 'good': return colors.butter;
+    case 'close': return colors.primary;
+    default: return colors.error;
   }
 }
 
@@ -355,7 +330,7 @@ export function PausePunchScreen() {
 
   // Feedback animation
   const [feedbackText, setFeedbackText] = useState('');
-  const [feedbackClr, setFeedbackClr] = useState('#4ADE80');
+  const [feedbackClr, setFeedbackClr] = useState(colors.success);
   const feedbackOpacity = useRef(new Animated.Value(0)).current;
   const feedbackScale = useRef(new Animated.Value(0.5)).current;
 
@@ -655,13 +630,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: typography.heading,
     fontWeight: typography.weightBold,
-    fontFamily: typography.fontDisplay,
+    fontFamily: typography.fontFamily.display,
     color: colors.text,
   },
   description: {
     fontSize: typography.body,
-    fontFamily: typography.fontRegular,
-    color: colors.muted,
+    fontFamily: typography.fontFamily.regular,
+    color: colors.textMuted,
     textAlign: 'center',
     lineHeight: 22,
     paddingHorizontal: spacing.sm,
@@ -679,7 +654,7 @@ const styles = StyleSheet.create({
   },
   scoreLabel: {
     fontSize: typography.body,
-    color: colors.muted,
+    color: colors.textMuted,
   },
   scoreValue: {
     fontSize: typography.subheading,
@@ -705,13 +680,13 @@ const styles = StyleSheet.create({
   playScore: {
     fontSize: typography.subheading,
     fontWeight: typography.weightBold,
-    fontFamily: typography.fontBold,
+    fontFamily: typography.fontFamily.bold,
     color: colors.primary,
   },
   playProgress: {
     fontSize: typography.small,
     fontWeight: typography.weightSemi,
-    color: colors.muted,
+    color: colors.textMuted,
   },
   teleprompterScroll: {
     flex: 1,
@@ -736,7 +711,7 @@ const styles = StyleSheet.create({
   wordText: {
     fontSize: 22,
     fontWeight: typography.weightRegular,
-    fontFamily: typography.fontRegular,
+    fontFamily: typography.fontFamily.regular,
     color: colors.text,
     lineHeight: 32,
   },
@@ -744,13 +719,13 @@ const styles = StyleSheet.create({
     color: '#4A4A4A',
   },
   wordCurrent: {
-    color: '#FFFFFF',
+    color: colors.textOnPrimary,
     fontWeight: typography.weightBold,
   },
   tapHint: {
     textAlign: 'center',
     fontSize: typography.small,
-    color: colors.muted,
+    color: colors.textMuted,
     paddingVertical: spacing.md,
     paddingBottom: spacing.lg,
   },
@@ -771,7 +746,7 @@ const styles = StyleSheet.create({
   feedbackText: {
     fontSize: 28,
     fontWeight: typography.weightBold,
-    fontFamily: typography.fontBold,
+    fontFamily: typography.fontFamily.bold,
     textAlign: 'center',
   },
 

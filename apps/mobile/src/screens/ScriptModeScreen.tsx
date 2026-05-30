@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     width: 22,
     height: 22,
     borderRadius: 11,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.surface,
   },
   toggleKnobOn: {
     alignSelf: 'flex-end',
