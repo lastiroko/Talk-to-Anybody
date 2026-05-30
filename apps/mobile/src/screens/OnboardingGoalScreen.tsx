@@ -14,10 +14,10 @@ interface OnboardingGoalScreenProps {
 }
 
 const GOALS = [
-  { id: 'public_speaking', label: 'PUBLIC SPEAKING', subtitle: 'Presentations, talks, speeches' },
-  { id: 'interviews', label: 'JOB INTERVIEWS', subtitle: 'Nail your next interview' },
-  { id: 'meetings', label: 'WORK MEETINGS', subtitle: 'Speak up with confidence at work' },
-  { id: 'social', label: 'SOCIAL CONFIDENCE', subtitle: 'Feel at ease in conversations' },
+  { id: 'public_speaking', label: 'Public speaking', subtitle: 'Presentations, talks, speeches' },
+  { id: 'interviews', label: 'Job interviews', subtitle: 'Nail your next interview' },
+  { id: 'meetings', label: 'Work meetings', subtitle: 'Speak up with confidence at work' },
+  { id: 'social', label: 'Social confidence', subtitle: 'Feel at ease in conversations' },
 ];
 
 export function OnboardingGoalScreen({ onNext }: OnboardingGoalScreenProps) {
@@ -31,8 +31,8 @@ export function OnboardingGoalScreen({ onNext }: OnboardingGoalScreenProps) {
 
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>What are you training for</Text>
-          <Text style={styles.subtitle}>We will build your plan around this</Text>
+          <Text style={styles.title}>What do you want to talk through?</Text>
+          <Text style={styles.subtitle}>We'll tune your plan around this.</Text>
         </View>
 
         {/* Goal cards */}
@@ -77,8 +77,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: typography.fontFamily.display,
-    fontSize: typography.heading,
+    fontSize: 28,
+    fontWeight: typography.weightSemi,
     color: colors.text,
+    lineHeight: 34,
   },
   subtitle: {
     fontFamily: typography.fontFamily.regular,
@@ -99,10 +101,9 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   goalTitle: {
-    fontFamily: typography.fontFamily.semiBold,
-    fontSize: typography.body,
+    fontFamily: typography.fontFamily.bold,
+    fontSize: 16,
     color: colors.text,
-    letterSpacing: 1,
   },
   goalSubtitle: {
     fontFamily: typography.fontFamily.regular,

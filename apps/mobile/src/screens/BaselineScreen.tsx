@@ -85,8 +85,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: typography.fontFamily.display,
-    fontSize: typography.heading,
+    fontSize: 28,
+    fontWeight: typography.weightSemi,
     color: colors.text,
+    lineHeight: 34,
   },
   subtitle: {
     fontFamily: typography.fontFamily.regular,
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
   },
   tips: {
     backgroundColor: colors.surface,
-    borderRadius: 12,
+    borderRadius: 20,
     padding: spacing.md,
     gap: spacing.xs,
     borderWidth: 1,
@@ -107,17 +109,16 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   tipsTitle: {
-    fontFamily: typography.fontFamily.semiBold,
-    fontSize: typography.caption,
-    letterSpacing: 2,
-    color: colors.textMuted,
+    fontFamily: typography.fontFamily.bold,
+    fontSize: 12,
+    color: colors.primary,
     marginBottom: 4,
   },
   tipItem: {
     fontFamily: typography.fontFamily.regular,
-    fontSize: typography.small,
-    color: colors.textMuted,
-    lineHeight: 20,
+    fontSize: 14,
+    color: colors.textSecondary,
+    lineHeight: 22,
     paddingLeft: spacing.sm,
   },
   actions: {

@@ -62,16 +62,16 @@ export function SignupScreen({ onCreated, onBack }: SignupScreenProps) {
       <View style={styles.container}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>Create account</Text>
+          <Text style={styles.title}>Let's get you started.</Text>
           <Text style={styles.subtitle}>
-            Start training your voice today
+            Build your voice in 5 minutes a day.
           </Text>
         </View>
 
         {/* Form */}
         <View style={styles.form}>
           <TextInputField
-            label="EMAIL"
+            label="Email"
             value={email}
             onChangeText={(t) => {
               setEmail(t);
@@ -86,7 +86,7 @@ export function SignupScreen({ onCreated, onBack }: SignupScreenProps) {
 
           <View>
             <TextInputField
-              label="PASSWORD"
+              label="Password"
               value={password}
               onChangeText={(t) => {
                 setPassword(t);
@@ -98,7 +98,7 @@ export function SignupScreen({ onCreated, onBack }: SignupScreenProps) {
               error={passwordError}
               rightIcon={
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                  <Ionicons name={showPassword ? 'eye-off-outline' : 'eye-outline'} size={20} color="#8A8A8A" />
+                  <Ionicons name={showPassword ? 'eye-off-outline' : 'eye-outline'} size={20} color={colors.textMuted} />
                 </TouchableOpacity>
               }
             />
@@ -149,8 +149,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: typography.fontFamily.display,
-    fontSize: typography.heading,
+    fontSize: typography.title,
+    fontWeight: typography.weightSemi,
     color: colors.text,
+    lineHeight: 36,
   },
   subtitle: {
     fontFamily: typography.fontFamily.regular,

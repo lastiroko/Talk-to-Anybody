@@ -46,14 +46,14 @@ export function LoginScreen({ onAuthenticated, onBack }: LoginScreenProps) {
       <View style={styles.container}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>Welcome back</Text>
-          <Text style={styles.subtitle}>Pick up where you left off</Text>
+          <Text style={styles.title}>Welcome back.</Text>
+          <Text style={styles.subtitle}>Pick up where you left off.</Text>
         </View>
 
         {/* Form */}
         <View style={styles.form}>
           <TextInputField
-            label="EMAIL"
+            label="Email"
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
@@ -64,7 +64,7 @@ export function LoginScreen({ onAuthenticated, onBack }: LoginScreenProps) {
 
           <View>
             <TextInputField
-              label="PASSWORD"
+              label="Password"
               value={password}
               onChangeText={setPassword}
               secureTextEntry={!showPassword}
@@ -72,7 +72,7 @@ export function LoginScreen({ onAuthenticated, onBack }: LoginScreenProps) {
               placeholder="Your password"
               rightIcon={
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                  <Ionicons name={showPassword ? 'eye-off-outline' : 'eye-outline'} size={20} color="#8A8A8A" />
+                  <Ionicons name={showPassword ? 'eye-off-outline' : 'eye-outline'} size={20} color={colors.textMuted} />
                 </TouchableOpacity>
               }
             />
@@ -133,8 +133,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: typography.fontFamily.display,
-    fontSize: typography.heading,
+    fontSize: typography.title,
+    fontWeight: typography.weightSemi,
     color: colors.text,
+    lineHeight: 36,
   },
   subtitle: {
     fontFamily: typography.fontFamily.regular,

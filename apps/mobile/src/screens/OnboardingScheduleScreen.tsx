@@ -15,9 +15,10 @@ interface OnboardingScheduleScreenProps {
 }
 
 const TIME_OPTIONS = [
-  { id: '5', minutes: '5 MIN', subtitle: 'Quick daily session', badge: null },
-  { id: '10', minutes: '10 MIN', subtitle: 'Recommended', badge: 'BEST VALUE' },
-  { id: '15', minutes: '15 MIN', subtitle: 'Maximum growth', badge: null },
+  { id: '5', minutes: '5 min', subtitle: 'A quick daily rep.', badge: null },
+  { id: '10', minutes: '10 min', subtitle: 'Steady progress.', badge: 'Recommended' },
+  { id: '15', minutes: '15 min', subtitle: 'Serious momentum.', badge: null },
+  { id: '20', minutes: '20 min', subtitle: 'All in.', badge: null },
 ];
 
 const DEFAULT_REMINDER_HOUR = 9;
@@ -61,8 +62,8 @@ export function OnboardingScheduleScreen({ onNext }: OnboardingScheduleScreenPro
 
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>Daily time commitment</Text>
-          <Text style={styles.subtitle}>Even 5 minutes moves the needle</Text>
+          <Text style={styles.title}>How much time per day?</Text>
+          <Text style={styles.subtitle}>We'll size your daily drill to match.</Text>
         </View>
 
         {/* Time cards */}
@@ -138,8 +139,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: typography.fontFamily.display,
-    fontSize: typography.heading,
+    fontSize: 28,
+    fontWeight: typography.weightSemi,
     color: colors.text,
+    lineHeight: 34,
   },
   subtitle: {
     fontFamily: typography.fontFamily.regular,
@@ -164,10 +167,10 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   optionMinutes: {
-    fontFamily: typography.fontFamily.bold,
-    fontSize: typography.subheading,
+    fontFamily: typography.fontFamily.display,
+    fontSize: 32,
+    fontWeight: typography.weightSemi,
     color: colors.text,
-    letterSpacing: 1,
   },
   optionSubtitle: {
     fontFamily: typography.fontFamily.regular,
@@ -175,18 +178,15 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
   },
   badge: {
-    backgroundColor: colors.surfaceMuted,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 2,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: colors.primary,
+    backgroundColor: colors.butter,
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: 999,
   },
   badgeText: {
-    fontFamily: typography.fontFamily.semiBold,
-    fontSize: 11,
-    color: colors.primary,
-    letterSpacing: 1,
+    fontFamily: typography.fontFamily.bold,
+    fontSize: 10,
+    color: colors.text,
   },
   changeHint: {
     fontFamily: typography.fontFamily.regular,
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     width: 22,
     height: 22,
     borderRadius: 11,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.surface,
   },
   toggleKnobOn: {
     alignSelf: 'flex-end',
