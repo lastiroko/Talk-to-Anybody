@@ -12,7 +12,15 @@ const EnvSchema = z.object({
   AWS_ENDPOINT_URL_S3: z.string().default(''),
   DEEPGRAM_API_KEY: z.string().default(''),
   ANTHROPIC_API_KEY: z.string().default(''),
+  VOYAGE_API_KEY: z.string().default(''),
   REDIS_URL: z.string().default('redis://localhost:6379'),
+  REVENUECAT_SECRET_API_KEY: z.string().default(''),
+  ALLOW_UNVERIFIED_PURCHASES: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((v) => v === 'true'),
+  NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+  REFRESH_TOKEN_TTL_DAYS: z.coerce.number().int().positive().default(30),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

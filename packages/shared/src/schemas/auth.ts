@@ -36,3 +36,23 @@ export const AuthResponseSchema = z.object({
   user: UserSchema,
 });
 export type AuthResponse = z.infer<typeof AuthResponseSchema>;
+
+// ── Refresh Request ─────────────────────────────────────────────────────────
+
+export const RefreshRequestSchema = z.object({
+  refreshToken: z.string().min(1),
+});
+export type RefreshRequest = z.infer<typeof RefreshRequestSchema>;
+
+export const RefreshResponseSchema = z.object({
+  accessToken: z.string(),
+  refreshToken: z.string(),
+});
+export type RefreshResponse = z.infer<typeof RefreshResponseSchema>;
+
+// ── Logout Request ──────────────────────────────────────────────────────────
+
+export const LogoutRequestSchema = z.object({
+  refreshToken: z.string().min(1),
+});
+export type LogoutRequest = z.infer<typeof LogoutRequestSchema>;

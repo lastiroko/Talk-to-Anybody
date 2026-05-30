@@ -1,17 +1,19 @@
 import type { FastifyPluginAsync } from 'fastify';
-import { PurchaseVerifyRequestSchema } from '@speakcoach/shared';
 import { validateBody } from '../middleware/validate';
-import { getPurchaseStatus, recordPurchase } from '../services/purchase.service';
+import {
+  getPurchaseStatus,
+  recordPurchase,
+  verifyWithRevenueCat,
+} from '../services/purchase.service';
 import { z } from 'zod';
 
 const PurchaseVerifyBodySchema = z.object({
   platform: z.enum(['ios', 'android']),
   planType: z.enum(['monthly', 'lifetime']),
-  receiptToken: z.string(),
+  receiptToken: z.string().optional(),
 });
 
 const purchaseRoutes: FastifyPluginAsync = async (fastify) => {
-  // GET /purchase/status — current entitlement (free/active, expiry)
   fastify.get('/purchase/status', {
     preHandler: [fastify.authenticate],
   }, async (request, reply) => {
@@ -20,16 +22,52 @@ const purchaseRoutes: FastifyPluginAsync = async (fastify) => {
     return reply.send(status);
   });
 
-  // POST /purchase/verify — verify receipt/token for iOS/Android
-  // For now, just records the purchase (real receipt verification comes later with RevenueCat)
   fastify.post('/purchase/verify', {
     preHandler: [fastify.authenticate, validateBody(PurchaseVerifyBodySchema)],
   }, async (request, reply) => {
     const userId = request.user.userId;
-    const { platform, planType, receiptToken } = request.body as z.infer<typeof PurchaseVerifyBodySchema>;
+    const { platform, planType } = request.body as z.infer<typeof PurchaseVerifyBodySchema>;
 
-    // TODO: verify receipt with Apple/Google via RevenueCat before recording
-    const purchase = await recordPurchase(fastify.prisma, userId, planType, platform);
+    const apiKey = fastify.config.REVENUECAT_SECRET_API_KEY;
+    const allowUnverified = fastify.config.ALLOW_UNVERIFIED_PURCHASES;
+    const isProd = fastify.config.NODE_ENV === 'production';
+
+    let storeTransactionId: string | null = null;
+    let expiresAt: Date | null = null;
+
+    if (apiKey) {
+      const result = await verifyWithRevenueCat(apiKey, userId, planType);
+      if (!result.valid) {
+        return reply.status(402).send({
+          message: 'No active entitlement found for this user on RevenueCat',
+        });
+      }
+      storeTransactionId = result.storeTransactionId;
+      expiresAt = result.expiresAt;
+    } else if (!allowUnverified || isProd) {
+      // Fail closed: no verifier configured and not explicitly allowed in dev
+      request.log.warn(
+        { userId },
+        'POST /purchase/verify rejected: REVENUECAT_SECRET_API_KEY not configured',
+      );
+      return reply.status(503).send({
+        message: 'Purchase verification not configured',
+      });
+    } else {
+      request.log.warn(
+        { userId, planType, platform },
+        'Recording UNVERIFIED purchase — ALLOW_UNVERIFIED_PURCHASES is set, do not use in production',
+      );
+    }
+
+    const purchase = await recordPurchase(
+      fastify.prisma,
+      userId,
+      planType,
+      platform,
+      storeTransactionId,
+      expiresAt,
+    );
 
     return reply.send({
       status: 'active',

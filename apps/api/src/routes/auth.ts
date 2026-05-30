@@ -2,8 +2,15 @@ import type { FastifyPluginAsync } from 'fastify';
 import {
   SignupRequestSchema,
   LoginRequestSchema,
+  RefreshRequestSchema,
+  LogoutRequestSchema,
 } from '@speakcoach/shared';
-import type { SignupRequest, LoginRequest } from '@speakcoach/shared';
+import type {
+  SignupRequest,
+  LoginRequest,
+  RefreshRequest,
+  LogoutRequest,
+} from '@speakcoach/shared';
 import { validateBody } from '../middleware/validate';
 import {
   hashPassword,
@@ -11,10 +18,13 @@ import {
   createUser,
   findUserByEmail,
   generateTokens,
+  rotateRefreshToken,
+  revokeRefreshToken,
 } from '../services/auth.service';
 
 const authRoutes: FastifyPluginAsync = async (fastify) => {
-  // POST /auth/signup — email/password signup
+  const refreshTtlDays = fastify.config.REFRESH_TOKEN_TTL_DAYS;
+
   fastify.post('/auth/signup', {
     preHandler: [validateBody(SignupRequestSchema)],
   }, async (request, reply) => {
@@ -22,9 +32,11 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
 
     const passwordHash = await hashPassword(password);
     const user = await createUser(fastify.prisma, email, passwordHash);
-    const { accessToken, refreshToken } = generateTokens(
+    const { accessToken, refreshToken } = await generateTokens(
+      fastify.prisma,
       user.id,
       (payload: { sub: string }) => fastify.jwt.sign(payload),
+      refreshTtlDays,
     );
 
     return reply.status(201).send({
@@ -41,7 +53,6 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
     });
   });
 
-  // POST /auth/login — email/password login
   fastify.post('/auth/login', {
     preHandler: [validateBody(LoginRequestSchema)],
   }, async (request, reply) => {
@@ -57,9 +68,11 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
       return reply.status(401).send({ message: 'Invalid email or password' });
     }
 
-    const { accessToken, refreshToken } = generateTokens(
+    const { accessToken, refreshToken } = await generateTokens(
+      fastify.prisma,
       user.id,
       (payload: { sub: string }) => fastify.jwt.sign(payload),
+      refreshTtlDays,
     );
 
     return reply.status(200).send({
@@ -76,21 +89,38 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
     });
   });
 
-  // POST /auth/refresh — refresh tokens
-  fastify.post('/auth/refresh', async (_request, reply) => {
-    // TODO: verify refresh token, issue new access + refresh tokens
-    return reply.status(501).send({ message: 'not implemented' });
+  fastify.post('/auth/refresh', {
+    preHandler: [validateBody(RefreshRequestSchema)],
+  }, async (request, reply) => {
+    const { refreshToken } = request.body as RefreshRequest;
+
+    const result = await rotateRefreshToken(
+      fastify.prisma,
+      refreshToken,
+      (payload: { sub: string }) => fastify.jwt.sign(payload),
+      refreshTtlDays,
+    );
+
+    if (!result) {
+      return reply.status(401).send({ message: 'Invalid or expired refresh token' });
+    }
+
+    return reply.status(200).send(result);
   });
 
-  // POST /auth/apple — federated login (optional in MVP)
+  fastify.post('/auth/logout', {
+    preHandler: [validateBody(LogoutRequestSchema)],
+  }, async (request, reply) => {
+    const { refreshToken } = request.body as LogoutRequest;
+    await revokeRefreshToken(fastify.prisma, refreshToken);
+    return reply.status(204).send();
+  });
+
   fastify.post('/auth/apple', async (_request, reply) => {
-    // TODO: verify Apple identity token, create/find user, return AuthResponse
     return reply.status(501).send({ message: 'not implemented' });
   });
 
-  // POST /auth/google — federated login (optional in MVP)
   fastify.post('/auth/google', async (_request, reply) => {
-    // TODO: verify Google ID token, create/find user, return AuthResponse
     return reply.status(501).send({ message: 'not implemented' });
   });
 };

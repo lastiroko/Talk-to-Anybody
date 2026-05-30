@@ -1,32 +1,75 @@
 import type { PrismaClient } from '@prisma/client';
 
-/** Verify an iOS App Store receipt */
-export async function verifyAppleReceipt(receiptToken: string, productId: string) {
-  // TODO: call Apple's verifyReceipt endpoint (production + sandbox fallback)
-  // Parse response for transaction_id, expires_date, product_id
-  // Return { valid: boolean, transactionId, expiresAt }
-  return { valid: false, transactionId: '', expiresAt: null };
+const REVENUECAT_BASE = 'https://api.revenuecat.com/v1';
+const ENTITLEMENT_ID = 'premium';
+
+export interface VerificationResult {
+  valid: boolean;
+  storeTransactionId: string | null;
+  expiresAt: Date | null;
 }
 
-/** Verify an Android Google Play purchase token */
-export async function verifyGoogleToken(receiptToken: string, productId: string) {
-  // TODO: call Google Play Developer API to verify purchase
-  // Parse response for orderId, expiryTimeMillis
-  // Return { valid: boolean, transactionId, expiresAt }
-  return { valid: false, transactionId: '', expiresAt: null };
+/**
+ * Verify a user's entitlement by querying RevenueCat for their subscriber record.
+ * Uses the authenticated userId as RevenueCat's app_user_id — mobile must call
+ * Purchases.logIn(userId) after auth so the entitlement is attached server-side.
+ */
+export async function verifyWithRevenueCat(
+  apiKey: string,
+  appUserId: string,
+  planType: 'monthly' | 'lifetime',
+): Promise<VerificationResult> {
+  const res = await fetch(`${REVENUECAT_BASE}/subscribers/${encodeURIComponent(appUserId)}`, {
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      Accept: 'application/json',
+    },
+  });
+
+  if (!res.ok) {
+    return { valid: false, storeTransactionId: null, expiresAt: null };
+  }
+
+  const body = (await res.json()) as {
+    subscriber?: {
+      entitlements?: Record<string, { expires_date: string | null; product_identifier: string }>;
+      non_subscriptions?: Record<string, Array<{ id: string; purchase_date: string }>>;
+    };
+  };
+
+  const entitlement = body.subscriber?.entitlements?.[ENTITLEMENT_ID];
+  if (!entitlement) {
+    return { valid: false, storeTransactionId: null, expiresAt: null };
+  }
+
+  const expiresAt = entitlement.expires_date ? new Date(entitlement.expires_date) : null;
+  if (planType === 'monthly' && (!expiresAt || expiresAt < new Date())) {
+    return { valid: false, storeTransactionId: null, expiresAt: null };
+  }
+
+  const nonSub = body.subscriber?.non_subscriptions
+    ? Object.values(body.subscriber.non_subscriptions).flat()[0]
+    : undefined;
+
+  return {
+    valid: true,
+    storeTransactionId: nonSub?.id ?? entitlement.product_identifier ?? null,
+    expiresAt,
+  };
 }
 
-/** Create or update a purchase record after successful verification */
+/** Create a purchase record. Caller is responsible for verifying first. */
 export async function recordPurchase(
   prisma: PrismaClient,
   userId: string,
   planType: 'monthly' | 'lifetime',
   platform: 'ios' | 'android',
+  storeTransactionId: string | null = null,
+  expiresAt: Date | null = null,
 ) {
-  const expiresAt =
-    planType === 'lifetime'
-      ? null
-      : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days for monthly
+  const resolvedExpiresAt =
+    expiresAt ??
+    (planType === 'lifetime' ? null : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000));
 
   const purchase = await prisma.purchase.create({
     data: {
@@ -34,7 +77,8 @@ export async function recordPurchase(
       platform,
       type: planType,
       status: 'active',
-      expiresAt,
+      storeTransactionId: storeTransactionId ?? undefined,
+      expiresAt: resolvedExpiresAt,
     },
   });
 
