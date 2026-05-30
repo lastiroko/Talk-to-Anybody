@@ -9,7 +9,7 @@ import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { colors } from '../theme/colors';
 import { apiSignup } from '../services/api';
-import { setToken, setUser } from '../storage/auth';
+import { setAuthTokens, setUser } from '../storage/auth';
 
 interface SignupScreenProps {
   onCreated: () => void;
@@ -44,7 +44,7 @@ export function SignupScreen({ onCreated, onBack }: SignupScreenProps) {
     setLoading(true);
     try {
       const res = await apiSignup(email, password);
-      await setToken(res.accessToken);
+      await setAuthTokens(res.accessToken, res.refreshToken);
       await setUser(res.user);
       onCreated();
     } catch (err: any) {

@@ -9,6 +9,7 @@ import { colors } from '../theme/colors';
 import { shadows } from '../theme/shadows';
 import { useProgress } from '../hooks/useProgress';
 import { getUser, AuthUser } from '../storage/auth';
+import { useAuthFlow } from '../contexts/AuthFlowContext';
 import {
   loadReminderPrefs,
   formatReminderTime,
@@ -23,9 +24,27 @@ import {
 export function SettingsScreen() {
   const { progress, resetProgress } = useProgress();
   const currentDay = progress?.currentDayUnlocked ?? 1;
+  const { signOut } = useAuthFlow();
 
   const [reminderPrefs, setReminderPrefs] = useState<ReminderPrefs | null>(null);
   const [user, setUser] = useState<AuthUser | null>(null);
+
+  const handleSignOut = () => {
+    Alert.alert(
+      'Sign Out',
+      'You will need to log in again to access your account.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Sign Out',
+          style: 'destructive',
+          onPress: () => {
+            signOut().catch(() => undefined);
+          },
+        },
+      ],
+    );
+  };
 
   useEffect(() => {
     getUser().then(setUser);
@@ -216,12 +235,7 @@ export function SettingsScreen() {
         {/* Sign out */}
         <TouchableOpacity
           style={styles.signOutButton}
-          onPress={() =>
-            Alert.alert(
-              'Sign Out',
-              'Sign out will be available when auth is connected.',
-            )
-          }
+          onPress={handleSignOut}
           activeOpacity={0.7}
         >
           <Text style={styles.signOutText}>Sign Out</Text>
