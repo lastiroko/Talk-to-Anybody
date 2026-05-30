@@ -1,81 +1,99 @@
+// SpeakCoach — Bright Pastel design tokens (Brief v3 — typography-led, gamified)
+//
+// Field names kept stable from the previous dark theme so existing components
+// don't need updates. Values fully replaced.
+
 export const colors = {
-  // Backgrounds — dark-first
-  background: '#0A0A0A',          // app background
-  backgroundLight: '#0F0F0F',     // slightly lighter variant
-  surface: '#141414',              // cards, sheets (elevated)
-  surfaceMuted: '#1F1F1F',        // inputs, chips, inactive tabs (subtle)
-  surfaceHighlight: '#1A0A04',    // warm highlight card (accent tint)
+  // Backgrounds
+  background: '#FFF8F1',           // app bg — soft cream
+  backgroundLight: '#FFFBF6',      // slightly lighter cream variant
+  surface: '#FFFFFF',              // white cards
+  surfaceMuted: '#F7EFE2',         // muted cream chip background
+  surfaceHighlight: '#FFEDDD',     // warm peach hero card
 
-  // Primary (orange accent)
-  primary: '#FF4500',             // main accent
-  primaryLight: '#FF7A1A',        // lighter accent / gradient end
-  primaryDark: '#CC3700',         // pressed accent
+  // Brand
+  primary: '#FF7A45',              // warm coral — main accent
+  primaryLight: '#FFD9C2',         // primary-soft — selected chip bg, soft pills
+  primaryDark: '#E55A22',          // pressed accent
 
-  // Secondary (red for recording / live)
-  gold: '#E63946',                // recording / live states
-  goldLight: 'rgba(230,57,70,0.15)', // light red bg
-  goldDark: '#CC2F3C',            // dark red
+  // Secondary (kept name for record-state; now a warm red)
+  gold: '#E5564B',                 // error red / recording (kept name for compat)
+  goldLight: 'rgba(229,86,75,0.12)',
+  goldDark: '#C6443A',
 
-  // Accent (teal/green — kept for success)
-  teal: '#4ADE80',                // success green
-  tealLight: 'rgba(74,222,128,0.12)', // light green bg
+  // Accent system (multi-color pastels)
+  teal: '#7ED9B5',                 // mint — wins, completed, success
+  tealLight: 'rgba(126,217,181,0.16)',
 
   // Gamification colors
-  gem: '#FF7A1A',                 // orange (was blue)
-  coin: '#FF4500',                // orange (was gold)
-  fire: '#FF4500',                // streak fire
-  xp: '#FF7A1A',                  // XP accent
+  gem: '#BFA8FF',                  // lavender — gems
+  coin: '#FFD05C',                 // butter — coins
+  fire: '#FF7A45',                 // coral — streak fire
+  xp: '#FFD05C',                   // butter — XP
 
   // Text
-  text: '#FFFFFF',                // primary headings
-  textBody: '#FFFFFF',            // body text (white on dark)
-  textMuted: '#8A8A8A',           // muted gray captions
-  textLight: '#4A4A4A',           // disabled, hints
-  textOnDark: '#FFFFFF',          // white on dark bg
-  textOnPrimary: '#FFFFFF',       // white on primary
+  text: '#1F1B16',                 // warm near-black
+  textBody: '#1F1B16',
+  textMuted: '#998E80',            // muted captions
+  textLight: '#998E80',
+  textOnDark: '#FFFFFF',
+  textOnPrimary: '#FFFFFF',
+  textSecondary: '#5B544B',        // subtitle gray
 
   // Status
-  success: '#4ADE80',             // green
-  successBg: 'rgba(74,222,128,0.12)',
-  warning: '#FACC15',             // amber
-  warningBg: 'rgba(250,204,21,0.12)',
-  error: '#E63946',               // red
-  errorBg: 'rgba(230,57,70,0.12)',
+  success: '#2EBD7E',
+  successBg: 'rgba(46,189,126,0.12)',
+  warning: '#F5A623',
+  warningBg: 'rgba(245,166,35,0.12)',
+  error: '#E5564B',
+  errorBg: 'rgba(229,86,75,0.12)',
 
-  // Exercise type colors — dark mode variants
-  recordBg: 'rgba(255,69,0,0.12)',
-  drillBg: 'rgba(255,122,26,0.12)',
-  reflectionBg: 'rgba(138,138,138,0.12)',
-  gameBg: 'rgba(74,222,128,0.12)',
-  unlearningBg: 'rgba(230,57,70,0.12)',
-  imitationBg: 'rgba(250,204,21,0.12)',
+  // Exercise type tints (soft accent backgrounds)
+  recordBg: 'rgba(255,122,69,0.12)',     // coral wash
+  drillBg: 'rgba(255,208,92,0.16)',      // butter wash
+  reflectionBg: 'rgba(141,201,255,0.16)', // sky wash
+  gameBg: 'rgba(126,217,181,0.16)',      // mint wash
+  unlearningBg: 'rgba(229,86,75,0.12)',  // red wash
+  imitationBg: 'rgba(191,168,255,0.16)', // lavender wash
 
-  // Category pill colors
-  categoryRed: '#E63946',
-  categoryBlue: '#60A5FA',
-  categoryGreen: '#4ADE80',
-  categoryPurple: '#A78BFA',
-  categoryOrange: '#FF7A1A',
-  categoryTeal: '#4ADE80',
+  // Category accent colors
+  categoryRed: '#E5564B',
+  categoryBlue: '#8DC9FF',         // sky
+  categoryGreen: '#7ED9B5',        // mint
+  categoryPurple: '#BFA8FF',       // lavender
+  categoryOrange: '#FF7A45',       // primary coral
+  categoryTeal: '#7ED9B5',         // mint
+  categoryButter: '#FFD05C',
+  categoryBlush: '#FFB4C4',
+
+  // Direct accent aliases (new components prefer these explicit names)
+  mint: '#7ED9B5',
+  butter: '#FFD05C',
+  lavender: '#BFA8FF',
+  blush: '#FFB4C4',
+  sky: '#8DC9FF',
+  peach: '#FFEDDD',
 
   // UI Chrome
-  divider: 'rgba(255,255,255,0.08)',
-  border: 'rgba(255,255,255,0.08)',
-  borderHi: 'rgba(255,255,255,0.16)',
-  borderAccent: 'rgba(255,69,0,0.45)',
-  cardShadow: 'rgba(0,0,0,0.5)',
-  overlay: 'rgba(10,10,10,0.72)',
-  recording: '#E63946',
+  divider: 'rgba(31,27,22,0.08)',
+  border: 'rgba(31,27,22,0.08)',
+  borderHi: 'rgba(31,27,22,0.14)',
+  borderAccent: 'rgba(255,122,69,0.45)',
+  track: '#F0E6D9',                // progress bar track
+  cardShadow: 'rgba(31,27,22,0.06)',
+  cardShadowWarm: 'rgba(255,122,69,0.12)',
+  overlay: 'rgba(31,27,22,0.45)',
+  recording: '#E5564B',
 
-  // Glow effects
-  accentGlow: 'rgba(255,91,10,0.35)',
-  accentGlowSm: 'rgba(255,91,10,0.18)',
+  // Glow effects (now warm coral instead of dark orange)
+  accentGlow: 'rgba(255,122,69,0.30)',
+  accentGlowSm: 'rgba(255,122,69,0.16)',
 
-  // Tab bar
-  tabBg: 'rgba(10,10,10,0.78)',
-  tabActive: '#FF7A1A',
-  tabInactive: '#4A4A4A',
+  // Tab bar (now white translucent instead of dark)
+  tabBg: 'rgba(255,255,255,0.92)',
+  tabActive: '#FF7A45',
+  tabInactive: '#998E80',
 
-  // Backwards compat aliases
-  muted: '#8A8A8A',
+  // Backwards compat
+  muted: '#998E80',
 };

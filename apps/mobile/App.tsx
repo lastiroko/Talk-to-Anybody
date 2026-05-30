@@ -5,16 +5,17 @@ import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import { initNotifications } from './src/services/notifications';
 import {
-  JetBrainsMono_400Regular,
-  JetBrainsMono_500Medium,
-  JetBrainsMono_600SemiBold,
-  JetBrainsMono_700Bold,
-} from '@expo-google-fonts/jetbrains-mono';
+  DMSans_400Regular,
+  DMSans_500Medium,
+  DMSans_600SemiBold,
+  DMSans_700Bold,
+} from '@expo-google-fonts/dm-sans';
 import {
-  SpaceGrotesk_500Medium,
-  SpaceGrotesk_600SemiBold,
-  SpaceGrotesk_700Bold,
-} from '@expo-google-fonts/space-grotesk';
+  Fraunces_500Medium,
+  Fraunces_500Medium_Italic,
+  Fraunces_600SemiBold,
+  Fraunces_700Bold,
+} from '@expo-google-fonts/fraunces';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { ProgressProvider } from './src/hooks/useProgress';
 import { PurchaseProvider } from './src/hooks/usePurchase';
@@ -66,19 +67,20 @@ export default function App() {
   const authFlowValue = useMemo(() => ({ signOut }), [signOut]);
 
   const [fontsLoaded] = useFonts({
-    JetBrainsMono_400Regular,
-    JetBrainsMono_500Medium,
-    JetBrainsMono_600SemiBold,
-    JetBrainsMono_700Bold,
-    SpaceGrotesk_500Medium,
-    SpaceGrotesk_600SemiBold,
-    SpaceGrotesk_700Bold,
+    DMSans_400Regular,
+    DMSans_500Medium,
+    DMSans_600SemiBold,
+    DMSans_700Bold,
+    Fraunces_500Medium,
+    Fraunces_500Medium_Italic,
+    Fraunces_600SemiBold,
+    Fraunces_700Bold,
   });
 
   if (!fontsLoaded || !bootstrapped) {
     return (
-      <View style={{ flex: 1, backgroundColor: '#0A0A0A', alignItems: 'center', justifyContent: 'center' }}>
-        <ActivityIndicator color="#FF4500" size="large" />
+      <View style={{ flex: 1, backgroundColor: '#FFF8F1', alignItems: 'center', justifyContent: 'center' }}>
+        <ActivityIndicator color="#FF7A45" size="large" />
       </View>
     );
   }
@@ -87,7 +89,7 @@ export default function App() {
     <AuthFlowProvider value={authFlowValue}>
       <ProgressProvider>
         <PurchaseProvider>
-          <StatusBar style="light" />
+          <StatusBar style="dark" />
           <AppNavigator
             flow={flow}
             onAuthenticated={() => setFlow('onboarding')}

@@ -1,25 +1,33 @@
+// SpeakCoach typography — Brief v3 (Fraunces display + DM Sans body)
+//
+// Field names kept compatible with the previous mono setup.
+// `fontFamily.regular/medium/semiBold/bold` now points at DM Sans variants.
+// `fontFamily.display*` points at Fraunces.
+
 export const typography = {
   fontFamily: {
-    regular: 'JetBrainsMono_400Regular',
-    medium: 'JetBrainsMono_500Medium',
-    semiBold: 'JetBrainsMono_600SemiBold',
-    bold: 'JetBrainsMono_700Bold',
-    extraBold: 'JetBrainsMono_700Bold',
-    // Display face
-    display: 'SpaceGrotesk_700Bold',
-    displayMedium: 'SpaceGrotesk_500Medium',
-    displaySemiBold: 'SpaceGrotesk_600SemiBold',
+    regular: 'DMSans_400Regular',
+    medium: 'DMSans_500Medium',
+    semiBold: 'DMSans_600SemiBold',
+    bold: 'DMSans_700Bold',
+    extraBold: 'DMSans_700Bold',
+    // Display face (Fraunces — warm modern serif)
+    display: 'Fraunces_600SemiBold',
+    displayMedium: 'Fraunces_500Medium',
+    displaySemiBold: 'Fraunces_600SemiBold',
+    displayItalic: 'Fraunces_500Medium_Italic',
   },
 
-  // Type scale — tech-editorial
-  hero: 64,       // display XL
-  title: 40,      // display L
-  heading: 24,    // heading (mono)
-  subheading: 18, // subheading
-  body: 14,       // body
-  caption: 11,    // caption (uppercase)
-  small: 10,      // small labels
-  tiny: 9,        // tiny labels
+  // Type scale — bright pastel system
+  hero: 56,       // hero display (Welcome headline)
+  title: 32,      // section title (Fraunces)
+  display: 48,    // big day number (Fraunces)
+  heading: 22,    // section heading (DM Sans Bold)
+  subheading: 17, // subheading (DM Sans Medium)
+  body: 15,       // body
+  small: 13,      // small label
+  caption: 11,    // eyebrow / tiny label (NOT all caps now)
+  tiny: 10,
 
   // Backwards compat aliases
   weightBold: '700' as const,
