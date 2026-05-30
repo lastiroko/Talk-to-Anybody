@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { typography } from '../theme/typography';
@@ -12,21 +12,31 @@ interface DayTileProps {
   onPress: () => void;
 }
 
-const STATUS_CONFIG: Record<DayTileProps['status'], { bg: string; icon: IoniconName; iconColor: string }> = {
+interface StatusStyle {
+  bg: string;
+  icon: IoniconName;
+  iconColor: string;
+  textColor: string;
+}
+
+const STATUS_CONFIG: Record<DayTileProps['status'], StatusStyle> = {
   completed: {
-    bg: '#1F1F1F',
+    bg: colors.mint,
     icon: 'checkmark',
-    iconColor: '#FF4500',
+    iconColor: colors.textOnPrimary,
+    textColor: colors.textOnPrimary,
   },
   current: {
-    bg: '#1F1F1F',
+    bg: colors.primary,
     icon: 'play',
-    iconColor: '#FF7A1A',
+    iconColor: colors.textOnPrimary,
+    textColor: colors.textOnPrimary,
   },
   locked: {
-    bg: '#1F1F1F',
+    bg: colors.surface,
     icon: 'lock-closed',
-    iconColor: '#4A4A4A',
+    iconColor: colors.textMuted,
+    textColor: colors.textMuted,
   },
 };
 
@@ -38,16 +48,15 @@ export function DayTile({ dayNumber, status, onPress }: DayTileProps) {
       style={[
         styles.tile,
         { backgroundColor: config.bg },
-        status === 'completed' && styles.completedTile,
-        status === 'current' && styles.currentHighlight,
-        status === 'locked' && styles.lockedTile,
-        shadows.soft,
+        status === 'locked' && styles.lockedBorder,
+        status !== 'locked' && shadows.soft,
+        status === 'current' && styles.currentBloom,
       ]}
       onPress={onPress}
       activeOpacity={status === 'locked' ? 1 : 0.7}
     >
       <Ionicons name={config.icon} size={14} color={config.iconColor} />
-      <Text style={[styles.dayNumber, status === 'locked' && styles.lockedText]}>
+      <Text style={[styles.dayNumber, { color: config.textColor }]}>
         {dayNumber}
       </Text>
     </TouchableOpacity>
@@ -58,37 +67,27 @@ const styles = StyleSheet.create({
   tile: {
     flex: 1,
     aspectRatio: 1,
-    borderRadius: 14,
+    borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
     margin: 4,
     gap: 2,
     maxWidth: 80,
   },
-  completedTile: {
+  lockedBorder: {
     borderWidth: 1,
-    borderColor: 'rgba(255,69,0,0.3)',
+    borderColor: colors.border,
   },
-  lockedTile: {
-    borderWidth: 1,
-    borderColor: '#4A4A4A',
-    borderStyle: 'dashed',
-  },
-  currentHighlight: {
-    borderWidth: 2.5,
-    borderColor: '#FF7A1A',
-    shadowColor: '#FF7A1A',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
+  currentBloom: {
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.30,
+    shadowRadius: 12,
     elevation: 4,
   },
   dayNumber: {
     fontSize: typography.small,
-    fontWeight: typography.weightSemi,
-    color: '#FFFFFF',
-  },
-  lockedText: {
-    color: '#4A4A4A',
+    fontFamily: typography.fontFamily.bold,
+    fontWeight: typography.weightBold,
   },
 });

@@ -16,11 +16,39 @@ interface PrimaryButtonProps {
   variant?: Variant;
 }
 
-const VARIANT_STYLES: Record<Variant, { bg: string; pressedBg: string; textColor: string; borderColor?: string; letterSpacing?: number; textTransform?: 'uppercase' }> = {
-  primary: { bg: '#FF4500', pressedBg: '#CC3700', textColor: '#FFFFFF' },
-  secondary: { bg: '#2A2A2A', pressedBg: '#333333', textColor: '#FFFFFF', borderColor: 'rgba(255,255,255,0.18)' },
-  ghost: { bg: 'transparent', pressedBg: 'rgba(255,255,255,0.06)', textColor: '#FFFFFF', borderColor: 'rgba(255,255,255,0.2)', letterSpacing: 1.5, textTransform: 'uppercase' },
-  danger: { bg: '#E63946', pressedBg: '#CC2F3C', textColor: '#FFFFFF' },
+interface VariantStyle {
+  bg: string;
+  pressedBg: string;
+  textColor: string;
+  borderColor?: string;
+  borderWidth?: number;
+}
+
+const VARIANT_STYLES: Record<Variant, VariantStyle> = {
+  primary: {
+    bg: colors.primary,
+    pressedBg: colors.primaryDark,
+    textColor: colors.textOnPrimary,
+  },
+  secondary: {
+    bg: colors.surface,
+    pressedBg: colors.surfaceMuted,
+    textColor: colors.primary,
+    borderColor: colors.primary,
+    borderWidth: 1.5,
+  },
+  ghost: {
+    bg: 'transparent',
+    pressedBg: colors.surfaceMuted,
+    textColor: colors.primary,
+  },
+  danger: {
+    bg: colors.surface,
+    pressedBg: colors.errorBg,
+    textColor: colors.error,
+    borderColor: colors.error,
+    borderWidth: 1.5,
+  },
 };
 
 export function PrimaryButton({ title, onPress, leftIcon, disabled = false, variant = 'primary' }: PrimaryButtonProps) {
@@ -57,8 +85,8 @@ export function PrimaryButton({ title, onPress, leftIcon, disabled = false, vari
         style={({ pressed }) => [
           styles.button,
           { backgroundColor: pressed && !disabled ? v.pressedBg : v.bg },
-          v.borderColor ? { borderWidth: 1.5, borderColor: v.borderColor } : undefined,
-          variant === 'primary' && shadows.card,
+          v.borderColor ? { borderWidth: v.borderWidth ?? 1.5, borderColor: v.borderColor } : undefined,
+          variant === 'primary' && !disabled && shadows.bloom,
           disabled && styles.disabled,
         ]}
         onPress={handlePress}
@@ -67,7 +95,14 @@ export function PrimaryButton({ title, onPress, leftIcon, disabled = false, vari
         disabled={disabled}
       >
         {leftIcon ? <View style={styles.iconSlot}>{leftIcon}</View> : null}
-        <Text style={[styles.title, { color: disabled ? '#4A4A4A' : v.textColor }, v.letterSpacing ? { letterSpacing: v.letterSpacing } : undefined, v.textTransform ? { textTransform: v.textTransform } : undefined]}>{title}</Text>
+        <Text
+          style={[
+            styles.title,
+            { color: disabled ? colors.textMuted : v.textColor },
+          ]}
+        >
+          {title}
+        </Text>
       </Pressable>
     </Animated.View>
   );
@@ -76,22 +111,22 @@ export function PrimaryButton({ title, onPress, leftIcon, disabled = false, vari
 const styles = StyleSheet.create({
   button: {
     borderRadius: 999,
-    height: 52,
+    height: 58,
     paddingHorizontal: spacing.lg,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
   },
   disabled: {
-    backgroundColor: '#1F1F1F',
+    backgroundColor: colors.surfaceMuted,
     opacity: 0.7,
   },
   iconSlot: {
     marginRight: spacing.sm,
   },
   title: {
-    fontSize: 13,
-    fontFamily: typography.fontFamily.semiBold,
-    fontWeight: typography.weightSemi,
+    fontSize: typography.subheading,
+    fontFamily: typography.fontFamily.bold,
+    fontWeight: typography.weightBold,
   },
 });

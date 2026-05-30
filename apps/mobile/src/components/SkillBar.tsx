@@ -10,9 +10,9 @@ interface SkillBarProps {
 }
 
 function getBarColor(value: number): string {
-  if (value > 70) return '#4ADE80';
-  if (value >= 40) return '#FACC15';
-  return '#E63946';
+  if (value > 70) return colors.success;
+  if (value >= 40) return colors.butter;
+  return colors.error;
 }
 
 export function SkillBar({ label, value, maxValue = 100 }: SkillBarProps) {
@@ -39,12 +39,12 @@ const styles = StyleSheet.create({
   label: {
     width: 80,
     fontSize: typography.small,
-    color: '#8A8A8A',
+    color: colors.textMuted,
   },
   barTrack: {
     flex: 1,
     height: 10,
-    backgroundColor: '#1F1F1F',
+    backgroundColor: colors.surface,
     borderRadius: 5,
     overflow: 'hidden',
   },

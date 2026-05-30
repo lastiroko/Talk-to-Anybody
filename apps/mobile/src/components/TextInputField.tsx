@@ -48,7 +48,7 @@ export function TextInputField({
           autoCapitalize={autoCapitalize}
           returnKeyType={returnKeyType}
           placeholder={placeholder}
-          placeholderTextColor="#4A4A4A"
+          placeholderTextColor={colors.textMuted}
         />
         {rightIcon ? <View style={styles.rightIcon}>{rightIcon}</View> : null}
       </View>
@@ -62,26 +62,31 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   label: {
-    fontSize: typography.small,
-    fontWeight: typography.weightSemi,
-    color: '#8A8A8A',
+    fontSize: typography.caption,
+    fontFamily: typography.fontFamily.bold,
+    fontWeight: typography.weightBold,
+    color: colors.primary,
+    letterSpacing: 0.4,
   },
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1.5,
-    borderColor: 'rgba(255,255,255,0.08)',
-    borderRadius: 12,
-    backgroundColor: '#1F1F1F',
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 16,
+    backgroundColor: colors.surface,
     paddingHorizontal: spacing.md,
+    minHeight: 56,
   },
   inputError: {
-    borderColor: '#E63946',
+    borderColor: colors.error,
+    borderWidth: 1.5,
   },
   input: {
     flex: 1,
     fontSize: typography.body,
-    color: '#FFFFFF',
+    fontFamily: typography.fontFamily.regular,
+    color: colors.text,
     paddingVertical: 14,
   },
   rightIcon: {
@@ -89,6 +94,8 @@ const styles = StyleSheet.create({
   },
   error: {
     fontSize: typography.small,
-    color: '#E63946',
+    fontFamily: typography.fontFamily.medium,
+    color: colors.error,
+    marginTop: 2,
   },
 });

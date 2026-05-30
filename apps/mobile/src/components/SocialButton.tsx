@@ -1,4 +1,5 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
@@ -10,18 +11,14 @@ interface SocialButtonProps {
 
 const CONFIG = {
   apple: {
-    emoji: '\ud83c\udf4e',
+    icon: 'logo-apple' as const,
+    iconColor: '#1F1B16',
     label: 'Continue with Apple',
-    bg: '#FFFFFF',
-    textColor: '#000000',
-    borderColor: '#FFFFFF',
   },
   google: {
-    emoji: 'G',
+    icon: 'logo-google' as const,
+    iconColor: '#4285F4',
     label: 'Continue with Google',
-    bg: '#1F1F1F',
-    textColor: '#FFFFFF',
-    borderColor: 'rgba(255,255,255,0.08)',
   },
 };
 
@@ -30,20 +27,17 @@ export function SocialButton({ provider, onPress }: SocialButtonProps) {
 
   return (
     <TouchableOpacity
-      style={[
-        styles.button,
-        {
-          backgroundColor: config.bg,
-          borderColor: config.borderColor,
-        },
-      ]}
+      style={styles.button}
       onPress={onPress}
       activeOpacity={0.7}
     >
-      <Text style={[styles.emoji, provider === 'google' && styles.googleEmoji]}>
-        {config.emoji}
-      </Text>
-      <Text style={[styles.label, { color: config.textColor }]}>{config.label}</Text>
+      <View style={styles.row}>
+        <Ionicons name={config.icon} size={20} color={config.iconColor} />
+        <Text style={styles.label}>{config.label}</Text>
+      </View>
+      <View style={styles.soonChip}>
+        <Text style={styles.soonText}>Soon</Text>
+      </View>
     </TouchableOpacity>
   );
 }
@@ -52,23 +46,36 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 12,
-    borderWidth: 1.5,
-    paddingVertical: 14,
-    paddingHorizontal: spacing.lg,
+    justifyContent: 'space-between',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+    paddingVertical: 16,
+    paddingHorizontal: spacing.md,
+    minHeight: 56,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: spacing.sm,
-  },
-  emoji: {
-    fontSize: 18,
-  },
-  googleEmoji: {
-    fontWeight: typography.weightBold,
-    fontSize: typography.subheading,
-    color: '#4285F4',
   },
   label: {
     fontSize: typography.body,
+    fontFamily: typography.fontFamily.semiBold,
     fontWeight: typography.weightSemi,
+    color: colors.text,
+  },
+  soonChip: {
+    backgroundColor: colors.primaryLight,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 999,
+  },
+  soonText: {
+    fontSize: typography.tiny,
+    fontFamily: typography.fontFamily.bold,
+    fontWeight: typography.weightBold,
+    color: colors.primaryDark,
   },
 });

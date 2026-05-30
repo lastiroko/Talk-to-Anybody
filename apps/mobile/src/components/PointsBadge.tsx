@@ -15,11 +15,11 @@ export function PointsBadge({ gems, coins, style }: PointsBadgeProps) {
     <View style={[styles.row, style]}>
       <View style={styles.pill}>
         <Ionicons name="diamond" size={12} color={colors.gem} />
-        <Text style={styles.gemText}>{gems.toLocaleString()}</Text>
+        <Text style={styles.text}>+{gems.toLocaleString()}</Text>
       </View>
       <View style={styles.pill}>
         <Ionicons name="ellipse" size={12} color={colors.coin} />
-        <Text style={styles.coinText}>{coins.toLocaleString()}</Text>
+        <Text style={styles.text}>+{coins.toLocaleString()}</Text>
       </View>
     </View>
   );
@@ -33,20 +33,18 @@ const styles = StyleSheet.create({
   pill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1F1F1F',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     borderRadius: 999,
-    gap: 4,
+    gap: 6,
   },
-  gemText: {
+  text: {
     fontSize: typography.caption,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
-    color: '#FF4500',
-  },
-  coinText: {
-    fontSize: typography.caption,
-    fontWeight: typography.weightBold,
-    color: '#FF7A1A',
+    color: colors.text,
   },
 });

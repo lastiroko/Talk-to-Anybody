@@ -1,4 +1,4 @@
-import { Animated, StyleSheet, View } from 'react-native';
+import { Animated, StyleSheet } from 'react-native';
 import { colors } from '../theme/colors';
 import { typography } from '../theme/typography';
 import { spacing } from '../theme/spacing';
@@ -11,19 +11,19 @@ interface ScrollHeaderProps {
 export function ScrollHeader({ title, scrollY }: ScrollHeaderProps) {
   const backgroundOpacity = scrollY.interpolate({
     inputRange: [0, 80],
-    outputRange: [0, 1],
+    outputRange: [0, 0.95],
     extrapolate: 'clamp',
   });
 
   const fontSize = scrollY.interpolate({
     inputRange: [0, 80],
-    outputRange: [28, 18],
+    outputRange: [32, 20],
     extrapolate: 'clamp',
   });
 
   const shadowOpacity = scrollY.interpolate({
     inputRange: [0, 80],
-    outputRange: [0, 0.1],
+    outputRange: [0, 0.06],
     extrapolate: 'clamp',
   });
 
@@ -47,7 +47,7 @@ export function ScrollHeader({ title, scrollY }: ScrollHeaderProps) {
         style={[
           StyleSheet.absoluteFill,
           {
-            backgroundColor: '#0A0A0A',
+            backgroundColor: colors.background,
             opacity: backgroundOpacity,
           },
         ]}
@@ -69,13 +69,14 @@ const styles = StyleSheet.create({
     paddingTop: spacing.md,
     paddingHorizontal: spacing.lg,
     zIndex: 10,
-    shadowColor: '#000',
+    shadowColor: '#1F1B16',
     shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 4,
+    shadowRadius: 8,
+    elevation: 2,
   },
   title: {
-    fontWeight: typography.weightBold,
-    color: '#FFFFFF',
+    fontFamily: typography.fontFamily.display,
+    fontWeight: typography.weightSemi,
+    color: colors.text,
   },
 });

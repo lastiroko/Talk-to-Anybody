@@ -12,9 +12,9 @@ interface MetricCardProps {
 }
 
 const TREND_CONFIG = {
-  up: { arrow: '\u2191', color: '#4ADE80' },
-  down: { arrow: '\u2193', color: '#E63946' },
-  stable: { arrow: '\u2192', color: '#8A8A8A' },
+  up: { arrow: '\u2191', color: colors.success },
+  down: { arrow: '\u2193', color: colors.error },
+  stable: { arrow: '\u2192', color: colors.textMuted },
 };
 
 export function MetricCard({ label, value, trend, trendLabel }: MetricCardProps) {
@@ -36,22 +36,22 @@ export function MetricCard({ label, value, trend, trendLabel }: MetricCardProps)
 const styles = StyleSheet.create({
   card: {
     flex: 1,
-    backgroundColor: '#141414',
+    backgroundColor: colors.surface,
     borderRadius: 14,
     padding: spacing.md,
     alignItems: 'center',
     gap: 4,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: colors.border,
   },
   value: {
     fontSize: 22,
     fontWeight: typography.weightBold,
-    color: '#FFFFFF',
+    color: colors.text,
   },
   label: {
     fontSize: typography.small,
-    color: '#8A8A8A',
+    color: colors.textMuted,
     textAlign: 'center',
   },
   trend: {

@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { typography } from '../theme/typography';
 
@@ -10,7 +11,7 @@ interface StreakBadgeProps {
 export function StreakBadge({ count, style }: StreakBadgeProps) {
   return (
     <View style={[styles.pill, style]}>
-      <Text style={styles.fire}>{'\ud83d\udd25'}</Text>
+      <Ionicons name="flame" size={14} color={colors.textOnPrimary} />
       <Text style={styles.count}>{count}</Text>
     </View>
   );
@@ -20,20 +21,21 @@ const styles = StyleSheet.create({
   pill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,69,0,0.12)',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
+    backgroundColor: colors.primary,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     borderRadius: 999,
     gap: 4,
-    borderWidth: 1,
-    borderColor: '#FF7A1A',
-  },
-  fire: {
-    fontSize: 14,
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 3,
   },
   count: {
     fontSize: typography.caption,
+    fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
-    color: '#FF7A1A',
+    color: colors.textOnPrimary,
   },
 });

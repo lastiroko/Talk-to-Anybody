@@ -35,15 +35,15 @@ export function AnxietyRater({ label, value, onChange }: AnxietyRaterProps) {
               style={[
                 styles.circle,
                 {
-                  backgroundColor: isSelected ? CIRCLE_COLORS[i] : '#1F1F1F',
-                  borderColor: isSelected ? CIRCLE_COLORS[i] : 'rgba(255,255,255,0.08)',
+                  backgroundColor: isSelected ? CIRCLE_COLORS[i] : colors.surface,
+                  borderColor: isSelected ? CIRCLE_COLORS[i] : colors.border,
                 },
               ]}
             >
               <Text
                 style={[
                   styles.circleText,
-                  { color: isSelected ? '#fff' : '#8A8A8A' },
+                  { color: isSelected ? '#fff' : colors.textMuted },
                 ]}
               >
                 {rating}
@@ -62,17 +62,17 @@ export function AnxietyRater({ label, value, onChange }: AnxietyRaterProps) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#141414',
+    backgroundColor: colors.surface,
     borderRadius: 12,
     padding: spacing.md,
     gap: spacing.sm,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: colors.border,
   },
   label: {
     fontSize: typography.body,
     fontWeight: typography.weightSemi,
-    color: '#FFFFFF',
+    color: colors.text,
     textAlign: 'center',
   },
   row: {
@@ -98,6 +98,6 @@ const styles = StyleSheet.create({
   },
   anchor: {
     fontSize: typography.small,
-    color: '#8A8A8A',
+    color: colors.textMuted,
   },
 });

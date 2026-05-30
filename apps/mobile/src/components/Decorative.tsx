@@ -1,4 +1,5 @@
 import { View, ViewStyle, StyleSheet } from 'react-native';
+import { colors } from '../theme/colors';
 
 interface GradientOrbProps {
   size: number;
@@ -56,7 +57,7 @@ interface WaveDividerProps {
   style?: ViewStyle;
 }
 
-export function WaveDivider({ color = 'rgba(255,255,255,0.08)', style }: WaveDividerProps) {
+export function WaveDivider({ color = colors.border, style }: WaveDividerProps) {
   return (
     <View style={[styles.waveContainer, style]}>
       {Array.from({ length: 6 }, (_, i) => (
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
     width: 3,
     height: 3,
     borderRadius: 1.5,
-    backgroundColor: 'rgba(255,255,255,0.06)',
+    backgroundColor: colors.border,
     opacity: 1,
   },
   waveContainer: {

@@ -41,7 +41,7 @@ export function GameCard({ icon, iconColor, title, description, locked, unlockDa
         onPressOut={handlePressOut}
         disabled={locked}
       >
-        <View style={[styles.iconCircle, { backgroundColor: locked ? '#4A4A4A' : circleColor }]}>
+        <View style={[styles.iconCircle, { backgroundColor: locked ? colors.textMuted : circleColor }]}>
           <Ionicons name={locked ? 'lock-closed-outline' : icon} size={20} color="#FFFFFF" />
         </View>
         <Text style={[styles.title, locked && styles.lockedText]}>{title}</Text>
@@ -60,14 +60,14 @@ export function GameCard({ icon, iconColor, title, description, locked, unlockDa
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#141414',
+    backgroundColor: colors.surface,
     borderRadius: 18,
     padding: spacing.md,
     alignItems: 'center',
     gap: spacing.xs,
     minHeight: 140,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: colors.border,
   },
   locked: {
     opacity: 0.55,
@@ -82,20 +82,20 @@ const styles = StyleSheet.create({
   title: {
     fontSize: typography.caption,
     fontWeight: typography.weightBold,
-    color: '#FFFFFF',
+    color: colors.text,
     textAlign: 'center',
   },
   lockedText: {
-    color: '#8A8A8A',
+    color: colors.textMuted,
   },
   description: {
     fontSize: typography.tiny,
-    color: '#8A8A8A',
+    color: colors.textMuted,
     textAlign: 'center',
     lineHeight: 14,
   },
   playBadge: {
-    backgroundColor: 'rgba(255,69,0,0.12)',
+    backgroundColor: colors.recordBg,
     paddingHorizontal: 12,
     paddingVertical: 3,
     borderRadius: 999,
@@ -104,6 +104,6 @@ const styles = StyleSheet.create({
   playText: {
     fontSize: typography.tiny,
     fontWeight: typography.weightBold,
-    color: '#FF4500',
+    color: colors.primary,
   },
 });

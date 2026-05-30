@@ -328,30 +328,30 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontFamily: typography.fontFamily.bold,
     fontWeight: typography.weightBold,
-    color: '#FFFFFF',
+    color: colors.text,
     fontVariant: ['tabular-nums'],
   },
   hint: {
     fontSize: typography.small,
-    color: '#8A8A8A',
+    color: colors.textMuted,
   },
   maxDuration: {
     fontSize: 12,
-    color: '#8A8A8A',
+    color: colors.textMuted,
   },
 
   // Prompt
   promptCard: {
-    backgroundColor: '#1F1F1F',
+    backgroundColor: colors.surface,
     borderRadius: 16,
     padding: spacing.md,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: colors.border,
     width: '100%',
   },
   promptText: {
     fontSize: typography.body,
-    color: '#FFFFFF',
+    color: colors.text,
     lineHeight: 22,
     textAlign: 'center',
   },
@@ -361,9 +361,9 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#1F1F1F',
+    backgroundColor: colors.surface,
     borderWidth: 3,
-    borderColor: '#E63946',
+    borderColor: colors.error,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#E63946',
+    backgroundColor: colors.error,
   },
 
   // Stop button
@@ -379,12 +379,12 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: '#E63946',
+    backgroundColor: colors.error,
     borderWidth: 3,
-    borderColor: '#E63946',
+    borderColor: colors.error,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#E63946',
+    shadowColor: colors.error,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.5,
     shadowRadius: 12,
@@ -414,7 +414,7 @@ const styles = StyleSheet.create({
   },
   controlLabel: {
     fontSize: 12,
-    color: '#8A8A8A',
+    color: colors.textMuted,
   },
   controlSpacer: {
     width: 60,
@@ -431,7 +431,7 @@ const styles = StyleSheet.create({
   waveformBar: {
     width: 6,
     borderRadius: 3,
-    backgroundColor: '#E63946',
+    backgroundColor: colors.error,
   },
 
   // Done section
@@ -444,41 +444,41 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: 'rgba(74,222,128,0.15)',
+    backgroundColor: colors.successBg,
     borderWidth: 3,
-    borderColor: '#4ADE80',
+    borderColor: colors.success,
     alignItems: 'center',
     justifyContent: 'center',
   },
   doneCheck: {
     fontSize: 32,
-    color: '#4ADE80',
+    color: colors.success,
     fontWeight: typography.weightBold,
   },
   doneText: {
     fontSize: typography.body,
-    color: '#4ADE80',
+    color: colors.success,
     fontWeight: typography.weightSemi,
   },
 
   // Playback
   playbackButton: {
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: colors.border,
     borderRadius: 16,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.lg,
-    backgroundColor: '#141414',
+    backgroundColor: colors.surface,
   },
   playbackText: {
     fontSize: typography.body,
     fontWeight: typography.weightSemi,
-    color: '#FFFFFF',
+    color: colors.text,
   },
 
   // Use button
   useButton: {
-    backgroundColor: '#FF4500',
+    backgroundColor: colors.primary,
     borderRadius: 999,
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.xl,
@@ -486,7 +486,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   useButtonDisabled: {
-    backgroundColor: '#1F1F1F',
+    backgroundColor: colors.surface,
   },
   useButtonInner: {
     flexDirection: 'row',
@@ -495,7 +495,7 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   useButtonText: {
-    color: '#FFFFFF',
+    color: colors.text,
     fontSize: typography.body,
     fontWeight: typography.weightSemi,
   },
@@ -513,18 +513,18 @@ const styles = StyleSheet.create({
   },
   secondaryText: {
     fontSize: typography.body,
-    color: '#FF7A1A',
+    color: colors.primary,
     fontWeight: typography.weightSemi,
   },
   discardText: {
     fontSize: typography.body,
-    color: '#8A8A8A',
+    color: colors.textMuted,
     fontWeight: typography.weightSemi,
   },
 
   minWarning: {
     fontSize: typography.small,
-    color: '#FACC15',
+    color: colors.butter,
   },
 
   // Countdown
@@ -532,30 +532,30 @@ const styles = StyleSheet.create({
     fontSize: 64,
     fontFamily: typography.fontFamily.display,
     fontWeight: typography.weightBold,
-    color: '#FF7A1A',
+    color: colors.primary,
   },
   countdownLabel: {
     fontSize: typography.body,
-    color: '#8A8A8A',
+    color: colors.textMuted,
   },
 
   // Error
   errorText: {
     fontSize: typography.body,
-    color: '#E63946',
+    color: colors.error,
     textAlign: 'center',
   },
   retryButton: {
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: colors.border,
     borderRadius: 999,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.lg,
-    backgroundColor: '#141414',
+    backgroundColor: colors.surface,
   },
   retryText: {
     fontSize: typography.body,
-    color: '#FF7A1A',
+    color: colors.primary,
     fontWeight: typography.weightSemi,
   },
 });

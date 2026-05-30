@@ -21,20 +21,25 @@ export function SettingsToggle({ value, onToggle }: SettingsToggleProps) {
 const styles = StyleSheet.create({
   track: {
     width: 50,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: '#1F1F1F',
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: colors.surfaceMuted,
     justifyContent: 'center',
     paddingHorizontal: 3,
   },
   trackOn: {
-    backgroundColor: '#FF4500',
+    backgroundColor: colors.primary,
   },
   knob: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    backgroundColor: '#FFFFFF',
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: colors.surface,
+    shadowColor: '#1F1B16',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.15,
+    shadowRadius: 2,
+    elevation: 2,
   },
   knobOn: {
     alignSelf: 'flex-end',

@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { Animated, Dimensions, StyleSheet, View } from 'react-native';
+import { colors } from '../theme/colors';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-const CONFETTI_COLORS = ['#FF4500', '#FF7A1A', '#E63946', '#FACC15', '#4ADE80', '#FFFFFF'];
+const CONFETTI_COLORS = [colors.primary, colors.primary, colors.error, colors.butter, colors.success, '#FFFFFF'];
 const PARTICLE_COUNT = 25;
 
 interface CelebrationProps {
@@ -167,6 +168,6 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 100,
-    backgroundColor: '#FF4500',
+    backgroundColor: colors.primary,
   },
 });

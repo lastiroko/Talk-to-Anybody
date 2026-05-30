@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
+import { shadows } from '../theme/shadows';
 
 interface SelectableCardProps {
   selected: boolean;
@@ -12,7 +13,11 @@ interface SelectableCardProps {
 export function SelectableCard({ selected, onPress, children }: SelectableCardProps) {
   return (
     <TouchableOpacity
-      style={[styles.card, selected ? styles.selected : styles.unselected]}
+      style={[
+        styles.card,
+        selected ? styles.selected : styles.unselected,
+        !selected && shadows.soft,
+      ]}
       onPress={onPress}
       activeOpacity={0.7}
     >
@@ -23,16 +28,21 @@ export function SelectableCard({ selected, onPress, children }: SelectableCardPr
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 12,
+    borderRadius: 20,
     borderWidth: 1.5,
     padding: spacing.md,
   },
   selected: {
-    borderColor: '#FF7A1A',
-    backgroundColor: 'rgba(255,69,0,0.08)',
+    borderColor: colors.primary,
+    backgroundColor: colors.surfaceHighlight,
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.18,
+    shadowRadius: 16,
+    elevation: 3,
   },
   unselected: {
-    borderColor: 'rgba(255,255,255,0.08)',
-    backgroundColor: '#141414',
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
   },
 });

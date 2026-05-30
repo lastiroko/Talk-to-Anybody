@@ -40,14 +40,14 @@ const styles = StyleSheet.create({
     marginRight: spacing.sm,
   },
   unlocked: {
-    backgroundColor: '#141414',
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: colors.border,
   },
   locked: {
-    backgroundColor: '#1F1F1F',
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: colors.border,
   },
   circle: {
     width: 48,
@@ -57,18 +57,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   circleUnlocked: {
-    backgroundColor: 'rgba(255,69,0,0.12)',
+    backgroundColor: colors.recordBg,
   },
   circleLocked: {
-    backgroundColor: 'rgba(255,255,255,0.08)',
+    backgroundColor: colors.border,
   },
   label: {
     fontSize: typography.tiny,
     fontWeight: typography.weightSemi,
-    color: '#FFFFFF',
+    color: colors.text,
     textAlign: 'center',
   },
   lockedLabel: {
-    color: '#8A8A8A',
+    color: colors.textMuted,
   },
 });

@@ -37,7 +37,7 @@ function SkeletonBase({ width, height, radius = 8, style }: SkeletonProps) {
           width,
           height,
           borderRadius: radius,
-          backgroundColor: '#1F1F1F',
+          backgroundColor: colors.surface,
           overflow: 'hidden',
         },
         style,
@@ -84,10 +84,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
   },
   card: {
-    backgroundColor: '#141414',
+    backgroundColor: colors.surface,
     borderRadius: 14,
     padding: spacing.lg,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: colors.border,
   },
 });

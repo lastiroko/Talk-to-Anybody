@@ -23,13 +23,13 @@ export function StatCard({ label, value, icon }: StatCardProps) {
 const styles = StyleSheet.create({
   card: {
     flex: 1,
-    backgroundColor: '#141414',
+    backgroundColor: colors.surface,
     borderRadius: 14,
     padding: spacing.md,
     alignItems: 'center',
     gap: 4,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: colors.border,
   },
   icon: {
     fontSize: 20,
@@ -37,11 +37,11 @@ const styles = StyleSheet.create({
   value: {
     fontSize: typography.subheading,
     fontWeight: typography.weightBold,
-    color: '#FFFFFF',
+    color: colors.text,
   },
   label: {
     fontSize: typography.small,
-    color: '#8A8A8A',
+    color: colors.textMuted,
     textAlign: 'center',
   },
 });

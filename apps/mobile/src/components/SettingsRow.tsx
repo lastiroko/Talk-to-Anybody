@@ -19,7 +19,7 @@ export function SettingsRow({ label, value, onPress, rightElement, destructive }
       <View style={styles.right}>
         {value ? <Text style={styles.value}>{value}</Text> : null}
         {rightElement}
-        {onPress && !rightElement ? <Text style={styles.chevron}>{'\u203a'}</Text> : null}
+        {onPress && !rightElement ? <Text style={styles.chevron}>{'›'}</Text> : null}
       </View>
     </View>
   );
@@ -42,15 +42,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 14,
     paddingHorizontal: spacing.md,
-    minHeight: 48,
+    minHeight: 52,
   },
   label: {
     fontSize: typography.body,
-    color: '#FFFFFF',
+    fontFamily: typography.fontFamily.medium,
+    color: colors.text,
     flex: 1,
   },
   destructiveLabel: {
-    color: '#E63946',
+    color: colors.error,
   },
   right: {
     flexDirection: 'row',
@@ -59,10 +60,11 @@ const styles = StyleSheet.create({
   },
   value: {
     fontSize: typography.body,
-    color: '#8A8A8A',
+    fontFamily: typography.fontFamily.regular,
+    color: colors.textMuted,
   },
   chevron: {
     fontSize: 20,
-    color: '#8A8A8A',
+    color: colors.textMuted,
   },
 });

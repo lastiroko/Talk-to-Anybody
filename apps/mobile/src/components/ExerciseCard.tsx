@@ -16,12 +16,12 @@ interface ExerciseCardProps {
 }
 
 const TYPE_CONFIG: Record<string, { bg: string; circleColor: string; label: string; icon: IoniconName }> = {
-  record: { bg: 'rgba(255,69,0,0.12)', circleColor: '#FF4500', label: 'Record', icon: 'mic-outline' },
-  drill: { bg: 'rgba(250,204,21,0.12)', circleColor: '#FACC15', label: 'Drill', icon: 'locate-outline' },
-  reflection: { bg: 'rgba(168,85,247,0.12)', circleColor: '#A855F7', label: 'Reflection', icon: 'bulb-outline' },
-  game: { bg: 'rgba(74,222,128,0.12)', circleColor: '#4ADE80', label: 'Game', icon: 'game-controller-outline' },
-  unlearning_drill: { bg: 'rgba(230,57,70,0.12)', circleColor: '#E63946', label: 'Unlearning', icon: 'refresh-outline' },
-  imitation_drill: { bg: 'rgba(45,212,191,0.12)', circleColor: '#2DD4BF', label: 'Imitation', icon: 'ear-outline' },
+  record: { bg: colors.recordBg, circleColor: colors.primary, label: 'Record', icon: 'mic-outline' },
+  drill: { bg: colors.drillBg, circleColor: colors.butter, label: 'Drill', icon: 'locate-outline' },
+  reflection: { bg: colors.imitationBg, circleColor: colors.lavender, label: 'Reflection', icon: 'bulb-outline' },
+  game: { bg: colors.gameBg, circleColor: colors.success, label: 'Game', icon: 'game-controller-outline' },
+  unlearning_drill: { bg: colors.unlearningBg, circleColor: colors.error, label: 'Unlearning', icon: 'refresh-outline' },
+  imitation_drill: { bg: 'rgba(126,217,181,0.16)', circleColor: colors.teal, label: 'Imitation', icon: 'ear-outline' },
 };
 
 export function ExerciseCard({ exercise, isCompleted, onStart }: ExerciseCardProps) {
@@ -79,14 +79,14 @@ export function ExerciseCard({ exercise, isCompleted, onStart }: ExerciseCardPro
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#141414',
+    backgroundColor: colors.surface,
     borderRadius: 18,
     padding: spacing.md,
     gap: spacing.sm,
     position: 'relative',
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: colors.border,
   },
   completedCard: {
     opacity: 0.7,
@@ -137,21 +137,21 @@ const styles = StyleSheet.create({
   duration: {
     fontSize: typography.small,
     fontWeight: typography.weightSemi,
-    color: '#8A8A8A',
+    color: colors.textMuted,
   },
   prompt: {
     fontSize: typography.body,
-    color: '#FFFFFF',
+    color: colors.text,
     lineHeight: 22,
   },
   toggle: {
     fontSize: typography.small,
-    color: '#FF4500',
+    color: colors.primary,
     fontWeight: typography.weightSemi,
   },
   instructions: {
     fontSize: typography.small,
-    color: '#8A8A8A',
+    color: colors.textMuted,
     lineHeight: 18,
     fontStyle: 'italic',
   },
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   startButtonText: {
-    color: '#fff',
+    color: colors.text,
     fontSize: typography.body,
     fontWeight: typography.weightSemi,
   },

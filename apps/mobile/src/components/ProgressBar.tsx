@@ -6,7 +6,7 @@ interface ProgressBarProps {
   color?: string;
 }
 
-export function ProgressBar({ progress, color = '#FF4500' }: ProgressBarProps) {
+export function ProgressBar({ progress, color = colors.primary }: ProgressBarProps) {
   const clampedProgress = Math.min(1, Math.max(0, progress));
 
   return (
@@ -23,8 +23,8 @@ export function ProgressBar({ progress, color = '#FF4500' }: ProgressBarProps) {
 
 const styles = StyleSheet.create({
   track: {
-    height: 8,
-    backgroundColor: '#1F1F1F',
+    height: 6,
+    backgroundColor: colors.track,
     borderRadius: 999,
     overflow: 'hidden',
   },
